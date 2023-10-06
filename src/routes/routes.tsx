@@ -7,6 +7,7 @@ import Chechout from "../pages/Chechout";
 import NotFound from "../components/NotFound";
 import Account from "../pages/Account";
 import About from "../pages/About";
+import Contact from "../pages/Cancat";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -18,6 +19,7 @@ const routes = [
   { path: "cart/chechout", element: <Chechout /> },
   { path: "account", element: <Account /> },
   { path: "about", element: <About /> },
+  { path: "contact", element: <Contact /> },
 ];
 
 export default routes;
