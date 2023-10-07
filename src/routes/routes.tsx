@@ -8,6 +8,7 @@ import NotFound from "../components/NotFound";
 import Account from "../pages/Account";
 import About from "../pages/About";
 import Contact from "../pages/Cancat";
+import ProductDetails from "../pages/ProductDetails";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -20,6 +21,7 @@ const routes = [
   { path: "account", element: <Account /> },
   { path: "about", element: <About /> },
   { path: "contact", element: <Contact /> },
+  { path: "product/:productId", element: <ProductDetails /> },
 ];
 
 export default routes;
