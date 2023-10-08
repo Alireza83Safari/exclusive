@@ -1,65 +1,89 @@
-import React from "react";
-import left from "../../assets/images/left.png";
-import right from "../../assets/images/right.png";
-import phone from "../../assets/images/phone.png";
-import computer from "../../assets/images/computer.png";
-import whatches from "../../assets/images/whaches.png";
-import camera from "../../assets/images/camera.png";
-import headPhone from "../../assets/images/headPhone.png";
-import gaming from "../../assets/images/gaming.png";
+import React, { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
 
+import { Pagination } from "swiper/modules";
 function Category() {
+  const categoryData = [
+    { img: "/images/phone.png", title: "Phones" },
+    { img: "/images/computer.png", title: "Computers" },
+    { img: "/images/whaches.png", title: "SmartWatch" },
+    { img: "/images/headPhone.png", title: "HeadPhones" },
+    { img: "/images/gaming.png", title: "Gaming" },
+    { img: "/images/phone.png", title: "Phones" },
+    { img: "/images/computer.png", title: "Computers" },
+    { img: "/images/whaches.png", title: "SmartWatch" },
+    { img: "/images/headPhone.png", title: "HeadPhones" },
+    { img: "/images/gaming.png", title: "Gaming" },
+  ];
+
+  const swiperRef = useRef<Swiper | null>(null);
+
+  const handlePrevClick = () => {
+    if (swiperRef.current) {
+      swiperRef.current.slidePrev();
+    }
+  };
+
+  const handleNextClick = () => {
+    if (swiperRef.current) {
+      swiperRef.current.slideNext();
+    }
+  };
   return (
-    <section className="max-w-[1170px] mx-auto py-20 border-b border-borderColor">
-      <p className="text-red my-4 font-semibold">Categories</p>
+    <section className="max-w-[1170px] mx-auto min-h-[400px] my-20 border-b border-borderColor">
+      <p className="text-red my-4 font-semibold md:text-base text-sm">Categories</p>
       <div className="flex justify-between">
-        <h2 className="text-4xl mb-10 font-semibold">Browse By Category</h2>
+        <h2 className="md:text-4xl text-2xl md:mb-4 font-semibold">Browse By Category</h2>
         <div className="flex">
-          <div className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2">
-            <img src={left} className="w-5" />
+          <div
+            className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2"
+            onClick={handlePrevClick}
+          >
+            <img src="/images/left.png" className="w-5" alt="Previous" />
           </div>
-          <div className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2">
-            <img src={right} className="w-5" />
+          <div
+            className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2"
+            onClick={handleNextClick}
+          >
+            <img src="/images/right.png" className="w-5" alt="Next" />
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-6">
-        <div className="border border-borderColor rounded-md p-4 w-44 h-44 flex justify-center items-center">
-          <div className="">
-            <img src={phone} className="w-14 h-14 object-contain m-auto" />
-            <p>Phones</p>
-          </div>
-        </div>
-        <div className="border border-borderColor rounded-md p-4 w-44 h-44 flex justify-center items-center">
-          <div className="">
-            <img src={computer} className="w-14 h-14 object-contain m-auto" />
-            <p>Computers</p>
-          </div>
-        </div>
-        <div className="border border-borderColor rounded-md p-4 w-44 h-44 flex justify-center items-center">
-          <div>
-            <img src={whatches} className="w-14 h-14 object-contain m-auto" />
-            <p>SmartWatch</p>
-          </div>
-        </div>
-        <div className="border border-borderColor rounded-md p-4 w-44 h-44 flex justify-center items-center">
-          <div>
-            <img src={camera} className="w-14 h-14 object-contain m-auto" />
-            <p>Camera</p>
-          </div>
-        </div>
-        <div className="border border-borderColor rounded-md p-4 w-44 h-44 flex justify-center items-center">
-          <div>
-            <img src={headPhone} className="w-14 h-14 object-contain m-auto" />
-            <p>HeadPhones</p>
-          </div>
-        </div>
-        <div className="border border-borderColor rounded-md p-4 w-44 h-44 flex justify-center items-center">
-          <div>
-            <img src={gaming} className="w-14 h-14 object-contain m-auto" />
-            <p>Gaming</p>
-          </div>
-        </div>
+      <div className="">
+        <Swiper
+          breakpoints={{
+            1: { slidesPerView: 2 },
+            650: { slidesPerView: 4 },
+            880: {
+              slidesPerView: 5,
+            },
+            1024: {
+              slidesPerView: 6,
+            },
+          }}
+          spaceBetween={4}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+          className="mySwiper"
+        >
+          {categoryData.map((data, index) => (
+            <SwiperSlide key={index}>
+              <div className="border border-borderColor rounded-md h-44 mx-2 text-center flex justify-center items-center my-10 hover:bg-red duration-200 hover:text-white">
+                <div>
+                  <img
+                    src={data.img}
+                    className="w-14 h-14 object-contain m-auto"
+                  />
+                  <p>{data.title}</p>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </section>
   );

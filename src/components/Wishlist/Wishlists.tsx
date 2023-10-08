@@ -49,15 +49,16 @@ function Wishlists() {
   return (
     <>
       <div>
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center md:mb-10 mb-5 px-3">
           <p> Wishlist(4)</p>
           <button className="py-3 px-5 border border-borderColor">
             View All Products
           </button>
         </div>
-        <div className="grid grid-cols-4">
-          {productData?.map((product) => (
+        <div className="grid md:grid-cols-4 grid-cols-2">
+          {productData?.map((product, index) => (
             <WishlistTemplate
+              key={index}
               title={product.title}
               name={product.name}
               price={product.price}
@@ -68,15 +69,16 @@ function Wishlists() {
       </div>
 
       <div className="mt-12">
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center md:mb-10 mb-5 px-3">
           <p>Just For You</p>
           <button className="py-3 px-10 border border-borderColor">
             See All
           </button>
         </div>
-        <div className="grid grid-cols-4">
-          {productData?.map((product) => (
+        <div className="grid md:grid-cols-4 grid-cols-2">
+          {productData?.map((product, index) => (
             <WishlistTemplate
+              key={index}
               title={product.title}
               name={product.name}
               price={product.price}

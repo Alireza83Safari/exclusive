@@ -34,20 +34,20 @@ function BestSelling(): ProductType {
     },
   ];
   return (
-    <section className="max-w-[1170px] mx-auto mt-20 relative">
+    <section className="max-w-[1170px] mx-auto mt-20 relative px-2">
       <p className="text-red font-semibold my-5">This Month</p>
       <div className="flex justify-between items-center my-8">
-        <div className="mr-28">
-          <h2 className="text-4xl font-semibold mb-5">Best Selling Products</h2>
-        </div>
-
-        <button className="px-4 bg-red text-white h-10">
+        <h2 className="md:text-4xl text-2xl font-semibold mb-5">
+          Best Selling Products
+        </h2>
+        <button className="px-4 bg-red text-white h-10 md:text-base text-sm">
           View All Products
         </button>
       </div>
-      <div className="grid grid-cols-4">
-        {productData?.map((product) => (
+      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+        {productData?.map((product, index) => (
           <ProductTemplate
+            key={index}
             title={product.title}
             name={product.name}
             price={product.price}

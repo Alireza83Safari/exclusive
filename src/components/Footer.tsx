@@ -3,8 +3,8 @@ import React from "react";
 function Footer() {
   return (
     <footer className="w-full bg-black">
-      <div className="max-w-[1170px] mx-auto relative mt-20 py-16 flex justify-between">
-        <div>
+      <div className="max-w-[1170px] mx-auto relative mt-20 py-16 md:flex justify-between grid sm:grid-cols-3 grid-cols-2">
+        <div className="md:mx-1 mx-3 my-3">
           <ul className="text-white">
             <li className="text-2xl font-semibold mb-4">Exclusive</li>
             <li className="text-xl font-medium my-4">Subscribe</li>
@@ -23,7 +23,7 @@ function Footer() {
             />
           </div>
         </div>
-        <div className="text-white">
+        <div className="text-white md:mx-1 mx-3 my-3">
           <ul>
             <li className="text-xl font-semibold mb-4">Support</li>
             <li className="my-4">
@@ -34,7 +34,7 @@ function Footer() {
             <li className="my-4">+88015-88888-9999</li>
           </ul>
         </div>
-        <div className="text-white">
+        <div className="text-white md:mx-1 mx-3 my-3">
           <ul>
             <li className="text-xl font-semibold mb-4">Account</li>
             <li className="my-4">My Account</li>
@@ -44,7 +44,7 @@ function Footer() {
             <li className="my-4">Shop</li>
           </ul>
         </div>
-        <div className="text-white">
+        <div className="text-white md:mx-1 mx-3 my-3">
           <ul>
             <li className="text-xl font-semibold mb-4">Quick Link</li>
             <li className="my-4">Privacy Policy</li>
@@ -52,7 +52,7 @@ function Footer() {
             <li className="my-4">Contact</li>
           </ul>
         </div>
-        <div className="text-white">
+        <div className="text-white md:mx-1 mx-3 my-3">
           <p className="text-xl font-semibold mb-4">Download App</p>
           <p className="text-xs mb-4">Save $3 with App New User Only</p>
           <div className="grid grid-cols-2">
@@ -96,7 +96,11 @@ function Footer() {
         </div>
       </div>
       <div className="flex items-center justify-center pb-5">
-        <img src="/images/copyright.png" className="w-5 h-5 mr-1" alt="copyright" />
+        <img
+          src="/images/copyright.png"
+          className="w-5 h-5 mr-1"
+          alt="copyright"
+        />
         <p className="text-center text-borderColor">
           Copyright Rimel 2022. All right reserved
         </p>

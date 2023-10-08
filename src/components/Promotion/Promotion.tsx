@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import left from "../../assets/images/left.png";
-import right from "../../assets/images/right.png";
 import ProductTemplate from "../Product/ProductTemplate";
+import Timer from "../Timer";
 
 export type ProductType = {
+  key: number;
   title: string;
   name: string;
   price: number;
+  image: string;
 };
 function Promotion(): ProductType {
   const productData = [
@@ -30,13 +31,13 @@ function Promotion(): ProductType {
     },
     {
       title: "hkj Sales",
-      name: "Cbryt7i Fhgkjhklatuihg iDiscikjount",
+      name: "Cbryt7i FiDiscikjount",
       price: 654,
       image: "/images/bookSelf.png",
     },
     {
       title: "xcv Sales",
-      name: "Cgkhgkhgkhgkunt",
+      name: "Cgkhgkhggkunt",
       price: 645,
       image: "/images/product-1.png",
     },
@@ -48,7 +49,7 @@ function Promotion(): ProductType {
     },
     {
       title: "fgh Sales",
-      name: "Caghkutiuyjgount",
+      name: "Caghkutiuygount",
       price: 546,
       image: "/images/product-1.png",
     },
@@ -71,32 +72,19 @@ function Promotion(): ProductType {
     }
   };
   return (
-    <section className="max-w-[1170px] mx-auto mt-20 relative text-center">
+    <section className="max-w-[1170px] mx-auto mt-20 relative px-3">
       <div>
         <p className="text-red font-semibold">Today’s</p>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="sm:flex justify-between items-center my-4">
         <div className="flex">
-          <div className="mr-28">
-            <h2 className="text-4xl font-semibold">Flash Sales</h2>
+          <div className="md:mr-28 mr-16">
+            <h2 className="md:text-4xl sm:text-3xl text-xl font-semibold">
+              Flash Sales
+            </h2>
           </div>
-          <div className="flex">
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
+          <div>
+            <Timer hour={24} />
           </div>
           <div></div>
         </div>
@@ -105,19 +93,20 @@ function Promotion(): ProductType {
             className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2"
             onClick={nextImage}
           >
-            <img src={left} className="w-5" />
+            <img src="/images/left.png" className="w-5" />
           </div>
           <div
             className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2"
             onClick={prevImage}
           >
-            <img src={right} className="w-5" />
+            <img src="/images/right.png" className="w-5" />
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-4">
-        {productData?.slice(startIndex, endIndex).map((product) => (
+      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+        {productData?.slice(startIndex, endIndex).map((product, index) => (
           <ProductTemplate
+            key={index}
             title={product.title}
             name={product.name}
             price={product.price}
@@ -126,7 +115,7 @@ function Promotion(): ProductType {
         ))}
       </div>
 
-      <div className="felx justify-center items-center py-10 mx-auto">
+      <div className="felx justify-center items-center py-10 text-center">
         <button className="bg-red text-white py-2 px-4 rounded-md">
           View All Products
         </button>

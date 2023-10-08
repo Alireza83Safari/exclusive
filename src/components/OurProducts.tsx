@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import left from "../assets/images/left.png";
-import right from "../assets/images/right.png";
 import ProductTemplate from "./Product/ProductTemplate";
+import Timer from "./Timer";
 
 export type ProductType = {
   title: string;
@@ -60,7 +59,7 @@ function OurProducts(): ProductType {
     },
   ];
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(8);
+  const [endIndex, setEndIndex] = useState(4);
 
   console.log(productData.length);
 
@@ -76,54 +75,42 @@ function OurProducts(): ProductType {
       setEndIndex(() => endIndex - 1);
     }
   };
+
   return (
-    <section className="max-w-[1170px] mx-auto mt-20 relative text-center">
+    <section className="max-w-[1170px] mx-auto mt-20 relative px-2">
       <div>
-        <p className="text-red font-semibold">Today’s</p>
+        <p className="text-red font-semibold mb-5">Today’s</p>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="md:flex justify-between items-center">
         <div className="flex">
-          <div className="mr-28">
-            <h2 className="text-4xl font-semibold">Flash Sales</h2>
+          <div className="md:mr-28 mr-10">
+            <h2 className="md:text-4xl text-3xl font-semibold mb-5">
+              Flash Sales
+            </h2>
           </div>
-          <div className="flex">
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
-            <div className="mr-5">
-              <span>Days</span>
-              <p>03</p>
-            </div>
+          <div>
+            <Timer hour={24} />
           </div>
-          <div></div>
         </div>
         <div className="flex">
           <div
             className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2"
             onClick={nextImage}
           >
-            <img src={left} className="w-5" />
+            <img src="/images/left.png" className="w-5" />
           </div>
           <div
             className="flex items-center justify-center w-8 h-8 bg-gray rounded-full mx-2"
             onClick={prevImage}
           >
-            <img src={right} className="w-5" />
+            <img src="/images/right.png" className="w-5" />
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-4">
-        {productData?.slice(startIndex, endIndex).map((product) => (
+      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+        {productData?.slice(startIndex, endIndex).map((product, index) => (
           <ProductTemplate
+            key={index}
             title={product.title}
             name={product.name}
             price={product.price}
@@ -132,7 +119,7 @@ function OurProducts(): ProductType {
         ))}
       </div>
 
-      <div className="felx justify-center items-center py-10 mx-auto">
+      <div className="felx justify-center items-center py-10 text-center">
         <button className="bg-red text-white py-2 px-4 rounded-md">
           View All Products
         </button>

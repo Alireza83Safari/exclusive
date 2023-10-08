@@ -2,9 +2,9 @@ import React from "react";
 
 function Chechout() {
   return (
-    <section className="max-w-[1170px] mx-auto my-10 relative">
-      <div className="grid grid-cols-2 mt-20">
-        <form className="pr-32">
+    <section className="max-w-[1170px] mx-auto my-10 relative sm:px-5 px-2">
+      <div className="grid md:grid-cols-2 md:mt-20 mt-10">
+        <form className="lg:pr-28 md:pr-8">
           <h1 className="text-4xl">Billing Details</h1>
           <div className="mt-5">
             <label htmlFor="" className="text-[#999999]">
@@ -59,7 +59,7 @@ function Chechout() {
           </div>
         </form>
 
-        <div className="pl-32">
+        <div className="lg:pl-28 md:pl-8 md:mt-0 mt-10">
           <div className="flex items-center justify-between my-7">
             <div className="flex items-center">
               <img src="/images/product-1.png" className="w-10 mr-4" />
@@ -76,11 +76,11 @@ function Chechout() {
             <p>$1100</p>
           </div>
 
-          <div className="flex justify-between py-4 border-b">
+          <div className="flex justify-between py-4 border-b border-borderColor">
             <p>Subtotal:</p>
             <p>$1750</p>
           </div>
-          <div className="flex justify-between py-4 border-b">
+          <div className="flex justify-between py-4 border-b border-borderColor">
             <p>Shipping:</p>
             <p>Free</p>
           </div>
@@ -105,13 +105,13 @@ function Chechout() {
             <input
               type="text"
               placeholder="Coupon Code"
-              className="border py-3 col-span-8 pl-4"
+              className="border md:py-3 py-2 col-span-8 pl-4"
             />
-            <button className="bg-red text-white py-3 col-span-4 ml-4">
+            <button className="bg-red text-white md:py-3 py-2 col-span-4 ml-4 md:text-base text-sm">
               Apply Coupon
             </button>
           </div>
-          <button className="bg-red text-white py-3 px-5 mt-5">
+          <button className="bg-red text-white md:py-3 py-2 px-5 mt-5 md:text-base text-sm">
             Place Order
           </button>
         </div>

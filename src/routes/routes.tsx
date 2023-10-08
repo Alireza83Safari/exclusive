@@ -7,7 +7,7 @@ import Chechout from "../pages/Chechout";
 import NotFound from "../components/NotFound";
 import Account from "../pages/Account";
 import About from "../pages/About";
-import Contact from "../pages/Cancat";
+import Contact from "../pages/Contect";
 import ProductDetails from "../pages/ProductDetails";
 
 const routes = [

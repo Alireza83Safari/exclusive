@@ -2,9 +2,9 @@ import React from "react";
 
 function Account() {
   return (
-    <section className="max-w-[1170px] mx-auto mt-20 relative">
-      <div className="grid grid-cols-5">
-        <ul className="col-span-1">
+    <section className="max-w-[1170px] mx-auto md:mt-20 mt-8 relative">
+      <div className="grid grid-cols-7">
+        <ul className="md:col-span-2 col-span-7 md:block flex md:gap-x-0 gap-x-10 px-5">
           <li className="mb-7">
             <p className="font-semibold">Manage My Account</p>
             <ul className="ml-5 mt-3 ">
@@ -22,12 +22,12 @@ function Account() {
             </ul>
           </li>
         </ul>
-        <div className="col-span-4">
-          <form className="grid grid-cols-2 shadow-xl px-10 py-8 relative">
+        <div className="md:col-span-5 col-span-7">
+          <form className="grid grid-cols-2 shadow-xl md:px-10 px-4 py-8 relative">
             <h3 className="text-red col-span-2 text-lg mb-2">
               Edit Your Profile
             </h3>
-            <div className="mr-6 my-4">
+            <div className="md:mr-6 mr-2 my-4">
               <label htmlFor="">First Name</label>
               <input
                 type="text"
@@ -35,7 +35,7 @@ function Account() {
                 className="w-full bg-gray px-3 py-3"
               />
             </div>
-            <div className="ml-6 my-4">
+            <div className="md:ml-6 ml-2 my-4">
               <label htmlFor="">First Name</label>
               <input
                 type="text"
@@ -44,7 +44,7 @@ function Account() {
               />
             </div>
 
-            <div className="mr-6 my-4">
+            <div className="md:mr-6 mr-2 my-4">
               <label htmlFor="">First Name</label>
               <input
                 type="text"
@@ -52,7 +52,7 @@ function Account() {
                 className="w-full bg-gray px-3 py-3"
               />
             </div>
-            <div className="ml-6 my-4">
+            <div className="md:ml-6 ml-2 my-4">
               <label htmlFor="">First Name</label>
               <input
                 type="text"
@@ -89,7 +89,7 @@ function Account() {
             </div>
             <div className="flex justify-end col-span-2 mt-5">
               <button className="mr-8">Cancel</button>
-              <button className="py-3 px-8 bg-red text-white">
+              <button className="py-3 sm:px-8 px-3 bg-red text-white">
                 Saves Changes
               </button>
             </div>

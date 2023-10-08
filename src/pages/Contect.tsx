@@ -2,10 +2,10 @@ import React from "react";
 
 function Contact() {
   return (
-    <section className="max-w-[1170px] mx-auto relative my-20">
+    <section className="max-w-[1170px] mx-auto relative md:my-20">
       <div className="grid grid-cols-10 gap-x-10">
-        <div className="col-span-3 shadow-md p-8">
-          <div className="border-b border-borderColor pb-8">
+        <div className="md:col-span-3 col-span-10 shadow-md p-5 md:block grid sm:grid-cols-2">
+          <div className="md:border-b border-borderColor md:pb-8 md:mr-0 sm:mr-4">
             <div className="flex items-center">
               <img src="/images/phone-contact.png" className="w-8 h-8 mr-3" />
               <p className="font-semibold text-lg">Call To Us</p>
@@ -16,7 +16,7 @@ function Contact() {
             </div>
           </div>
 
-          <div className="pt-8">
+          <div className="md:pt-8 pt-12 sm:pt-0 md:ml-0 sm:ml-4">
             <div className="flex items-center">
               <img src="/images/name-image.png" className="w-8 h-8 mr-3" />
               <p className="font-semibold text-lg">Write To US</p>
@@ -30,7 +30,7 @@ function Contact() {
             </div>
           </div>
         </div>
-        <div className="col-span-7 relative shadow-md p-4">
+        <div className="md:col-span-7 col-span-10 relative shadow-md p-4 md:mt-0 mt-12 pb-24">
           <form action="" className="grid grid-cols-3">
             <div className="mx-3">
               <input
@@ -57,7 +57,7 @@ function Contact() {
               <textarea rows={11} className="w-full bg-gray"></textarea>
             </div>
           </form>
-          <button className="bg-red px-8 py-3 text-white absolute right-4 bottom-10">
+          <button className="bg-red px-8 py-3 text-white absolute md:right-4 right-6 bottom-10">
             Send Message
           </button>
         </div>

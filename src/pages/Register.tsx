@@ -1,27 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Register() {
   return (
-    <section className="max-w-[1170px] mx-auto relative mt-10">
-      <div className="grid grid-cols-2">
+    <section className="max-w-[1170px] mx-auto relative lg:mt-10">
+      <div className="grid md:grid-cols-2 grid-cols-1">
         <div className="1">
           <img src="/images/register.png" alt="" />
         </div>
-        <div className="px-16 mt-8">
+        <div className="lg:px-16 md:px-8 px-3 lg:mt-8 mt-10">
           <form action="">
             <h1 className="text-4xl">Create an account</h1>
             <p className="my-5">Enter your details below</p>
-            <div className="border-b py-5 mb-4">
+            <div className="border-b border-borderColor py-5 mb-4">
               <input type="text" className="" placeholder="Name" />
             </div>
-            <div className="border-b py-5 mb-4">
+            <div className="border-b border-borderColor py-5 mb-4">
               <input
                 type="text"
                 className=""
                 placeholder="Email or Phone Number"
               />
             </div>
-            <div className="border-b py-5 mb-4">
+            <div className="border-b border-borderColor py-5 mb-4">
               <input type="text" className="" placeholder="Password" />
             </div>
             <button className="bg-red w-full py-4 mt-8 text-white">
@@ -34,7 +35,9 @@ function Register() {
 
             <div className="flex justify-center mt-3">
               <p>Already have account?</p>
-              <p className="font-semibold">Log in</p>
+              <Link className="font-semibold" to="/login">
+                Log in
+              </Link>
             </div>
           </form>
         </div>

@@ -4,8 +4,8 @@ import Options from "../components/Options";
 function About() {
   return (
     <section className="max-w-[1170px] mx-auto mt-20 relative">
-      <div className="grid grid-cols-2 mb-20">
-        <div className=" m-auto pr-16">
+      <div className="grid lg:grid-cols-2 md:mb-20">
+        <div className=" m-auto lg:pr-16 lg:order-1 order-2 px-2">
           <h1 className="text-5xl font-semibold">Our Story</h1>
           <p className="my-9">
             Launced in 2015, Exclusive is South Asia’s premier online shopping
@@ -20,12 +20,12 @@ function About() {
             ranging from consumer.
           </p>
         </div>
-        <div>
+        <div className="lg:order-2 order-1">
           <img src="/images/about.png" alt="about" loading="lazy" />
         </div>
       </div>
-      <div className="grid grid-cols-4 my-32 text-center">
-        <div className="border border-borderColor py-6 px-3 mx-3">
+      <div className="grid md:grid-cols-4 grid-cols-2 my-28 text-center">
+        <div className="border border-borderColor py-6 px-3 m-3">
           <div className="bg-black w-14 h-14 flex justify-center items-center rounded-full border-8 border-borderColor m-auto">
             <img src="/images/about-home.png" alt="" className="w-6" />
           </div>
@@ -33,7 +33,7 @@ function About() {
           <p className="mt-3">Free delivery for all orders over $140</p>
         </div>
 
-        <div className="border border-borderColor py-6 px-3 mx-3">
+        <div className="border border-borderColor py-6 px-3 m-3">
           <div className="bg-black w-14 h-14 flex justify-center items-center rounded-full border-8 border-borderColor m-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ function About() {
           <p className="mt-3">Monthly Products Sale</p>
         </div>
 
-        <div className="border border-borderColor py-6 px-3 mx-3">
+        <div className="border border-borderColor py-6 px-3 m-3">
           <div className="bg-black w-14 h-14 flex justify-center items-center rounded-full border-8 border-borderColor m-auto">
             <img src="/images/about-home.png" alt="" className="w-6" />
           </div>
@@ -70,7 +70,7 @@ function About() {
           <p className="mt-3">Customer active in our site</p>
         </div>
 
-        <div className="border border-borderColor py-6 px-3 mx-3">
+        <div className="border border-borderColor py-6 px-3 m-3">
           <div className="bg-black w-14 h-14 flex justify-center items-center rounded-full border-8 border-borderColor m-auto">
             <img src="/images/about-bag-money.png" alt="" className="w-6" />
           </div>
@@ -79,14 +79,18 @@ function About() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-x-6 my-32">
+      <div className="grid grid-cols-3 md:gap-x-6 gap-x-1 md:my-32 my-12">
         <div>
           <div>
             <img src="/images/user1.png" alt="" />
           </div>
           <div>
-            <h2 className="text-2xl font-semibold mt-3">Tom Cruise</h2>
-            <p className="mt-2">Founder & Chairman</p>
+            <h2 className="md:text-2xl text-base font-semibold md:mt-3 mt-1">
+              Tom Cruise
+            </h2>
+            <p className="md:mt-2 mt-1 md:text-base text-xs">
+              Founder & Chairman
+            </p>
             <div className="flex mt-3">
               <div className="mr-3">
                 <svg
@@ -160,8 +164,12 @@ function About() {
             <img src="/images/user2.png" alt="" />
           </div>
           <div>
-            <h2 className="text-2xl font-semibold mt-3">Emma Watson</h2>
-            <p className="mt-2">Managing Director</p>
+            <h2 className="md:text-2xl text-base font-semibold md:mt-3 mt-1">
+              Emma Watson
+            </h2>
+            <p className="md:mt-2 mt-1 md:text-base text-xs">
+              Managing Director
+            </p>
             <div className="flex mt-3">
               <div className="mr-3">
                 <svg
@@ -235,8 +243,12 @@ function About() {
             <img src="/images/user3.png" alt="" />
           </div>
           <div>
-            <h2 className="text-2xl font-semibold mt-3">Will Smith</h2>
-            <p className="mt-2">Product Designer</p>
+            <h2 className="md:text-2xl text-base font-semibold md:mt-3 mt-1">
+              Will Smith
+            </h2>
+            <p className="md:mt-2 mt-1 md:text-base text-xs">
+              Product Designer
+            </p>
             <div className="flex mt-3">
               <div className="mr-3">
                 <svg
