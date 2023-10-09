@@ -1,6 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userAxios } from "../../../services/userInterceptor";
-import { AuthType, UserLoginType } from "./auth.type";
+import { userAxios } from "../../services/userInterceptor";
+import { AuthType } from "./auth.type";
+import { userRegisterType } from "../../pages/Register/Register.type";
+import { userLoginType } from "../../pages/Login/Login.type";
+import { adminAxios } from "../../services/adminInterceptor";
+
+export type AuthType = {
+  userInfo: null;
+  loginError: string | null;
+  error: string | null;
+  loading: boolean;
+  userIsLogin: boolean | null;
+  registerError: string | null;
+};
 
 export const getUserInfos = createAsyncThunk(
   "auth/userInfo",
@@ -23,7 +35,7 @@ export const getUserInfos = createAsyncThunk(
 
 export const userLoginHandler = createAsyncThunk(
   "auth/login",
-  async (userData: UserLoginType, { dispatch }) => {
+  async (userData: userLoginType, { dispatch }) => {
     try {
       dispatch(authSlice.actions.setLoading(true));
       const response = await userAxios.post("/login", userData);
@@ -39,12 +51,32 @@ export const userLoginHandler = createAsyncThunk(
     }
   }
 );
+export const userRegisterHandler = createAsyncThunk(
+  "auth/login",
+  async (userData: userRegisterType, { dispatch }) => {
+    try {
+      dispatch(authSlice.actions.setLoading(true));
+      const response = await userAxios.post("/register", userData);
+      dispatch(authSlice.actions.setLoading(false));
+
+      if (response.status === 200) {
+        location.href = "/login";
+        return response.data;
+      }
+    } catch (error: any) {
+      dispatch(authSlice.actions.setLoading(false));
+      dispatch(authSlice.actions.setRegisterError(error?.response?.data));
+      throw error?.response.data;
+    }
+  }
+);
 
 export const logoutHandler = createAsyncThunk(
   "auth/logout",
-  async (_, { dispatch }) => {
+  async (isAdmin: boolean, { dispatch }) => {
     try {
-      const response = await userAxios.get("/logout");
+      const instacneAxios = isAdmin ? adminAxios : userAxios;
+      const response = await instacneAxios.get("/logout");
       if (response.status === 200) {
         dispatch(authSlice.actions.setIsLogin(false));
         location.href = "/login";
@@ -58,10 +90,12 @@ export const authSlice = createSlice({
   initialState: {
     userInfo: null,
     loginError: null,
+    registerError: null,
     error: null,
     loading: false,
     userIsLogin: false,
   } as AuthType,
+
   reducers: {
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -75,14 +109,13 @@ export const authSlice = createSlice({
     setLoginError: (state, action) => {
       state.loginError = action.payload;
     },
+    setRegisterError: (state, action) => {
+      state.registerError = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserInfos.fulfilled, (state, action) => {
       state.userInfo = action.payload;
-      state.error = null;
-      state.loading = false;
-    });
-    builder.addCase(userLoginHandler.fulfilled, (state, action) => {
       state.error = null;
       state.loading = false;
     });
