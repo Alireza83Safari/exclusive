@@ -1,12 +1,12 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const userAxios = axios.create({
-  baseURL: "/api/v1/user",
+const adminAxios = axios.create({
+  baseURL: "/api/v1/admin",
   withCredentials: true,
 });
 
-userAxios.interceptors.request.use(
+adminAxios.interceptors.request.use(
   function (config) {
     return config;
   },
@@ -15,7 +15,7 @@ userAxios.interceptors.request.use(
   }
 );
 
-userAxios.interceptors.response.use(
+adminAxios.interceptors.response.use(
   function (response) {
     return response;
   },
@@ -23,7 +23,7 @@ userAxios.interceptors.response.use(
     if (
       error.response.status === 401 &&
       error?.response?.request?.responseURL !==
-        "http://localhost:5173/api/v1/user/is_authenticated"
+        "http://localhost:5173/api/v1/admin/is_authenticated"
     ) {
       toast.error("Unauthorized. Please log in.");
     }
@@ -31,4 +31,4 @@ userAxios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export { userAxios };
+export { adminAxios };

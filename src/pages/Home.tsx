@@ -7,6 +7,7 @@ import Suggestion from "../components/Suggestion";
 import OurProducts from "../components/OurProducts";
 import Arrival from "../components/Arrival";
 import Options from "../components/Options";
+import { Toaster } from "react-hot-toast";
 
 function Home() {
   return (
@@ -19,6 +20,7 @@ function Home() {
       <OurProducts />
       <Arrival />
       <Options />
+      <Toaster />
     </>
   );
 }

@@ -61,7 +61,6 @@ function OurProducts(): ProductType {
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(4);
 
-  console.log(productData.length);
 
   const prevImage = () => {
     if (endIndex < productData?.length) {

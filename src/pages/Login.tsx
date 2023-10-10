@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../../components/Spinner/Spinner";
-import { userLoginHandler } from "../../Redux/Store/auth";
-import { UserLoginType } from "../../Redux/Store/Auth/auth.type";
-import { rootState } from "../../Redux/Store";
+import Spinner from "../components/Spinner/Spinner";
+import { userLoginHandler } from "../Redux/Store/auth";
+import { userLoginType } from "../types/Auth.type";
+import { rootState } from "../Redux/Store";
 
 function Login() {
   const dispatch = useDispatch();
   const { loading, loginError } = useSelector((state: rootState) => state.auth);
 
-  const [loginInfos, setLoginInfos] = useState<UserLoginType>({
+  const [loginInfos, setLoginInfos] = useState<userLoginType>({
     username: "",
     password: "",
   });

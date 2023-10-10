@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { userRegisterType } from "./Register.type";
+import { userRegisterType } from "../types/Auth.type";
 import { useDispatch, useSelector } from "react-redux";
-import { userRegisterHandler } from "../../Redux/Store/auth";
-import { rootState } from "../../Redux/store";
-import Spinner from "../../components/Spinner/Spinner";
+import { userRegisterHandler } from "../Redux/Store/auth";
+import { rootState } from "../Redux/Store";
+import Spinner from "../components/Spinner/Spinner";
 
 function Register() {
   const dispatch = useDispatch();

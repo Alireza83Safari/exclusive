@@ -1,18 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userAxios } from "../../services/userInterceptor";
-import { AuthType } from "./auth.type";
-import { userRegisterType } from "../../pages/Register/Register.type";
-import { userLoginType } from "../../pages/Login/Login.type";
+import { authType } from "../../types/Auth.type";
+import { userRegisterType } from "../../types/Auth.type";
+import { userLoginType } from "../../types/Auth.type";
 import { adminAxios } from "../../services/adminInterceptor";
-
-export type AuthType = {
-  userInfo: null;
-  loginError: string | null;
-  error: string | null;
-  loading: boolean;
-  userIsLogin: boolean | null;
-  registerError: string | null;
-};
 
 export const getUserInfos = createAsyncThunk(
   "auth/userInfo",
@@ -94,7 +85,7 @@ export const authSlice = createSlice({
     error: null,
     loading: false,
     userIsLogin: false,
-  } as AuthType,
+  } as authType,
 
   reducers: {
     setLoading: (state, action) => {
