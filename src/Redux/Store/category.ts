@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminAxios } from "../../../services/adminInterceptor";
-import { userAxios } from "../../../services/userInterceptor";
+import { adminAxios } from "../../services/adminInterceptor";
+import { userAxios } from "../../services/userInterceptor";
 import {
   categoryStateType,
   categoryUserType,
   editCategoryType,
   categoryAdminType,
-} from "./category.type";
+} from "../../types/Category.type";
 import toast from "react-hot-toast";
 
 export const getCategory = createAsyncThunk(

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategory } from "../../Redux/Store/Category/category";
+import { getCategory } from "../../Redux/Store/category";
 import { rootState } from "../../Redux/Store";
 
 function Menu() {
