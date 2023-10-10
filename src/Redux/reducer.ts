@@ -6,6 +6,7 @@ import productItemReducer from "./Store/productItem";
 import colorReducer from "./Store/color";
 import addressReducer from "./Store/address";
 import brandReducer from "./Store/brand";
+import commentReducer from "./Store/comment";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   color: colorReducer,
   address: addressReducer,
   brand: brandReducer,
+  comment: commentReducer,
 });
