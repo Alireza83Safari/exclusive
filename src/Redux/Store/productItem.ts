@@ -1,20 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   productItemSelectList,
-  adminProductItemType,
   productItemStateType,
   productItemType,
-} from "../../types/productItem.type";
+  productItemProductType,
+  productItemItemIdType,
+} from "../../types/ProductItem.type";
 import { userAxios } from "../../services/userInterceptor";
 import { adminAxios } from "../../services/adminInterceptor";
 import toast from "react-hot-toast";
 
-export const getProductItemUser = createAsyncThunk(
-  "productItem/user",
-  async (itemId: string, { dispatch }) => {
+export const getProductItemWithItemId = createAsyncThunk(
+  "productItem/ItemID",
+  async (id: string, { dispatch }) => {
     try {
       dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await userAxios.get(`productItem/${itemId}`);
+      const response = await userAxios.get(`productItem/${id}`);
       if (response.status === 200) {
         dispatch(productItemSlice.actions.setProductItem(response.data));
         dispatch(productItemSlice.actions.setProductItemLoading(false));
@@ -25,14 +26,14 @@ export const getProductItemUser = createAsyncThunk(
   }
 );
 
-export const getProductItemAdmin = createAsyncThunk(
-  "productItem/admin",
-  async (productId: string, { dispatch }) => {
+export const getProductItemWithProductId = createAsyncThunk(
+  "productItem/productId",
+  async (id: string, { dispatch }) => {
     try {
       dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await adminAxios.get(`productItem/${productId}`);
+      const response = await adminAxios.get(`productItem/product/${id}`);
       if (response.status === 200) {
-        dispatch(productItemSlice.actions.setAdminProductItem(response.data));
+        dispatch(productItemSlice.actions.setProductItemProduct(response.data));
         dispatch(productItemSlice.actions.setProductItemLoading(false));
       }
     } catch (error) {
@@ -118,22 +119,23 @@ export const deleteProductItem = createAsyncThunk(
 const productItemSlice = createSlice({
   name: "productItem",
   initialState: {
-    productItem: null,
+    productItem: {} as productItemItemIdType,
+    productItemProduct: [] as productItemProductType[],
     productItemSelectList: [] as productItemSelectList[],
-    adminProductItem: [] as adminProductItemType[],
-    addProductItem: {} as adminProductItemType,
+    addProductItem: {} as productItemType,
     productItemLoading: false,
   } as productItemStateType,
   reducers: {
     setProductItemLoading: (state, action) => {
       state.productItemLoading = action.payload;
     },
+    setProductItemProduct: (state, action) => {
+      state.productItemProduct = action.payload;
+    },
     setProductItem: (state, action) => {
       state.productItem = action.payload;
     },
-    setAdminProductItem: (state, action) => {
-      state.adminProductItem = action.payload;
-    },
+
     setAdminProductSelectList: (state, action) => {
       state.productItemSelectList = action.payload;
     },

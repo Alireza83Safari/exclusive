@@ -27,14 +27,15 @@ export const addfavorite = createAsyncThunk(
 
 export const isFavoriteHandler = createAsyncThunk(
   "favorite/isFavorite",
-  async (productItemId: addFavoriteType, { dispatch }) => {
+  async (productItemId: string, { dispatch }) => {
     try {
       dispatch(favoriteReducer.actions.setLoading(true));
-      const response = await userAxios.post(
+      const response = await userAxios.get(
         `/favoriteProductItem/isFavorite/${productItemId}`
       );
       if (response.status === 200) {
-        dispatch(favoriteReducer.actions.setIsFavorite(true));
+        dispatch(favoriteReducer.actions.setIsFavorite(response.data.data));
+
         dispatch(favoriteReducer.actions.setLoading(false));
       }
     } catch (error) {
@@ -65,7 +66,7 @@ const favoriteReducer = createSlice({
   name: "favorite",
   initialState: {
     favoriteLoading: false,
-    isFavorite: false,
+    isFavorite: null,
   },
 
   reducers: {

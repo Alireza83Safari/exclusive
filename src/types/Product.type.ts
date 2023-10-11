@@ -3,7 +3,7 @@ export type productStateType = {
   adminProduct: adminProductType | null;
   adminProducts: adminProductType[];
   adminProductSelectList: adminProductType[];
-  userProduct: userProductType | null;
+  userProduct: userProductType ;
   userProducts: userProductType[];
   error: string | null;
 };

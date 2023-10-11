@@ -25,20 +25,20 @@ export const getAddress = createAsyncThunk(
 );
 
 export const getAddressWithUserId = createAsyncThunk(
-        "addres/getWithuserId",
-        async (userId: string, { dispatch }) => {
-          try {
-            dispatch(addressSlice.actions.setLoading(true));
-            const response = await adminAxios.get(`/address/${userId}`);
-            if (response.status === 200) {
-              dispatch(addressSlice.actions.setAddressUserId(response.data));
-              dispatch(addressSlice.actions.setLoading(false));
-            }
-          } catch (error) {
-            dispatch(addressSlice.actions.setLoading(false));
-          }
-        }
-      );
+  "addres/getWithuserId",
+  async (userId: string, { dispatch }) => {
+    try {
+      dispatch(addressSlice.actions.setLoading(true));
+      const response = await adminAxios.get(`/address/${userId}`);
+      if (response.status === 200) {
+        dispatch(addressSlice.actions.setAddressUserId(response.data));
+        dispatch(addressSlice.actions.setLoading(false));
+      }
+    } catch (error) {
+      dispatch(addressSlice.actions.setLoading(false));
+    }
+  }
+);
 
 export const getAddresses = createAsyncThunk(
   "address/get",
@@ -74,10 +74,16 @@ export const addAddress = createAsyncThunk(
 
 export const editAddress = createAsyncThunk(
   "address/edit",
-  async ({addressInfo , addressId}:{addressInfo: addressType , addressId:string} { dispatch }) => {
+  async (
+    { addressInfo, addressId }: { addressInfo: addressType; addressId: string },
+    { dispatch }
+  ) => {
     try {
       dispatch(addressSlice.actions.setLoading(true));
-      const response = await userAxios.post(`/address/edit/${addressId}`, addressInfo);
+      const response = await userAxios.post(
+        `/address/edit/${addressId}`,
+        addressInfo
+      );
       if (response.status === 200) {
         toast.success("edit address is success");
         dispatch(addressSlice.actions.setLoading(false));
@@ -108,8 +114,8 @@ const addressSlice = createSlice({
   name: "address",
   initialState: {
     addressLoading: false,
-    address: {} as getAddressType, 
-    addressUserId:  [] as getAddressType[],
+    address: {} as getAddressType,
+    addressUserId: [] as getAddressType[],
     addresses: [] as getAddressType[],
   } as addressStateType,
   reducers: {
@@ -123,8 +129,8 @@ const addressSlice = createSlice({
       state.addresses = action.payload;
     },
     setAddressUserId: (state, action) => {
-        state.addressUserId = action.payload;
-      },
+      state.addressUserId = action.payload;
+    },
   },
 });
 

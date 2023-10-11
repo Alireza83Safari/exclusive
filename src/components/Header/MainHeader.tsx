@@ -4,7 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { BiLogIn } from "react-icons/bi";
 import Profile from "../Profile";
 import { useSelector } from "react-redux";
-import ContentLoaders from "../ContentLoader/ContentLoaders";
+import ContentLoaders from "../ContentLoaders";
 import { rootState } from "../../Redux/Store";
 
 function MainHeader() {
@@ -15,6 +15,7 @@ function MainHeader() {
     { label: "Home", link: "/" },
     { label: "Contact", link: "/contact" },
     { label: "About", link: "/about" },
+    { label: "Products", link: "/Products" },
     { label: "Sign Up", link: "/register" },
   ]);
   const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);

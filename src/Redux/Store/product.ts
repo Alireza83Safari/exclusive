@@ -31,9 +31,13 @@ export const getProducts = createAsyncThunk(
 
 export const getProduct = createAsyncThunk(
   "product/getOne",
-  async ({ isAdmin, id }: { isAdmin: boolean; id: string }, { dispatch }) => {
+  async (
+    { isAdmin, id }: { isAdmin: boolean; id: string | number },
+    { dispatch }
+  ) => {
     try {
       dispatch(productSlice.actions.setLoading(true));
+
       const axiosInstance = isAdmin ? adminAxios : userAxios;
       const response = await axiosInstance.get(`/product/${id}`);
       if (response.status === 200) {
@@ -103,7 +107,7 @@ const productSlice = createSlice({
     productLoading: false,
     adminProduct: null,
     adminProducts: [] as adminProductType[],
-    userProduct: null,
+    userProduct: {} as userProductType,
     userProducts: [] as userProductType[],
     error: null,
     adminProductSelectList: [] as adminProductType[],
