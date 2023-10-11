@@ -7,6 +7,8 @@ import colorReducer from "./Store/color";
 import addressReducer from "./Store/address";
 import brandReducer from "./Store/brand";
 import commentReducer from "./Store/comment";
+import favoriteReduer from "./Store/favorite";
+//import discountReducer from "./Store/discount";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,4 +19,6 @@ export const rootReducer = combineReducers({
   address: addressReducer,
   brand: brandReducer,
   comment: commentReducer,
+  favorite: favoriteReduer,
+  //discount: discountReducer,
 });
