@@ -1,217 +1,336 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import ProductTemplate from "../components/Product/ProductTemplate";
+import { useDispatch, useSelector } from "react-redux";
+import { rootState } from "../Redux/Store";
+import { useParams } from "react-router-dom";
+import { getProducts } from "../Redux/Store/product";
+import { getProductItemWithItemId } from "../Redux/Store/productItem";
+import Spinner from "../components/Spinner/Spinner";
+import { userProductType } from "../types/Product.type";
+import {
+  addFavoriteType,
+  addfavorite,
+  isFavoriteHandler,
+} from "../Redux/Store/favorite";
+import { addOrderItem } from "../Redux/Store/order";
+import { addOrderItemType } from "../types/Order.type";
+import ContentLoaders from "../components/ContentLoaders";
 
 function ProductDetails() {
-  const [thumbsSwiper, setThumbsSwiper] = useState<any>() as any;
-  const productData = [
-    {
-      title: "Flash Sales",
-      name: "Cart With Flat Discount",
-      price: 160,
-      image: "/images/bookSelf.png",
-    },
-    {
-      title: "urt Sales",
-      name: "yjthghjgj Flat Discount",
-      price: 1450,
-      image: "/images/bookSelf.png",
-    },
-    {
-      title: "tey Sales",
-      name: "rytgvb Flat Discount",
-      price: 45,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "hkj Sales",
-      name: "Cbryt7i Fhgkjhklatuihg iDiscikjount",
-      price: 654,
-      image: "/images/bookSelf.png",
-    },
-    {
-      title: "xcv Sales",
-      name: "Cgkhgkhgkhgkunt",
-      price: 645,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "yut Sales",
-      name: "Caghkhgkhgjkunt",
-      price: 645,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "fgh Sales",
-      name: "Caghkutiuyjgount",
-      price: 546,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "fgh Sales",
-      name: "Caghkutiuyjgount",
-      price: 546,
-      image: "/images/product-1.png",
-    },
-  ];
+  const { productId } = useParams();
+  const dispatch = useDispatch();
+  const [productFind, setProductFind] = useState<userProductType>();
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>();
+  const [count, setCount] = useState<number>(1);
+
+  const { isFavorite, favoriteLoading } = useSelector(
+    (state: rootState) => state.favorite
+  );
+  const { userProducts, productLoading } = useSelector(
+    (state: rootState) => state.product
+  );
+  const { productItem, productItemLoading } = useSelector(
+    (state: rootState) => state.productItem
+  );
+
+  useEffect(() => {
+    dispatch(getProducts(false) as any);
+  }, [dispatch, productId]);
+
+  useEffect(() => {
+    let findProduct = userProducts.find((product) => product.id == productId);
+    setProductFind(findProduct);
+  }, [userProducts]);
+
+  useEffect(() => {
+    if (productFind) {
+      dispatch(isFavoriteHandler(productFind?.itemId) as any);
+      dispatch(getProductItemWithItemId(productFind?.itemId) as any);
+    }
+  }, [productFind]);
+
+  const memoizedProductsTemplate = useMemo(() => {
+    return userProducts
+      ?.slice(2, 10)
+      ?.map((product) => <ProductTemplate {...product} />);
+  }, [userProducts]);
+
+  const addProductToFavorite = () => {
+    const productItemId = {
+      productItemId: productFind?.itemId,
+    } as addFavoriteType;
+    if (!isFavorite) {
+      dispatch(addfavorite(productItemId) as any);
+    }
+    if (productFind) {
+      dispatch(isFavoriteHandler(productFind?.itemId) as any);
+    }
+  };
+
+  const addProductToBasket = (id: string) => {
+    let orderItemInfo = {
+      productItemId: id,
+      quantity: count,
+    } as addOrderItemType;
+    dispatch(addOrderItem(orderItemInfo));
+    setCount(1);
+  };
   return (
-    <section className="max-w-[1170px] mx-auto my-10 relative grid grid-cols-9">
-      <div className="lg:col-span-5 col-span-9">
-        <Swiper
-          style={{ width: "full", height: "500px" }}
-          navigation={true}
-          thumbs={thumbsSwiper}
-          modules={[FreeMode, Navigation, Thumbs]}
-          className="mySwiper2"
-        >
-          <SwiperSlide>
-            <div className="w-full h-full">
-              <img
-                src="/images/game.png"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </SwiperSlide>
-        </Swiper>
-        <Swiper
-          onSwiper={setThumbsSwiper}
-          spaceBetween={10}
-          slidesPerView={4}
-          freeMode={true}
-          watchSlidesProgress={true}
-          modules={[FreeMode, Navigation, Thumbs]}
-          className="mySwiper mt-2"
-        >
-          <SwiperSlide>
-            <img src="/images/game.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="/images/game.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="/images/game.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="/images/game.png" />
-          </SwiperSlide>
-        </Swiper>
-      </div>
-      <div className="lg:col-span-4 col-span-9 lg:px-16 sm:px-8 px-3 lg:py-0 py-7">
-        <div className="border-b border-borderColor lg:pb-10 pb-5">
-          <h1 className="text-lg font-semibold">Havic HV G-92 Gamepad</h1>
-          <div className="flex items-center my-5">
-            <div className="flex mr-3">
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-            </div>
-            <p className="mr-3">(150 Reviews)</p>
-            <p className="text-green mr-3">In Stock</p>
+    <section className="max-w-[1170px] mx-auto relative my-10 grid grid-cols-10">
+      {productItemLoading || productLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <div className="lg:col-span-5 col-span-10">
+            {productItemLoading || productLoading ? (
+              <ContentLoaders width={350} height={350} />
+            ) : (
+              <Swiper
+                style={{
+                  width: "full",
+                  height: "500px",
+                }}
+                navigation={true}
+                thumbs={thumbsSwiper}
+                modules={[FreeMode, Navigation, Thumbs]}
+                className="mySwiper2"
+              >
+                <SwiperSlide>
+                  <div className="w-full h-full flex justify-center">
+                    <img
+                      src={`http://127.0.0.1:6060/${productFind?.fileUrl}`}
+                      className="object-contain"
+                    />
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            )}
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              spaceBetween={10}
+              slidesPerView={4}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className="mySwiper mt-2"
+            >
+              {productItem?.files?.map((file, index) => (
+                <div key={index}>
+                  {productItemLoading || productLoading ? (
+                    <ContentLoaders width={150} height={30} />
+                  ) : (
+                    <SwiperSlide>
+                      <img
+                        src={`http://127.0.0.1:6060/${file?.fileUrl}`}
+                        className="object-contain w-full"
+                      />
+                    </SwiperSlide>
+                  )}
+                </div>
+              ))}
+            </Swiper>
           </div>
-          <p className="my-5">$192.00</p>
-          <p>
-            PlayStation 5 Controller Skin High quality vinyl with air channel
-            adhesive for easy bubble free install & mess free removal Pressure
-            sensitive.
-          </p>
-        </div>
-        <div>
-          <div className="flex items-center lg:mb-10 mb-5 lg:mt-10 mt-5">
-            <p className="mr-2">Colours:</p>
-            <div className="w-5 h-5 rounded-full bg-red mx-1 border border-borderColor"></div>
-            <div className="w-5 h-5 rounded-full bg-gray mx-1 border border-borderColor"></div>
-          </div>
-          <div className="flex items-center lg:my-12 my-6">
-            <p>Size:</p>
-            <div className="border border-borderColor w-7 h-7 flex justify-center items-center sm:mx-2 mx-1 text-sm">
-              xs
-            </div>
-            <div className="border border-borderColor w-7 h-7 flex justify-center items-center sm:mx-2 mx-1 text-sm">
-              s
-            </div>
-            <div className="border border-borderColor w-7 h-7 flex justify-center items-center sm:mx-2 mx-1 text-sm">
-              M
-            </div>
-            <div className="border border-borderColor w-7 h-7 flex justify-center items-center sm:mx-2 mx-1 text-sm">
-              L
-            </div>
-            <div className="border border-borderColor w-7 h-7 flex justify-center items-center sm:mx-2 mx-1 text-sm">
-              XL
-            </div>
-          </div>
-          <div className="xl:flex lg:block sm:flex  items-center lg:my-12 my-6">
-            <div className="border border-borderColor xl:w-1/3 sm:w-2/4 grid grid-cols-4 sm:mr-5 lg:w-full w-full">
-              <button className="text-xl hover:bg-red py-1 hover:text-white">
-                -
+          <div className="lg:col-span-5 col-span-10 lg:px-16 sm:px-8 px-3 lg:py-0 py-7">
+            <div className="border-b border-borderColor lg:pb-10 pb-5 relative">
+              {productItemLoading || productLoading ? (
+                <ContentLoaders width={80} height={20} />
+              ) : (
+                <h1 className="text-xl font-semibold">
+                  {productItem?.productTitle}
+                </h1>
+              )}
+
+              <button
+                className="px-3 absolute right-0 top-0 z-10"
+                disabled={isFavorite == true}
+                onClick={() => addProductToFavorite()}
+              >
+                {favoriteLoading ? (
+                  <ContentLoaders width={30} height={25} />
+                ) : (
+                  <>
+                    {isFavorite ? (
+                      <img src="/images/red-heart.svg" className="w-5 h-5" />
+                    ) : (
+                      <img src="/images/favorite.png" className="w-5 h-5" />
+                    )}
+                  </>
+                )}
               </button>
-              <button className="col-span-2 py-1">2</button>
-              <button className="text-xl hover:bg-red py-1 hover:text-white">
-                +
-              </button>
+              <div className="flex items-center justify-between my-5">
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={70} height={25} />
+                ) : (
+                  <div className="flex">
+                    <img src="/images/star.png" className="w-3 h-3" />
+                    <img src="/images/star.png" className="w-3 h-3" />
+                    <img src="/images/star.png" className="w-3 h-3" />
+                    <img src="/images/star.png" className="w-3 h-3" />
+                    <img src="/images/star.png" className="w-3 h-3" />
+                  </div>
+                )}
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={50} height={25} />
+                ) : (
+                  <p className="text-green">
+                    {productItem?.status === 0 ? "In Stock" : "Out Stock"}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center my-5">
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={80} height={25} />
+                ) : (
+                  <>
+                    <p className="text-sm mr-3">Price:</p>
+                    <p className="font-semibold">${productFind?.price}</p>
+                  </>
+                )}
+              </div>
+              {productItemLoading || productLoading ? (
+                <ContentLoaders width={200} height={40} />
+              ) : (
+                <p className="text-sm">
+                  {productItem?.productShortDescription}
+                </p>
+              )}
             </div>
             <div>
-              <button className="bg-red py-2 xl:px-14 lg:px-9 px-16 lg:w-full text-white sm:mr-5 xl:my-0 lg:my-4 sm:w-auto w-full sm:my-0 my-4">
-                Buy Now
-              </button>
-              <button className="border border-borderColor py-3 px-3 rounded-md lg:orde">
-                <img src="/images/favorite.png" className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center border border-borderColor rounded-sm p-3">
-              <img
-                src="/images/truck-black.png"
-                className="w-7 h-7 mr-3"
-                loading="lazy"
-              />
+              <div className="flex justify-between lg:mb-10 mb-5 lg:mt-10 mt-5">
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={100} height={30} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="mr-2">Colors:</p>
+                    <div
+                      className="w-6 h-6 rounded-full mx-1 border border-borderColor"
+                      style={{
+                        backgroundColor: productItem?.colors?.find(
+                          (color) => color?.name === productItem?.color
+                        )?.colorHex,
+                      }}
+                    ></div>
+                  </div>
+                )}
+
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={100} height={30} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="text-sm mr-2">Brand:</p>
+                    <p className="font-semibold">{productFind?.brandName}</p>
+                  </div>
+                )}
+
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={100} height={30} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="text-sm mr-2">Code:</p>
+                    <p className="font-semibold">#{productItem?.productCode}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid sm:grid-cols-2 grid-cols-1 lg:my-12 my-10 gap-x-4 sm:gap-y-0 gap-y-5">
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={200} height={40} />
+                ) : (
+                  <div className="border border-borderColor grid grid-cols-4 w-full sm:my-4 my-0">
+                    <button
+                      className="text-xl hover:bg-red duration-300 py-1 hover:text-white"
+                      onClick={() => setCount(count === 1 ? count : count - 1)}
+                    >
+                      -
+                    </button>
+                    <button className="col-span-2 py-1">{count}</button>
+                    <button
+                      className="text-xl hover:bg-red duration-300 py-1 hover:text-white"
+                      onClick={() =>
+                        setCount(
+                          count >= productItem?.quantity ? count : count + 1
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={200} height={40} />
+                ) : (
+                  <div className="sm:my-4 my-0">
+                    <button
+                      className="bg-red hover:bg-white hover:border hover:text-red duration-300 py-2 w-full text-white"
+                      onClick={() => addProductToBasket(productFind?.itemId)}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="lg:my-12 my-10">
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={280} height={80} />
+                ) : (
+                  <>
+                    <p className="font-semibold">product description:</p>
+                    <p className="text-sm">{productItem?.productDescription}</p>
+                  </>
+                )}
+              </div>
               <div>
-                <p className="text-sm">Free Delivery</p>
-                <p className="text-xs">
-                  Enter your postal code for Delivery Availability
-                </p>
+                {productItemLoading || productLoading ? (
+                  <ContentLoaders width={300} height={100} />
+                ) : (
+                  <>
+                    <div className="flex items-center border border-borderColor rounded-sm p-3">
+                      <img
+                        src="/images/truck-black.png"
+                        className="w-7 h-7 mr-3"
+                        loading="lazy"
+                      />
+                      <div>
+                        <p className="text-sm">Free Delivery</p>
+                        <p className="text-xs">
+                          Enter your postal code for Delivery Availability
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center border-x border-b border-borderColor rounded-sm p-3">
+                      <img
+                        src="/images/return.png"
+                        className="w-7 h-7 mr-3"
+                        loading="lazy"
+                      />
+                      <div>
+                        <p className="text-sm">Return Delivery</p>
+                        <p className="text-xs">
+                          Free 30 Days Delivery Returns. Details
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-            <div className="flex items-center border-x border-b border-borderColor rounded-sm p-3">
-              <img
-                src="/images/return.png"
-                className="w-7 h-7 mr-3"
-                loading="lazy"
-              />
-              <div>
-                <p className="text-sm">Return Delivery</p>
-                <p className="text-xs">
-                  Free 30 Days Delivery Returns. Details
-                </p>
-              </div>
+          </div>
+          <div className="col-span-10 sm:mt-28 mt-10">
+            <h2 className="text-2xl font-semibold mb-5 text-center">
+              Related Item
+            </h2>
+            <div className="grid lg:grid-cols-4 grid-cols-2">
+              {memoizedProductsTemplate}
             </div>
           </div>
-        </div>
-      </div>
-      <div className="col-span-9 sm:mt-28 mt-14">
-        <h2 className="text-2xl font-semibold mb-7 text-center">
-          Related Item
-        </h2>
-        <div className="grid lg:grid-cols-4 grid-cols-2">
-          {productData?.slice(0, 4).map((product, index) => (
-            <ProductTemplate
-              key={index}
-              title={product.title}
-              name={product.name}
-              price={product.price}
-              image={product.image}
-            />
-          ))}
-        </div>
-      </div>
+        </>
+      )}
     </section>
   );
 }
