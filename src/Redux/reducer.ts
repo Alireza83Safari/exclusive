@@ -8,6 +8,7 @@ import addressReducer from "./Store/address";
 import brandReducer from "./Store/brand";
 import commentReducer from "./Store/comment";
 import favoriteReduer from "./Store/favorite";
+import orderReducer from "./Store/order";
 //import discountReducer from "./Store/discount";
 
 export const rootReducer = combineReducers({
@@ -20,5 +21,6 @@ export const rootReducer = combineReducers({
   brand: brandReducer,
   comment: commentReducer,
   favorite: favoriteReduer,
+  order: orderReducer,
   //discount: discountReducer,
 });
