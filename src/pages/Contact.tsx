@@ -1,6 +1,41 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
+import toast from "react-hot-toast";
 
+type contactType = {
+  name: string;
+  email: string;
+  phone: string;
+  text: string;
+};
 function Contact() {
+  const [contactInfo, setContactInfo] = useState<contactType>({
+    name: "",
+    email: "",
+    phone: "",
+    text: "",
+  });
+
+  const btnDisabled = useMemo(() => {
+    if (
+      contactInfo.name.length <= 2 ||
+      contactInfo.email.length <= 2 ||
+      contactInfo.text.length <= 8
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [contactInfo]);
+  console.log(btnDisabled);
+
+  const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setContactInfo({ ...contactInfo, [name]: value });
+  };
+  const contactHandler = () => {
+    setContactInfo({ name: "", email: "", phone: "", text: "" });
+    toast.success("Thank you, our colleagues will respond to you shortly.");
+  };
   return (
     <section className="max-w-[1170px] mx-auto relative md:my-20">
       <div className="grid grid-cols-10 gap-x-10">
@@ -35,29 +70,48 @@ function Contact() {
             <div className="mx-3">
               <input
                 type="text"
-                className="bg-gray py-2 px-5 w-full"
+                className="bg-gray py-2 px-5 w-full outline-none"
                 placeholder="Your Name"
+                name="name"
+                onChange={setInputValue}
+                value={contactInfo.name}
               />
             </div>
             <div className="mx-3">
               <input
                 type="text"
-                className="bg-gray py-2 px-5 w-full"
+                className="bg-gray py-2 px-5 w-full outline-none"
                 placeholder="Your Email"
+                name="email"
+                onChange={setInputValue}
+                value={contactInfo.email}
               />
             </div>
             <div className="mx-3">
               <input
-                type="text"
-                className="bg-gray py-2 px-5 w-full"
+                type="number"
+                className="bg-gray py-2 px-5 w-full outline-none"
                 placeholder="Your Phone"
+                name="phone"
+                onChange={setInputValue}
+                value={contactInfo.phone}
               />
             </div>
             <div className="col-span-3 mx-3 mt-5">
-              <textarea rows={11} className="w-full bg-gray"></textarea>
+              <textarea
+                rows={11}
+                className="w-full bg-gray outline-none px-4 py-2"
+                name="text"
+                onChange={setInputValue}
+                value={contactInfo.text}
+              ></textarea>
             </div>
           </form>
-          <button className="bg-red px-8 py-3 text-white absolute md:right-4 right-6 bottom-10">
+          <button
+            className="bg-red px-8 py-3 text-white absolute md:right-4 right-6 bottom-10 disabled:bg-gray"
+            disabled={btnDisabled}
+            onClick={contactHandler}
+          >
             Send Message
           </button>
         </div>
