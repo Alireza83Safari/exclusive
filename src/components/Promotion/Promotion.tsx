@@ -1,65 +1,17 @@
 import React, { useState } from "react";
 import ProductTemplate from "../Product/ProductTemplate";
 import Timer from "../Timer";
+import { useSelector } from "react-redux";
+import { rootState } from "../../Redux/Store";
+import { Link } from "react-router-dom";
 
-export type ProductType = {
-  key: number;
-  title: string;
-  name: string;
-  price: number;
-  image: string;
-};
-function Promotion(): ProductType {
-  const productData = [
-    {
-      title: "Flash Sales",
-      name: "Cart With Flat Discount",
-      price: 160,
-      image: "/images/bookSelf.png",
-    },
-    {
-      title: "urt Sales",
-      name: "yjthghjgj Flat Discount",
-      price: 1450,
-      image: "/images/bookSelf.png",
-    },
-    {
-      title: "tey Sales",
-      name: "rytgvb Flat Discount",
-      price: 45,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "hkj Sales",
-      name: "Cbryt7i FiDiscikjount",
-      price: 654,
-      image: "/images/bookSelf.png",
-    },
-    {
-      title: "xcv Sales",
-      name: "Cgkhgkhggkunt",
-      price: 645,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "yut Sales",
-      name: "Caghkhgkhgjkunt",
-      price: 645,
-      image: "/images/product-1.png",
-    },
-    {
-      title: "fgh Sales",
-      name: "Caghkutiuygount",
-      price: 546,
-      image: "/images/product-1.png",
-    },
-  ];
-  const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(4);
-
+function Promotion() {
+  const { userProducts } = useSelector((state: rootState) => state.product);
+  const [startIndex, setStartIndex] = useState(3);
+  const [endIndex, setEndIndex] = useState(7);
 
   const prevImage = () => {
-    if (endIndex < productData?.length) {
+    if (endIndex < userProducts?.length) {
       setStartIndex(() => startIndex + 1);
       setEndIndex(() => endIndex + 1);
     }
@@ -70,6 +22,7 @@ function Promotion(): ProductType {
       setEndIndex(() => endIndex - 1);
     }
   };
+
   return (
     <section className="max-w-[1170px] mx-auto mt-20 relative px-3">
       <div>
@@ -103,21 +56,17 @@ function Promotion(): ProductType {
         </div>
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-        {productData?.slice(startIndex, endIndex).map((product, index) => (
-          <ProductTemplate
-            key={index}
-            title={product.title}
-            name={product.name}
-            price={product.price}
-            image={product.image}
-          />
+        {userProducts?.slice(startIndex, endIndex).map((product) => (
+          <ProductTemplate {...product} />
         ))}
       </div>
 
       <div className="felx justify-center items-center py-10 text-center">
-        <button className="bg-red text-white py-2 px-4 rounded-md">
-          View All Products
-        </button>
+        <Link to="/products">
+          <button className="bg-red text-white py-2 px-4 rounded-md">
+            View All Products
+          </button>
+        </Link>
       </div>
     </section>
   );

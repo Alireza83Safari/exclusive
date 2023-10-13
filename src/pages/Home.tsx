@@ -1,7 +1,7 @@
 import React from "react";
 import Content from "../components/Content/Content";
 import Promotion from "../components/Promotion/Promotion";
-import Category from "../components/Category/Category";
+import Brand from "../components/Brand";
 import BestSelling from "../components/BestSelling";
 import Suggestion from "../components/Suggestion";
 import OurProducts from "../components/OurProducts";
@@ -14,7 +14,7 @@ function Home() {
     <>
       <Content />
       <Promotion />
-      <Category />
+      <Brand />
       <BestSelling />
       <Suggestion />
       <OurProducts />

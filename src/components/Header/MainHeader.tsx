@@ -15,7 +15,7 @@ function MainHeader() {
     { label: "Home", link: "/" },
     { label: "Contact", link: "/contact" },
     { label: "About", link: "/about" },
-    { label: "Products", link: "/Products" },
+    { label: "Products", link: "/products" },
     { label: "Sign Up", link: "/register" },
   ]);
   const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);

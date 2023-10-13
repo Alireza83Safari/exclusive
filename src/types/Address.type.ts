@@ -3,17 +3,19 @@ export type addressStateType = {
   address: getAddressType;
   addressUserId: getAddressType[];
   addresses: getAddressType[];
+  addressError: errorAddressType;
 };
 
-export type addressType = {
+export interface addressType {
   address: string;
   firstName: string;
   lastName: string;
   nationalCode: string;
   phoneNumber: string;
-  plaque: number;
+  plaque: number | null;
   postalCode: string;
-};
+}
+export interface errorAddressType extends Partial<addressType> {}
 
 export type getAddressType = {
   address: string;

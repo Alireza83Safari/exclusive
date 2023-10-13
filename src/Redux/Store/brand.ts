@@ -17,7 +17,9 @@ export const getBrands = createAsyncThunk(
       const axiosInstance = isAdmin ? adminAxios : userAxios;
       const response = await axiosInstance.get("/brand");
       if (response.status === 200) {
-        dispatch(brandSlice.actions.setBrands(response.data.data));
+        isAdmin
+          ? dispatch(brandSlice.actions.setBrands(response.data.data))
+          : dispatch(brandSlice.actions.setBrandsUser(response.data.data));
         dispatch(brandSlice.actions.setLoading(false));
       }
     } catch (error) {

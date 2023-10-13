@@ -2,6 +2,7 @@ export type orderStateType = {
   userOrders: orderUserType[];
   adminOrders: orderAdminType[];
   orderLoading: boolean;
+  ordersPrice: number;
 };
 
 export type addOrderItemType = {

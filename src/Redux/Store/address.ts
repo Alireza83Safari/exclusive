@@ -5,6 +5,7 @@ import { userAxios } from "../../services/userInterceptor";
 import {
   addressStateType,
   addressType,
+  errorAddressType,
   getAddressType,
 } from "../../types/Address.type";
 
@@ -62,12 +63,17 @@ export const addAddress = createAsyncThunk(
     try {
       dispatch(addressSlice.actions.setLoading(true));
       const response = await userAxios.post("/address", addressInfo);
+
       if (response.status === 200) {
         toast.success("add address is success");
         dispatch(addressSlice.actions.setLoading(false));
       }
     } catch (error) {
+      dispatch(
+        addressSlice.actions.setAddressError(error?.response.data.errors)
+      );
       dispatch(addressSlice.actions.setLoading(false));
+      console.log(error);
     }
   }
 );
@@ -110,12 +116,13 @@ export const deleteAddress = createAsyncThunk(
   }
 );
 
-const addressSlice = createSlice({
+export const addressSlice = createSlice({
   name: "address",
   initialState: {
     addressLoading: false,
     address: {} as getAddressType,
     addressUserId: [] as getAddressType[],
+    addressError: {} as errorAddressType,
     addresses: [] as getAddressType[],
   } as addressStateType,
   reducers: {
@@ -128,6 +135,10 @@ const addressSlice = createSlice({
     setAddresses: (state, action) => {
       state.addresses = action.payload;
     },
+    setAddressError: (state, action) => {
+      state.addressError = action.payload;
+    },
+
     setAddressUserId: (state, action) => {
       state.addressUserId = action.payload;
     },

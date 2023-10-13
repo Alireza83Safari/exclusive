@@ -26,7 +26,6 @@ function Contact() {
       return false;
     }
   }, [contactInfo]);
-  console.log(btnDisabled);
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
