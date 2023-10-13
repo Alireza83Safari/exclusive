@@ -16,7 +16,8 @@ export const getOrderUser = createAsyncThunk(
       dispatch(orderSlice.actions.setOrderLoading(true));
       const response = await userAxios.get(`order`);
       if (response.status === 200) {
-        dispatch(orderSlice.actions.setUserOrders(response.data.item));
+        dispatch(orderSlice.actions.setUserOrders(response.data.items));
+        dispatch(orderSlice.actions.setOrdersPrice(response.data.price));
         dispatch(orderSlice.actions.setOrderLoading(false));
       }
     } catch (error) {
@@ -49,6 +50,7 @@ export const addOrder = createAsyncThunk(
       const response = await userAxios.post(`order/checkout/${addressId}`);
       if (response.status === 200) {
         toast.success("add order is success");
+        location.href = "/";
         dispatch(orderSlice.actions.setOrderLoading(false));
       }
     } catch (error) {
@@ -97,6 +99,7 @@ const orderSlice = createSlice({
     userOrders: [] as orderUserType[],
     adminOrders: [] as orderAdminType[],
     orderLoading: false,
+    ordersPrice: 0,
   } as orderStateType,
   reducers: {
     setOrderLoading: (state, action) => {
@@ -104,6 +107,9 @@ const orderSlice = createSlice({
     },
     setUserOrders: (state, action) => {
       state.userOrders = action.payload;
+    },
+    setOrdersPrice: (state, action) => {
+      state.ordersPrice = action.payload;
     },
     setAdminOrders: (state, action) => {
       state.adminOrders = action.payload;
