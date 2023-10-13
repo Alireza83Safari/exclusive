@@ -6,6 +6,7 @@ export type productStateType = {
   userProduct: userProductType;
   userProducts: userProductType[];
   error: string | null;
+  productsWithOrder:  userProductType;
 };
 
 export type productType = {
