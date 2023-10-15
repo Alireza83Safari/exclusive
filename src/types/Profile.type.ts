@@ -4,7 +4,7 @@ export type profileStateType = {
   profileFavorite: profileFavoriteType[];
   profileOrdersAdmin: profileOrdersType[];
   profileFavoriteAdmin: profileFavoriteType[];
-  profilesUserInfo: profileUserInfo[];
+  profilesUserInfo: profileUserInfo;
 };
 
 export type profileFavoriteType = {
