@@ -12,6 +12,12 @@ import ProductDetails from "../pages/ProductDetails";
 import Products from "../pages/Products";
 import CategoryResult from "../pages/CategoryResult";
 import BrandResult from "../pages/BrandResult";
+import UserInfo from "../components/Account/AccountUserInfo";
+import FavoriteProducts from "../components/Account/FavoriteProducts";
+import AccountOrders from "../components/Account/AccountOrders";
+import AccountAddress from "../components/Account/AccountAddress";
+import AccountComments from "../components/Account/AccountComments";
+import AccountUserInfo from "../components/Account/AccountUserInfo";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -28,6 +34,18 @@ const routes = [
   { path: "products", element: <Products /> },
   { path: "category/:category", element: <CategoryResult /> },
   { path: "brand/:brand", element: <BrandResult /> },
+  {
+    path: "account/*",
+    element: <Account />,
+    children: [
+      { path: "userInfo", element: <UserInfo /> },
+      { path: "favorite", element: <FavoriteProducts /> },
+      { path: "order", element: <AccountOrders /> },
+      { path: "comment", element: <AccountComments /> },
+      { path: "address", element: <AccountAddress /> },
+      { path: "userInfo", element: <AccountUserInfo /> },
+    ],
+  },
 ];
 
 export default routes;
