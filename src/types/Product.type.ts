@@ -6,7 +6,7 @@ export type productStateType = {
   userProduct: userProductType;
   userProducts: userProductType[];
   error: string | null;
-  productsWithOrder:  userProductType;
+  productsWithOrder: userProductType;
 };
 
 export type productType = {
@@ -35,6 +35,10 @@ export type userProductType = {
   price: number;
   quantity: number;
 };
+type productsLoading = {
+  productsLoading?: boolean;
+};
+export type userProductTypeWithLoading = userProductType & productsLoading;
 
 export type adminProductType = {
   brandFileUrl?: string;

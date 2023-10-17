@@ -28,6 +28,28 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
+export const getProductsWithOrder = createAsyncThunk(
+  "product/get/order",
+  async (url: string, { dispatch }) => {
+    try {
+      dispatch(productSlice.actions.setLoading(true));
+      const response = await userAxios.get(`/product${url}`);
+
+      if (response.status === 200) {
+        // You can use a dynamic action name here to distinguish requests
+        dispatch(
+          productSlice.actions.setProductsWithOrder({
+            url,
+            data: response.data.data,
+          })
+        );
+        dispatch(productSlice.actions.setLoading(false));
+      }
+    } catch (error) {
+      dispatch(productSlice.actions.setLoading(false));
+    }
+  }
+);
 
 export const getProduct = createAsyncThunk(
   "product/getOne",
@@ -111,6 +133,7 @@ const productSlice = createSlice({
     userProducts: [] as userProductType[],
     error: null,
     adminProductSelectList: [] as adminProductType[],
+    productsWithOrder: {} as userProductType,
   } as productStateType,
   reducers: {
     setUserProducts: (state, action) => {
@@ -124,6 +147,10 @@ const productSlice = createSlice({
     },
     setAdminProduct: (state, action) => {
       state.adminProduct = action.payload;
+    },
+    setProductsWithOrder: (state, action) => {
+      const { url, data } = action.payload;
+      state.productsWithOrder[url] = data;
     },
     setLoading: (state, action) => {
       state.productLoading = action.payload;

@@ -9,6 +9,7 @@ import brandReducer from "./Store/brand";
 import commentReducer from "./Store/comment";
 import favoriteReduer from "./Store/favorite";
 import orderReducer from "./Store/order";
+import profileReducer from "./Store/profile";
 //import discountReducer from "./Store/discount";
 
 export const rootReducer = combineReducers({
@@ -22,5 +23,6 @@ export const rootReducer = combineReducers({
   comment: commentReducer,
   favorite: favoriteReduer,
   order: orderReducer,
+  profile: profileReducer,
   //discount: discountReducer,
 });
