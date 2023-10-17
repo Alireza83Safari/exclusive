@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { userProductType } from "../../types/Product.type";
+import { userProductTypeWithLoading } from "../../types/Product.type";
 import { addOrderItem } from "../../Redux/Store/order";
 import { useDispatch } from "react-redux";
 import { addOrderItemType } from "../../types/Order.type";
+import ContentLoaders from "../ContentLoaders";
 
 function ProductTemplate({
   name,
@@ -12,7 +13,10 @@ function ProductTemplate({
   id,
   discountValue,
   itemId,
-}: userProductType) {
+  categoryName,
+  quantity,
+  productsLoading,
+}: userProductTypeWithLoading) {
   const dispatch = useDispatch();
 
   const addProductToBasket = () => {
@@ -52,20 +56,45 @@ function ProductTemplate({
             />
           </div>
         </div>
-        <div>
-          <h3 className="md:text-base text-sm">{name}</h3>
-          <div className="flex  my-1">
-            <p className="text-red mr-4 md:text-base text-sm">${price}</p>
-            <p className="line-through md:text-base text-sm">$160</p>
+        <div className="mt-2">
+          {productsLoading ? (
+            <ContentLoaders width={100} height={20} />
+          ) : (
+            <h3 className="text-lg font-semibold">{name}</h3>
+          )}
+          <div className="flex justify-between mt-2">
+            <p className="text-emerald-600 font-semibold">{categoryName}</p>
+            <p>quantity:{quantity}</p>
           </div>
-          <div className="flex items-center">
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <span className="md:text-base text-sm">(88)</span>
-          </div>
+
+          {productsLoading ? (
+            <div className="my-1">
+              <ContentLoaders width={100} height={20} />
+            </div>
+          ) : (
+            <div className="flex mt-2">
+              <p className="text-red mr-4 md:text-base text-sm">
+                ${discountValue ? price - (discountValue / 100) * price : price}
+              </p>
+              <p className="line-through md:text-base text-sm">
+                {discountValue ? `$ ${price}` : null}
+              </p>
+            </div>
+          )}
+
+          {productsLoading ? (
+            <div className="my-1">
+              <ContentLoaders width={200} height={40} />
+            </div>
+          ) : (
+            <div className="flex items-center mt-2">
+              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+            </div>
+          )}
         </div>
       </Link>
     </div>
