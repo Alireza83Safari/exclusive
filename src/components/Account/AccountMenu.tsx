@@ -12,7 +12,7 @@ function AccountMenu() {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="pl-4">
       {menuItem.map((menu, index) => (
         <Link
           className={`block my-7 text-lg ${

@@ -21,7 +21,7 @@ function About() {
     },
   ];
   return (
-    <section className="max-w-[1170px] mx-auto mt-20 relative">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative">
       <div className="grid lg:grid-cols-2 md:mb-20">
         <div className=" m-auto lg:pr-16 lg:order-1 order-2 px-2">
           <h1 className="text-5xl font-semibold">Our Story</h1>

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { userAxios } from "../services/userInterceptor";
 
-export const useFetchDataFromUrl = () => {
+export const useFetchDataFromUrl = <T,>(urlName: string | null) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [getFilterProducts, setFilterProducts] = useState([]);
+  const [getFilterProducts, setFilterProducts] = useState<T[]>([]);
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -18,7 +18,9 @@ export const useFetchDataFromUrl = () => {
   const limit = searchParams.get("limit");
 
   const fetchProductFormUrl = useCallback(async () => {
-    let url = `product?page=${page}&limit=${limit}`;
+    let url = `${
+      urlName !== null ? urlName : `product`
+    }?page=${page}&limit=${limit}`;
 
     switch (true) {
       case Boolean(searchTerm):
@@ -67,8 +69,14 @@ export const useFetchDataFromUrl = () => {
   ]);
 
   useEffect(() => {
-    fetchProductFormUrl();
+    if (page != null) {
+      fetchProductFormUrl();
+    }
   }, [fetchProductFormUrl]);
 
-  return { getFilterProducts, totalProducts, loading };
+  const memoizedData = useMemo(
+    () => ({ getFilterProducts, totalProducts, loading }),
+    [getFilterProducts, totalProducts, loading]
+  );
+  return memoizedData;
 };

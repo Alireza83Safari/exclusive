@@ -22,7 +22,7 @@ function Options() {
     },
   ];
   return (
-    <section className="max-w-[1170px] mx-auto relative my-20">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative my-20">
       <div className="grid grid-cols-3 lg:px-16">
         {optiomsData.map((option) => (
           <div className="text-center mx-3" key={option.id}>

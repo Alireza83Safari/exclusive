@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-
 import { Pagination } from "swiper/modules";
 import { useDispatch, useSelector } from "react-redux";
 import { getBrands } from "../Redux/Store/brand";
@@ -21,7 +20,7 @@ function Brand() {
   }, [dateIsFetched]);
 
   return (
-    <section className="max-w-[1170px] mx-auto min-h-[400px] my-20 border-b border-borderColor">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto min-h-[400px] my-20 border-b border-borderColor px-3">
       <p className="text-red my-4 font-semibold md:text-base text-sm">Brands</p>
       <div className="flex justify-between">
         <h2 className="md:text-4xl text-2xl md:mb-4 font-semibold">
@@ -47,7 +46,6 @@ function Brand() {
           modules={[Pagination]}
           className="mySwiper"
         >
-          
           {brandsUser.map((data, index) => (
             <SwiperSlide key={index}>
               <Link to={`/brand/product?brandId=${data.id}`}>

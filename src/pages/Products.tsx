@@ -1,47 +1,70 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Suspense, lazy, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import { rootState } from "../Redux/Store";
-import { getProducts } from "../Redux/Store/product";
-import ProductTemplate from "../components/Product/ProductTemplate";
 import Spinner from "../components/Spinner/Spinner";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { usePagination } from "../hooks/usePagination";
-import Pagination from "../components/Pagination";
+import { userProductType } from "../types/Product.type";
+const ProductTemplate = lazy(
+  () => import("../components/Product/ProductTemplate")
+);
+const FilterProducts = lazy(() => import("../components/FilterProducts"));
+const Pagination = lazy(() => import("../components/Pagination"));
+
 function Products() {
-  const [dataFetched, setDataFetched] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const { productLoading } = useSelector((state: rootState) => state.product);
-
-  useEffect(() => {
-    if (!dataFetched) {
-      dispatch(getProducts(false) as any);
-      setDataFetched(true);
-    }
-  }, [dataFetched]);
-
   const [currentPage, setCurrentPage] = useState<number>(1);
+
   const limitShow = 12;
-  const { getFilterProducts, totalProducts, loading } = useFetchDataFromUrl();
+  const { getFilterProducts, totalProducts, loading } =
+    useFetchDataFromUrl<userProductType>(null);
+
   const {} = usePagination(currentPage, limitShow);
-  const totalPages = Math.ceil(totalProducts / limitShow);
+
+  const totalPages = useMemo(() => {
+    return Math.ceil(totalProducts / limitShow);
+  }, [limitShow, totalProducts]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
   return (
-    <section className="max-w-[1170px] mx-auto relative my-20">
-      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-        {productLoading || loading ? (
-          <Spinner />
-        ) : (
-          getFilterProducts?.map((product) => <ProductTemplate {...product} />)
-        )}
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full min-h-[400px] px-4 mx-auto relative my-4">
+      <Suspense fallback={<Spinner />}>
+        <FilterProducts />
+      </Suspense>
+      {productLoading || loading ? (
+        <Spinner />
+      ) : (
+        <>
+          {getFilterProducts.length ? (
+            <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+              {getFilterProducts?.map((product) => (
+                <Suspense fallback={<Spinner />}>
+                  <ProductTemplate
+                    {...product}
+                    productsLoading={productLoading}
+                  />
+                </Suspense>
+              ))}
+            </div>
+          ) : (
+            <div className="text-5xl flex justify-center items-center mt-28">
+              No exact matches found
+            </div>
+          )}
+        </>
+      )}
+      {totalPages > 1 && (
+        <Suspense fallback={<Spinner />}>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </Suspense>
+      )}
     </section>
   );
 }

@@ -1,41 +1,40 @@
 import React, { Suspense, lazy, useState } from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
+import { userProductType } from "../types/Product.type";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "../components/Spinner/Spinner";
-import { userProductType } from "../types/Product.type";
 const ProductTemplate = lazy(
   () => import("../components/Product/ProductTemplate")
 );
-const Pagination = lazy(() => import("../components/Pagination"));
 const FilterProducts = lazy(() => import("../components/FilterProducts"));
+const Pagination = lazy(() => import("../components/Pagination"));
 
-function BrandResult() {
+function SearchResult() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const limitShow = 12;
   const { getFilterProducts, totalProducts, loading } =
     useFetchDataFromUrl<userProductType>(null);
-  const {} = usePagination(currentPage, limitShow);
+  const {} = usePagination(1, 2);
   const totalPages = Math.ceil(totalProducts / limitShow);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  console.log(getFilterProducts);
-
   return (
-    <section className="max-w-[1170px] mx-auto mt-5 relative px-2 min-h-[400px]">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
       <Suspense fallback={<Spinner />}>
         <FilterProducts />
       </Suspense>
-      {loading ? (
-        <Spinner />
-      ) : getFilterProducts.length >= 1 ? (
+      {getFilterProducts.length ? (
         <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-          {getFilterProducts?.map((product) => (
-            <Suspense fallback={<Spinner />}>
-              <ProductTemplate {...product} productsLoading={loading} />
-            </Suspense>
-          ))}
+          {loading || loading ? (
+            <Spinner />
+          ) : (
+            getFilterProducts?.map((product) => (
+              <Suspense fallback={<Spinner />}>
+                <ProductTemplate {...product} />
+              </Suspense>
+            ))
+          )}
         </div>
       ) : (
         <h2 className="text-4xl font-bold mt-32 text-center">
@@ -55,4 +54,4 @@ function BrandResult() {
   );
 }
 
-export default BrandResult;
+export default SearchResult;

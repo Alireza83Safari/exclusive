@@ -2,7 +2,7 @@ import React from "react";
 
 function Suggestion() {
   return (
-    <div className="max-w-[1170px] mx-auto col-span-10 py-8">
+    <div className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto col-span-10 py-8">
       <div className="w-full md:h-[500px] h-[600px] bg-black lg:px-16 px-5 grid md:grid-cols-2 grid-cols-1 md:py-0 py-10">
         <div className="md:my-16 my-4 md:order-1 order-2 text-center md:text-start">
           <p className="text-green">Categories</p>

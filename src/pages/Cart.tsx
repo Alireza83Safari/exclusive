@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { rootState } from "../Redux/Store";
+import { getOrderUser } from "../Redux/Store/order";
 
 function Cart() {
+  const dispatch = useDispatch();
+  const { userOrders, ordersPrice } = useSelector(
+    (state: rootState) => state.order
+  );
+  useEffect(() => {
+    dispatch(getOrderUser() as any);
+  }, []);
+
   return (
-    <section className="max-w-[1170px] mx-auto my-10 relative">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto my-10 relative">
       <div className="text-center mt-20">
         <div className="grid grid-cols-4 shadow-md py-5 my-10 ">
           <p>Product</p>
@@ -11,65 +22,42 @@ function Cart() {
           <p>Quantity</p>
           <p>Subtotal</p>
         </div>
-        <div className="grid grid-cols-4 shadow-md py-5 my-10">
-          <div className="flex justify-center items-center">
-            <img src="/images/monitor.png" className="w-10 mr-4" /> LCD Monitor
-          </div>
-          <p>$650</p>
-          <div className="flex justify-center items-center">
-            <div className="border border-gray w-14 flex py-2 px-2">
-              <p className="mr-3">01</p>
-              <div>
-                <img src="/images/upSmall.png" className="mb-2 w-3" />
-                <img src="/images/downSmall.png" className="mt-2 w-3" />
-              </div>
+        {userOrders.map((order) => (
+          <div className="grid grid-cols-4 shadow-md py-5 my-10 hover:bg-gray duration-300">
+            <div className="flex justify-center items-center">
+              <img
+                src={`http://127.0.0.1:6060/${order.fileUrl}`}
+                className="w-10 mr-4"
+              />
+              {order.productName}
             </div>
+            <p>${order.price}</p>
+            <p className="mr-3">{order.quantity}</p>
+            <p>$ {order.totalPrice}</p>
           </div>
-          <p>$650</p>
-        </div>
-        <div className="grid grid-cols-4 shadow-md py-5 my-10">
-          <div className="flex justify-center items-center">
-            <img src="/images/product-1.png" className="w-10 mr-4" /> LCD
-            Monitor
-          </div>
-          <p>$650</p>
-          <div className="flex justify-center items-center">
-            <div className="border border-gray w-14 flex py-2 px-2">
-              <p className="mr-3">01</p>
-              <div>
-                <img src="/images/upSmall.png" className="mb-2 w-3" />
-                <img src="/images/downSmall.png" className="mt-2 w-3" />
-              </div>
-            </div>
-          </div>
-          <p>$650</p>
-        </div>
+        ))}
 
         <div className="flex justify-between">
-          <Link to="/" className="border py-3 px-4">
+          <Link
+            to="/products"
+            className="border py-3 px-4 hover:bg-red duration-500 hover:text-white"
+          >
             View All Products
           </Link>
-          <Link to="/" className="border py-3 px-4">
+          <Link
+            to="/"
+            className="border py-3 px-4 hover:bg-red duration-500 hover:text-white"
+          >
             Update Cart
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-32">
-        <div className="w-full">
-          <input
-            type="text"
-            placeholder="Coupon Code"
-            className="border px-7 py-3"
-          />
-          <button className="bg-red text-white py-3 px-4 ml-5">
-            Apply Coupon
-          </button>
-        </div>
+      <div className="grid grid-cols-2 mt-10">
         <div className="border px-6 py-5 rounded-sm">
           <h3 className="font-semibold text-lg mb-3">Cart Total</h3>
           <div className="flex justify-between py-4 border-b">
             <p>Subtotal:</p>
-            <p>$1750</p>
+            <p>${ordersPrice}</p>
           </div>
           <div className="flex justify-between py-4 border-b">
             <p>Shipping:</p>
@@ -77,12 +65,14 @@ function Cart() {
           </div>
           <div className="flex justify-between py-4">
             <p>Total:</p>
-            <p>$1750</p>
+            <p>${ordersPrice}</p>
           </div>
-          <div className="flex justify-center">
-            <button className="bg-red text-white py-4 px-5">
-              View All Products
-            </button>
+          <div className="w-full">
+            <Link to="shipping">
+              <button className="bg-red text-white w-full py-3 hover:bg-gray duration-500 hover:text-red">
+                Shipping
+              </button>
+            </Link>
           </div>
         </div>
       </div>

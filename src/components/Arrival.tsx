@@ -2,7 +2,7 @@ import React from "react";
 
 function Arrival() {
   return (
-    <section className="max-w-[1170px] mx-auto relative my-20">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full px-4 mx-auto relative my-20">
       <div className="px-2">
         <p>Featured</p>
         <h2 className="text-4xl font-semibold my-4">New Arrival</h2>

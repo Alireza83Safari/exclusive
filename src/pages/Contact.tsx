@@ -36,7 +36,7 @@ function Contact() {
     toast.success("Thank you, our colleagues will respond to you shortly.");
   };
   return (
-    <section className="max-w-[1170px] mx-auto relative md:my-20">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative md:my-20">
       <div className="grid grid-cols-10 gap-x-10">
         <div className="md:col-span-3 col-span-10 shadow-md p-5 md:block grid sm:grid-cols-2">
           <div className="md:border-b border-borderColor md:pb-8 md:mr-0 sm:mr-4">

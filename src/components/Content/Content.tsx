@@ -4,7 +4,7 @@ import Banner from "./Banner";
 
 function Content() {
   return (
-    <div className="max-w-[1170px] m-auto grid grid-cols-12 relative">
+    <div className="xl:max-w-[1280px] md:max-w-[98%] w-full m-auto grid grid-cols-12 relative">
       <Menu />
       <Banner />
     </div>

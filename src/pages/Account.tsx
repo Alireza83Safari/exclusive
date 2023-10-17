@@ -1,99 +1,19 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
+import { Outlet } from "react-router-dom";
+import Spinner from "../components/Spinner/Spinner";
+const AccountMenu = lazy(() => import("../components/Account/AccountMenu"));
 
 function Account() {
   return (
-    <section className="max-w-[1170px] mx-auto md:mt-20 mt-8 relative">
-      <div className="grid grid-cols-7">
-        <ul className="md:col-span-2 col-span-7 md:block flex md:gap-x-0 gap-x-10 px-5">
-          <li className="mb-7">
-            <p className="font-semibold">Manage My Account</p>
-            <ul className="ml-5 mt-3 ">
-              <li className="my-1">My Profile</li>
-              <li className="my-1">Address Book</li>
-              <li className="my-1">My Payment Options</li>
-            </ul>
-          </li>
-
-          <li>
-            <p className="font-semibold">My Orders</p>
-            <ul className="ml-5 mt-3 ">
-              <li className="my-1">My Returns</li>
-              <li className="my-1">My Cancellations</li>
-            </ul>
-          </li>
-        </ul>
-        <div className="md:col-span-5 col-span-7">
-          <form className="grid grid-cols-2 shadow-xl md:px-10 px-4 py-8 relative">
-            <h3 className="text-red col-span-2 text-lg mb-2">
-              Edit Your Profile
-            </h3>
-            <div className="md:mr-6 mr-2 my-4">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-            <div className="md:ml-6 ml-2 my-4">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-
-            <div className="md:mr-6 mr-2 my-4">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-            <div className="md:ml-6 ml-2 my-4">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-
-            <div className="my-2 col-span-2">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-
-            <div className="my-2 col-span-2">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-
-            <div className="my-2 col-span-2">
-              <label htmlFor="">First Name</label>
-              <input
-                type="text"
-                placeholder="Md"
-                className="w-full bg-gray px-3 py-3"
-              />
-            </div>
-            <div className="flex justify-end col-span-2 mt-5">
-              <button className="mr-8">Cancel</button>
-              <button className="py-3 sm:px-8 px-3 bg-red text-white">
-                Saves Changes
-              </button>
-            </div>
-          </form>
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-5 relative">
+      <div className="grid grid-cols-5">
+        <div className="col-span-1">
+          <Suspense fallback={<Spinner />}>
+            <AccountMenu />
+          </Suspense>
+        </div>
+        <div className="col-span-4">
+          <Outlet />
         </div>
       </div>
     </section>

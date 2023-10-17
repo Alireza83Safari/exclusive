@@ -1,12 +1,14 @@
-import React from "react";
-import TopHeader from "../components/Header/TopHeader";
-import MainHeader from "../components/Header/MainHeader";
-
+import React, { Suspense, lazy } from "react";
+import Spinner from "../components/Spinner/Spinner";
+const TopHeader = lazy(() => import("../components/Header/TopHeader"));
+const MainHeader = lazy(() => import("../components/Header/MainHeader"));
 function Header() {
   return (
     <header>
-      <TopHeader />
-      <MainHeader />
+      <Suspense fallback={<Spinner />}>
+        <TopHeader />
+        <MainHeader />
+      </Suspense>
     </header>
   );
 }

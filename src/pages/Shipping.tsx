@@ -8,7 +8,7 @@ import { addressSlice } from "../Redux/Store/address";
 import { codeDiscountValidate } from "../Redux/Store/discount";
 import toast from "react-hot-toast";
 
-function Chechout() {
+function Shipping() {
   const [copunValue, setCopunValue] = useState<string>("");
   const [chooseAddress, setChooseAddress] = useState<string>("");
   const [newAddress, setNewAddress] = useState<addressType>({
@@ -78,7 +78,7 @@ function Chechout() {
   };
 
   return (
-    <section className="max-w-[1170px] mx-auto my-10 relative sm:px-5 px-2">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto my-10 relative sm:px-5 px-2">
       <div className="grid md:grid-cols-2 md:mt-20 mt-10">
         <div>
           {addresses.length ? (
@@ -307,4 +307,4 @@ function Chechout() {
   );
 }
 
-export default Chechout;
+export default Shipping;

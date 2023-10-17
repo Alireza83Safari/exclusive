@@ -1,12 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
     <footer className="w-full bg-black">
-      <div className="max-w-[1170px] mx-auto relative mt-20 py-16 md:flex justify-between grid sm:grid-cols-3 grid-cols-2">
+      <div className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-20 py-16 md:flex justify-between grid sm:grid-cols-3 grid-cols-2">
         <div className="md:mx-1 mx-3 my-3">
           <ul className="text-white">
-            <li className="text-2xl font-semibold mb-4">Exclusive</li>
+            <li className="text-2xl font-semibold mb-4">
+              <Link to="contact">Exclusive</Link>
+            </li>
             <li className="text-xl font-medium my-4">Subscribe</li>
             <li className="my-4">Get 10% off your first order</li>
           </ul>
@@ -36,12 +39,25 @@ function Footer() {
         </div>
         <div className="text-white md:mx-1 mx-3 my-3">
           <ul>
-            <li className="text-xl font-semibold mb-4">Account</li>
-            <li className="my-4">My Account</li>
-            <li className="my-4">Login / Register</li>
-            <li className="my-4">Cart</li>
-            <li className="my-4">Wishlist</li>
-            <li className="my-4">Shop</li>
+            <li className="text-xl font-semibold mb-4">
+              <Link to="/account">Account</Link>
+            </li>
+            <li className="my-4">
+              <Link to="/account">My Account</Link>
+            </li>
+            <li className="my-4">
+              <Link to="/login">Login / Register</Link>
+            </li>
+            <li className="my-4">
+              <Link to="/cart">Cart</Link>
+            </li>
+
+            <li className="my-4">
+              <Link to="wishlist">Wishlist</Link>
+            </li>
+            <li className="my-4">
+              <Link to="products">Shop</Link>
+            </li>
           </ul>
         </div>
         <div className="text-white md:mx-1 mx-3 my-3">
@@ -49,7 +65,9 @@ function Footer() {
             <li className="text-xl font-semibold mb-4">Quick Link</li>
             <li className="my-4">Privacy Policy</li>
             <li className="my-4">FAQ</li>
-            <li className="my-4">Contact</li>
+            <li className="my-4">
+              <Link to="contact">Contact</Link>
+            </li>
           </ul>
         </div>
         <div className="text-white md:mx-1 mx-3 my-3">

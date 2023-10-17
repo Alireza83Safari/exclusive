@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { lazy, useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import ProductTemplate from "../components/Product/ProductTemplate";
 import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "../Redux/Store";
 import { useParams } from "react-router-dom";
@@ -21,6 +20,9 @@ import {
 import { addOrderItem } from "../Redux/Store/order";
 import { addOrderItemType } from "../types/Order.type";
 import ContentLoaders from "../components/ContentLoaders";
+const ProductTemplate = lazy(
+  () => import("../components/Product/ProductTemplate")
+);
 
 function ProductDetails() {
   const { productId } = useParams();
@@ -78,11 +80,11 @@ function ProductDetails() {
       productItemId: id,
       quantity: count,
     } as addOrderItemType;
-    dispatch(addOrderItem(orderItemInfo));
+    dispatch(addOrderItem(orderItemInfo) as any);
     setCount(1);
   };
   return (
-    <section className="max-w-[1170px] mx-auto relative my-10 grid grid-cols-10">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative my-10 grid grid-cols-10">
       {productItemLoading || productLoading ? (
         <Spinner />
       ) : (
