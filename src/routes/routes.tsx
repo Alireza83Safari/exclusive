@@ -1,9 +1,7 @@
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import Wishlist from "../pages/Wishlist";
 import Cart from "../pages/Cart";
-import Chechout from "../pages/Chechout";
 import NotFound from "../components/NotFound";
 import Account from "../pages/Account";
 import About from "../pages/About";
@@ -18,15 +16,16 @@ import AccountOrders from "../components/Account/AccountOrders";
 import AccountAddress from "../components/Account/AccountAddress";
 import AccountComments from "../components/Account/AccountComments";
 import AccountUserInfo from "../components/Account/AccountUserInfo";
+import SearchResult from "../pages/SearchResult";
+import Shipping from "../pages/Shipping";
 
 const routes = [
   { path: "*", element: <NotFound /> },
   { path: "register", element: <Register /> },
   { path: "login", element: <Login /> },
   { path: "", element: <Home /> },
-  { path: "wishlist", element: <Wishlist /> },
   { path: "cart", element: <Cart /> },
-  { path: "cart/chechout", element: <Chechout /> },
+  { path: "cart/Shipping", element: <Shipping /> },
   { path: "account", element: <Account /> },
   { path: "about", element: <About /> },
   { path: "contact", element: <Contact /> },
@@ -34,6 +33,7 @@ const routes = [
   { path: "products", element: <Products /> },
   { path: "category/:category", element: <CategoryResult /> },
   { path: "brand/:brand", element: <BrandResult /> },
+  { path: "search/:search", element: <SearchResult /> },
   {
     path: "account/*",
     element: <Account />,
