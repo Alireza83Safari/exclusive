@@ -1,118 +1,53 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminAxios } from "../../services/adminInterceptor";
-import { userAxios } from "../../services/userInterceptor";
-import {
-  categoryStateType,
-  categoryUserType,
-  editCategoryType,
-  categoryAdminType,
-} from "../../types/Category.type";
-import toast from "react-hot-toast";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { categoryAdminType, editCategoryType } from "../../types/Category.type";
 
-export const getCategory = createAsyncThunk(
-  "category/get",
-  async (_, { dispatch }) => {
-    try {
-      dispatch(categorySlice.actions.setCategoryLoading(true));
-
-      const response = await userAxios.get("/category/selectList");
-      if (response.status === 200) {
-        dispatch(categorySlice.actions.setCategory(response.data.data));
-        dispatch(categorySlice.actions.setCategoryLoading(false));
-      }
-    } catch (error) {
-      dispatch(categorySlice.actions.setCategoryLoading(false));
-    }
-  }
-);
-
-export const getAdminCategory = createAsyncThunk(
-  "category/get",
-  async (_, { dispatch }) => {
-    try {
-      dispatch(categorySlice.actions.setCategoryLoading(true));
-
-      const response = await adminAxios.get("/category");
-      if (response.status === 200) {
-        dispatch(categorySlice.actions.setCategory(response.data.data));
-        dispatch(categorySlice.actions.setCategoryLoading(false));
-      }
-    } catch (error) {
-      dispatch(categorySlice.actions.setCategoryLoading(false));
-    }
-  }
-);
-
-export const addCategory = createAsyncThunk(
-  "category/add",
-  async (categoryData: categoryAdminType, { dispatch }) => {
-    try {
-      dispatch(categorySlice.actions.setCategoryLoading(true));
-      const response = await adminAxios.post("/category", categoryData);
-      if (response.status === 200) {
-        toast.success("add category is success");
-        dispatch(categorySlice.actions.setCategoryLoading(false));
-      }
-    } catch (error) {
-      dispatch(categorySlice.actions.setCategoryLoading(false));
-    }
-  }
-);
-
-export const editCategory = createAsyncThunk(
-  "category/edit",
-  async ({ categoryData, id }: editCategoryType, { dispatch }) => {
-    try {
-      dispatch(categorySlice.actions.setCategoryLoading(true));
-      const response = await adminAxios.post(
-        `/category/edit/${id}`,
-        categoryData
-      );
-      if (response.status === 200) {
-        toast.success("edit category is success");
-        dispatch(categorySlice.actions.setCategoryLoading(false));
-      }
-    } catch (error) {
-      dispatch(categorySlice.actions.setCategoryLoading(false));
-    }
-  }
-);
-
-export const deleteCategory = createAsyncThunk(
-  "category/delete",
-  async (id, { dispatch }) => {
-    try {
-      dispatch(categorySlice.actions.setCategoryLoading(true));
-      const response = await adminAxios.post(`/category/delete/${id}`);
-      if (response.status === 200) {
-        toast.success("delete category is success");
-        dispatch(categorySlice.actions.setCategoryLoading(false));
-      }
-    } catch (error) {
-      dispatch(categorySlice.actions.setCategoryLoading(false));
-    }
-  }
-);
-
-const categorySlice = createSlice({
-  name: "category",
-  initialState: {
-    category: [] as categoryUserType[],
-    adminCategory: [] as categoryAdminType[],
-    categoryError: null,
-    categoryLoading: false,
-  } as categoryStateType,
-  reducers: {
-    setCategory: (state, action) => {
-      state.category = action.payload;
-    },
-    setCategoryLoading: (state, action) => {
-      state.categoryLoading = action.payload;
-    },
-    setCategoryError: (state, action) => {
-      state.categoryError = action.payload;
-    },
-  },
+export const categoryApiSlice = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
+  reducerPath: "categoryApi",
+  endpoints: (builder) => ({
+    getCategories: builder.query({
+      query: (url: string) => `admin/category${url}`,
+    }),
+    getCategorySelectList: builder.query({
+      query: (url: string) => `user/category${url}`,
+    }),
+    getCategory: builder.query({
+      query: (id: string) => `admin/category/${id}`,
+    }),
+    createCategory: builder.mutation({
+      query: (categoryInfo: categoryAdminType) => ({
+        url: "/admin/category",
+        method: "POST",
+        body: categoryInfo,
+      }),
+    }),
+    editCategory: builder.mutation({
+      query: ({
+        id,
+        categoryInfo,
+      }: {
+        id: string;
+        categoryInfo: editCategoryType;
+      }) => ({
+        url: `/admin/category/edit/${id}`,
+        method: "POST",
+        body: categoryInfo,
+      }),
+    }),
+    deleteCategory: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/category/delete/${id}`,
+        method: "POST",
+      }),
+    }),
+  }),
 });
 
-export default categorySlice.reducer;
+export const {
+  useGetCategoriesQuery,
+  useGetCategorySelectListQuery,
+  useGetCategoryQuery,
+  useCreateCategoryMutation,
+  useEditCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoryApiSlice;

@@ -1,148 +1,47 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { adminAxios } from "../../services/adminInterceptor";
-import toast from "react-hot-toast";
-import { userAxios } from "../../services/userInterceptor";
-import {
-  addressStateType,
-  addressType,
-  errorAddressType,
-  getAddressType,
-} from "../../types/Address.type";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { addressType } from "../../types/Address.type";
 
-export const getAddress = createAsyncThunk(
-  "addres/getWithId",
-  async (id: string, { dispatch }) => {
-    try {
-      dispatch(addressSlice.actions.setLoading(true));
-      const response = await userAxios.get(`/address/${id}`);
-      if (response.status === 200) {
-        dispatch(addressSlice.actions.setAddress(response.data));
-        dispatch(addressSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(addressSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const getAddressWithUserId = createAsyncThunk(
-  "addres/getWithuserId",
-  async (userId: string, { dispatch }) => {
-    try {
-      dispatch(addressSlice.actions.setLoading(true));
-      const response = await adminAxios.get(`/address/${userId}`);
-      if (response.status === 200) {
-        dispatch(addressSlice.actions.setAddressUserId(response.data));
-        dispatch(addressSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(addressSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const getAddresses = createAsyncThunk(
-  "address/get",
-  async (_, { dispatch }) => {
-    try {
-      dispatch(addressSlice.actions.setLoading(true));
-      const response = await userAxios.get("/address");
-      if (response.status === 200) {
-        dispatch(addressSlice.actions.setAddresses(response.data));
-        dispatch(addressSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(addressSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const addAddress = createAsyncThunk(
-  "color/add",
-  async (addressInfo: addressType, { dispatch }) => {
-    try {
-      dispatch(addressSlice.actions.setLoading(true));
-      const response = await userAxios.post("/address", addressInfo);
-
-      if (response.status === 200) {
-        toast.success("add address is success");
-        dispatch(addressSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(
-        addressSlice.actions.setAddressError(error?.response.data.errors)
-      );
-      dispatch(addressSlice.actions.setLoading(false));
-      console.log(error);
-    }
-  }
-);
-
-export const editAddress = createAsyncThunk(
-  "address/edit",
-  async (
-    { addressInfo, addressId }: { addressInfo: addressType; addressId: string },
-    { dispatch }
-  ) => {
-    try {
-      dispatch(addressSlice.actions.setLoading(true));
-      const response = await userAxios.post(
-        `/address/edit/${addressId}`,
-        addressInfo
-      );
-      if (response.status === 200) {
-        toast.success("edit address is success");
-        dispatch(addressSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(addressSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const deleteAddress = createAsyncThunk(
-  "address/delete",
-  async (addresId: string, { dispatch }) => {
-    try {
-      dispatch(addressSlice.actions.setLoading(true));
-      const response = await adminAxios.post(`/address/delete/${addresId}`);
-      if (response.status === 200) {
-        toast.success("delete address is success");
-        dispatch(addressSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(addressSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const addressSlice = createSlice({
-  name: "address",
-  initialState: {
-    addressLoading: false,
-    address: {} as getAddressType,
-    addressUserId: [] as getAddressType[],
-    addressError: {} as errorAddressType,
-    addresses: [] as getAddressType[],
-  } as addressStateType,
-  reducers: {
-    setLoading: (state, action) => {
-      state.addressLoading = action.payload;
-    },
-    setAddress: (state, action) => {
-      state.address = action.payload;
-    },
-    setAddresses: (state, action) => {
-      state.addresses = action.payload;
-    },
-    setAddressError: (state, action) => {
-      state.addressError = action.payload;
-    },
-
-    setAddressUserId: (state, action) => {
-      state.addressUserId = action.payload;
-    },
-  },
+export const addressApiSlice = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
+  reducerPath: "addressApi",
+  endpoints: (builder) => ({
+    getAddresses: builder.query({
+      query: () => `user/address`,
+    }),
+    getAddressWithId: builder.query({
+      query: (id: string) => `user/address/${id}`,
+    }),
+    getAddressWithUserID: builder.query({
+      query: (userId: string) => `admin/address/${userId}`,
+    }),
+    createAddress: builder.mutation({
+      query: (addressInfo: addressType) => ({
+        url: "/user/address",
+        method: "POST",
+        body: addressInfo,
+      }),
+    }),
+    editAddress: builder.mutation({
+      query: ({ id, addressInfo }: { id: string; addressInfo: addressType }) => ({
+        url: `/user/address/edit/${id}`,
+        method: "POST",
+        body: addressInfo,
+      }),
+    }),
+    deleteAddress: builder.mutation({
+      query: (id: string) => ({
+        url: `/user/address/delete/${id}`,
+        method: "POST",
+      }),
+    }),
+  }),
 });
 
-export default addressSlice.reducer;
+export const {
+  useGetAddressesQuery,
+  useGetAddressWithIdQuery,
+  useGetAddressWithUserIDQuery,
+  useCreateAddressMutation,
+  useEditAddressMutation,
+  useDeleteAddressMutation,
+} = addressApiSlice;

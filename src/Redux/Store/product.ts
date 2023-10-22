@@ -1,161 +1,63 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminAxios } from "../../services/adminInterceptor";
-import { userAxios } from "../../services/userInterceptor";
-import {
-  adminProductType,
-  productStateType,
-  productType,
-  userProductType,
-} from "../../types/Product.type";
-import toast from "react-hot-toast";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const getProducts = createAsyncThunk(
-  "product/get",
-  async (isAdmin: boolean, { dispatch }) => {
-    try {
-      dispatch(productSlice.actions.setLoading(true));
-      const axiosInstance = isAdmin ? adminAxios : userAxios;
-      const response = await axiosInstance.get("/product");
-
-      if (response.status === 200) {
-        isAdmin
-          ? dispatch(productSlice.actions.setAdminProducts(response.data.data))
-          : dispatch(productSlice.actions.setUserProducts(response.data.data));
-        dispatch(productSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(productSlice.actions.setLoading(false));
-    }
-  }
-);
-export const getProductsWithOrder = createAsyncThunk(
-  "product/get/order",
-  async (url: string, { dispatch }) => {
-    try {
-      dispatch(productSlice.actions.setLoading(true));
-      const response = await userAxios.get(`/product${url}`);
-
-      if (response.status === 200) {
-        // You can use a dynamic action name here to distinguish requests
-        dispatch(
-          productSlice.actions.setProductsWithOrder({
-            url,
-            data: response.data.data,
-          })
-        );
-        dispatch(productSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(productSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const getProduct = createAsyncThunk(
-  "product/getOne",
-  async (
-    { isAdmin, id }: { isAdmin: boolean; id: string | number },
-    { dispatch }
-  ) => {
-    try {
-      dispatch(productSlice.actions.setLoading(true));
-
-      const axiosInstance = isAdmin ? adminAxios : userAxios;
-      const response = await axiosInstance.get(`/product/${id}`);
-      if (response.status === 200) {
-        isAdmin
-          ? dispatch(productSlice.actions.setAdminProduct(response.data))
-          : dispatch(productSlice.actions.setUserProduct(response.data));
-
-        dispatch(productSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(productSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const addProduct = createAsyncThunk(
-  "product/add",
-  async (productData: productType, { dispatch }) => {
-    try {
-      dispatch(productSlice.actions.setLoading(true));
-      const response = await adminAxios.post("/product", productData);
-      if (response.status === 200) {
-        toast.success("add product is success");
-        dispatch(productSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(productSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const editProduct = createAsyncThunk(
-  "product/edit",
-  async (productData: productType, { dispatch }) => {
-    try {
-      dispatch(productSlice.actions.setLoading(true));
-      const response = await adminAxios.post("/product/edit", productData);
-      if (response.status === 200) {
-        toast.success("edit product is success");
-        dispatch(productSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(productSlice.actions.setLoading(false));
-    }
-  }
-);
-
-export const deleteProduct = createAsyncThunk(
-  "product/delete",
-  async (id: string, { dispatch }) => {
-    try {
-      dispatch(productSlice.actions.setLoading(true));
-      const response = await adminAxios.post("/product/delete", id);
-      if (response.status === 200) {
-        toast.success("delete product is success");
-        dispatch(productSlice.actions.setLoading(false));
-      }
-    } catch (error) {
-      dispatch(productSlice.actions.setLoading(false));
-    }
-  }
-);
-
-const productSlice = createSlice({
-  name: "product",
-  initialState: {
-    productLoading: false,
-    adminProduct: null,
-    adminProducts: [] as adminProductType[],
-    userProduct: {} as userProductType,
-    userProducts: [] as userProductType[],
-    error: null,
-    adminProductSelectList: [] as adminProductType[],
-    productsWithOrder: {} as userProductType,
-  } as productStateType,
-  reducers: {
-    setUserProducts: (state, action) => {
-      state.userProducts = action.payload;
-    },
-    setAdminProducts: (state, action) => {
-      state.adminProducts = action.payload;
-    },
-    setUserProduct: (state, action) => {
-      state.userProduct = action.payload;
-    },
-    setAdminProduct: (state, action) => {
-      state.adminProduct = action.payload;
-    },
-    setProductsWithOrder: (state, action) => {
-      const { url, data } = action.payload;
-      state.productsWithOrder[url] = data;
-    },
-    setLoading: (state, action) => {
-      state.productLoading = action.payload;
-    },
-  },
+export const ProductApiSlice = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
+  reducerPath: "productApi",
+  endpoints: (builder) => ({
+    getProductsAdmin: builder.query({
+      query: (url?: string) => `admin/product${url ? url : ""}`,
+    }),
+    getProductsSelectList: builder.query({
+      query: () => `admin/product/selectList`,
+    }),
+    getProductAdmin: builder.query({
+      query: (id: string) => `admin/product/${id}`,
+    }),
+    getProductsUser: builder.query({
+      query: (url?: string) => `user/product${url ? url : ""}`,
+    }),
+    getProductUser: builder.query({
+      query: (id: string) => `user/product/${id}`,
+    }),
+    getProductsSuggestions: builder.query({
+      query: () => `user/product/suggestions`,
+    }),
+    createProduct: builder.mutation({
+      query: (productInfo: productType) => ({
+        url: "/admin/product",
+        method: "POST",
+        body: productInfo,
+      }),
+    }),
+    editProduct: builder.mutation({
+      query: ({
+        id,
+        productInfo,
+      }: {
+        id: string;
+        productInfo: productType;
+      }) => ({
+        url: `/admin/product/edit/${id}`,
+        method: "POST",
+        body: productInfo,
+      }),
+    }),
+    deleteProduct: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/product/delete/${id}`,
+        method: "POST",
+      }),
+    }),
+  }),
 });
 
-export default productSlice.reducer;
+export const {
+  useGetProductsAdminQuery,
+  useGetProductsSelectListQuery,
+  useGetProductAdminQuery,
+  useGetProductsUserQuery,
+  useGetProductsSuggestionsQuery,
+  useCreateProductMutation,
+  useEditProductMutation,
+  useDeleteProductMutation,
+} = ProductApiSlice;

@@ -1,145 +1,55 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  productItemSelectList,
-  productItemStateType,
-  productItemType,
   productItemProductType,
-  productItemItemIdType,
+  productItemType,
 } from "../../types/ProductItem.type";
-import { userAxios } from "../../services/userInterceptor";
-import { adminAxios } from "../../services/adminInterceptor";
-import toast from "react-hot-toast";
 
-export const getProductItemWithItemId = createAsyncThunk(
-  "productItem/ItemID",
-  async (id: string, { dispatch }) => {
-    try {
-      dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await userAxios.get(`productItem/${id}`);
-      if (response.status === 200) {
-        dispatch(productItemSlice.actions.setProductItem(response.data));
-        dispatch(productItemSlice.actions.setProductItemLoading(false));
-      }
-    } catch (error) {
-      dispatch(productItemSlice.actions.setProductItemLoading(false));
-    }
-  }
-);
+export const productItemApiSlice = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
+  reducerPath: "productItemApi",
+  endpoints: (builder) => ({
+    getProductItemAdmin: builder.query({
+      query: (productId: string) => `admin/productItem/product/${productId}`,
+    }),
 
-export const getProductItemWithProductId = createAsyncThunk(
-  "productItem/productId",
-  async (id: string, { dispatch }) => {
-    try {
-      dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await adminAxios.get(`productItem/product/${id}`);
-      if (response.status === 200) {
-        dispatch(productItemSlice.actions.setProductItemProduct(response.data));
-        dispatch(productItemSlice.actions.setProductItemLoading(false));
-      }
-    } catch (error) {
-      dispatch(productItemSlice.actions.setProductItemLoading(false));
-    }
-  }
-);
+    getProductItemSelectList: builder.query({
+      query: (productId: string) => `admin/productItem/selectList/${productId}`,
+    }),
 
-export const getProductItemSelectList = createAsyncThunk(
-  "productItem/selectList",
-  async (productId: string, { dispatch }) => {
-    try {
-      dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await adminAxios.get(
-        `productItem/selectList/${productId}`
-      );
-      if (response.status === 200) {
-        dispatch(
-          productItemSlice.actions.setAdminProductSelectList(response.data.data)
-        );
-        dispatch(productItemSlice.actions.setProductItemLoading(false));
-      }
-    } catch (error) {
-      dispatch(productItemSlice.actions.setProductItemLoading(false));
-    }
-  }
-);
+    getProductItemUser: builder.query({
+      query: (id: string) => `user/productItem/${id}`,
+    }),
 
-export const addProductItem = createAsyncThunk(
-  "productItem/add",
-  async (itemInfo: productItemType, { dispatch }) => {
-    try {
-      dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await adminAxios.post("productItem", itemInfo);
-      if (response.status === 200) {
-        toast.success("add productItem is success");
-        dispatch(productItemSlice.actions.setProductItemLoading(false));
-      }
-    } catch (error) {
-      dispatch(productItemSlice.actions.setProductItemLoading(false));
-    }
-  }
-);
+    createProductItem: builder.mutation({
+      query: (item: productItemProductType) => ({
+        url: "/admin/productItem",
+        method: "POST",
+        body: item,
+      }),
+    }),
 
-export const editProductItem = createAsyncThunk(
-  "productItem/edit",
-  async (
-    { itemInfo, productId }: { itemInfo: productItemType; productId: string },
-    { dispatch }
-  ) => {
-    try {
-      dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await adminAxios.post(
-        `productItem/edit/${productId}`,
-        itemInfo
-      );
-      if (response.status === 200) {
-        toast.success("edit productItem is success");
-        dispatch(productItemSlice.actions.setProductItemLoading(false));
-      }
-    } catch (error) {
-      dispatch(productItemSlice.actions.setProductItemLoading(false));
-    }
-  }
-);
+    editProductItem: builder.mutation({
+      query: ({ id, itemInfo }: { id: string; itemInfo: productItemType }) => ({
+        url: `/admin/productItem/edit/${id}`,
+        method: "POST",
+        body: itemInfo,
+      }),
+    }),
 
-export const deleteProductItem = createAsyncThunk(
-  "productItem/delete",
-  async (productId: string, { dispatch }) => {
-    try {
-      dispatch(productItemSlice.actions.setProductItemLoading(true));
-      const response = await adminAxios.post(`productItem/delete/${productId}`);
-      if (response.status === 200) {
-        toast.success("delete productItem is success");
-        dispatch(productItemSlice.actions.setProductItemLoading(false));
-      }
-    } catch (error) {
-      dispatch(productItemSlice.actions.setProductItemLoading(false));
-    }
-  }
-);
-
-const productItemSlice = createSlice({
-  name: "productItem",
-  initialState: {
-    productItem: {} as productItemItemIdType,
-    productItemProduct: [] as productItemProductType[],
-    productItemSelectList: [] as productItemSelectList[],
-    addProductItem: {} as productItemType,
-    productItemLoading: false,
-  } as productItemStateType,
-  reducers: {
-    setProductItemLoading: (state, action) => {
-      state.productItemLoading = action.payload;
-    },
-    setProductItemProduct: (state, action) => {
-      state.productItemProduct = action.payload;
-    },
-    setProductItem: (state, action) => {
-      state.productItem = action.payload;
-    },
-
-    setAdminProductSelectList: (state, action) => {
-      state.productItemSelectList = action.payload;
-    },
-  },
+    deleteProductItem: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/productItem/delete/${id}`,
+        method: "POST",
+      }),
+    }),
+  }),
 });
 
-export default productItemSlice.reducer;
+export const {
+  useGetProductItemAdminQuery,
+  useGetProductItemSelectListQuery,
+  useGetProductItemUserQuery,
+  useCreateProductItemMutation,
+  useEditProductItemMutation,
+  useDeleteProductItemMutation,
+} = productItemApiSlice;
