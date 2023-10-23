@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "sans";
+  src: url("./assets/fonts/OpenSans-Italic-VariableFont_wdth\,wght.ttf");
+}
+
 .App {
   box-sizing: border-box;
+  font-family: "sans";
 }
