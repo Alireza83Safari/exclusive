@@ -1,10 +1,8 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../Redux/Store";
-import { getBrandsSelectList } from "../Redux/Store/brand";
-import { getCategory } from "../Redux/Store/category";
+import { useGetBrandsSelectListQuery } from "../Redux/apis/brandApi"; 
+import { useGetCategorySelectListQuery } from "../Redux/apis/categoryApi"; 
 import { useNavigate } from "react-router-dom";
-import { getProducts } from "../Redux/Store/product";
+import { useGetProductsUserQuery } from "../Redux/apis/productApi"; 
 import { BsFilterLeft } from "react-icons/bs";
 import Spinner from "./Spinner/Spinner";
 const SelectList = lazy(() => import("./SelectList"));
@@ -21,7 +19,6 @@ type filterType = {
 const FilterProducts = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [priceFilter, setFilterPrice] = useState({ minPrice: 0, maxPrice: 0 });
-  const [dataFetched, setDataFetched] = useState<boolean>(false);
   const [filterValue, setFilterValue] = useState({
     brandId: "",
     categoryId: "",
@@ -32,34 +29,31 @@ const FilterProducts = () => {
   } as filterType);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const { userProducts } = useSelector((state: rootState) => state.product);
-  const { brandsSelectList } = useSelector((state: rootState) => state.brand);
-  const { category } = useSelector((state: rootState) => state.category);
 
-  const rangeInputMinValue = userProducts.reduce((minPrice, nextPrice) => {
-    if (minPrice?.price > nextPrice?.price) {
-      return nextPrice;
-    }
-    return minPrice;
-  }, userProducts[0]);
+  const { data: brands } = useGetBrandsSelectListQuery("");
+  const { data: products } = useGetProductsUserQuery("");
+  const { data: category } = useGetCategorySelectListQuery("");
+  const rangeInputMinValue = products?.data?.reduce(
+    (minPrice: any, nextPrice: any) => {
+      if (minPrice?.price > nextPrice?.price) {
+        return nextPrice;
+      }
+      return minPrice;
+    },
+    products?.data[0]
+  );
 
-  const rangeInputMaxValue = userProducts.reduce((minPrice, nextPrice) => {
-    if (minPrice?.price < nextPrice?.price) {
-      return nextPrice;
-    }
-    return minPrice;
-  }, userProducts[0]);
+  const rangeInputMaxValue = products?.data?.reduce(
+    (minPrice: any, nextPrice: any) => {
+      if (minPrice?.price < nextPrice?.price) {
+        return nextPrice;
+      }
+      return minPrice;
+    },
+    products?.data[0]
+  );
 
-  useEffect(() => {
-    if (!dataFetched) {
-      dispatch(getBrandsSelectList() as any);
-      dispatch(getCategory() as any);
-      dispatch(getProducts(false) as any);
-      setDataFetched(true);
-    }
-  }, [dataFetched]);
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();
@@ -123,7 +117,7 @@ const FilterProducts = () => {
                 onChange={(selected) =>
                   setFilterValue({ ...filterValue, categoryId: selected.value })
                 }
-                options={category.map((data) => ({
+                options={category?.data.map((data) => ({
                   value: data.key,
                   label: data.value,
                 }))}
@@ -161,7 +155,7 @@ const FilterProducts = () => {
                 onChange={(selected) =>
                   setFilterValue({ ...filterValue, brandId: selected.value })
                 }
-                options={brandsSelectList.map((data) => ({
+                options={brands?.data?.map((data) => ({
                   value: data.key,
                   label: data.value,
                 }))}

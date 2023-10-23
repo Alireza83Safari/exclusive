@@ -1,33 +1,33 @@
 import { combineReducers } from "redux";
-import { productItemApiSlice } from "./store/productItem";
-import { ProductApiSlice } from "./store/product";
-import { colorApiSlice } from "./store/color";
-import { brandApiSlice } from "./store/brand";
 
-import authReducer from "./store/auth";
-import { categoryApiSlice } from "./store/category";
-import { addressApiSlice } from "./store/address";
-import { commentApiSlice } from "./store/comment";
-import { favoriteApiSlice } from "./store/favotrie";
-import { orderApiSlice } from "./store/order";
-import { profileApiSlice } from "./store/profile";
-import featureReducer from "./store/feature";
-import { appPicApiSlice } from "./store/appPic";
+import authReducer from "./slices/auth";
+import featureReducer from "./slices/feature";
+import { productItemApi } from "./apis/productItemApi";
+import { ProductApi } from "./apis/productApi";
+import { colorApi } from "./apis/colorApi";
+import { brandApi } from "./apis/brandApi";
+import { addressApi } from "./apis/addressApi";
+import { appPicApi } from "./apis/appPicApi";
+import { categoryApi } from "./apis/categoryApi";
+import { commentApi } from "./apis/commentApi";
 // import discountReducer from './Store/discount';
+import { favoriteApi } from "./apis/favoriteApi";
+import { orderApi } from "./apis/orderApi";
+import { profileApi } from "./apis/profileApi";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   feature: featureReducer,
-  [productItemApiSlice.reducerPath]: productItemApiSlice.reducer,
-  [ProductApiSlice.reducerPath]: ProductApiSlice.reducer,
-  [colorApiSlice.reducerPath]: colorApiSlice.reducer,
-  [brandApiSlice.reducerPath]: brandApiSlice.reducer,
-  [addressApiSlice.reducerPath]: addressApiSlice.reducer,
-  [appPicApiSlice.reducerPath]: appPicApiSlice.reducer,
-  [categoryApiSlice.reducerPath]: categoryApiSlice.reducer,
-  [commentApiSlice.reducerPath]: commentApiSlice.reducer,
-  [favoriteApiSlice.reducerPath]: favoriteApiSlice.reducer,
-  [orderApiSlice.reducerPath]: orderApiSlice.reducer,
-  [profileApiSlice.reducerPath]: profileApiSlice.reducer,
+  [productItemApi.reducerPath]: productItemApi.reducer,
+  [ProductApi.reducerPath]: ProductApi.reducer,
+  [colorApi.reducerPath]: colorApi.reducer,
+  [brandApi.reducerPath]: brandApi.reducer,
+  [addressApi.reducerPath]: addressApi.reducer,
+  [appPicApi.reducerPath]: appPicApi.reducer,
+  [categoryApi.reducerPath]: categoryApi.reducer,
+  [commentApi.reducerPath]: commentApi.reducer,
+  [favoriteApi.reducerPath]: favoriteApi.reducer,
+  [orderApi.reducerPath]: orderApi.reducer,
+  [profileApi.reducerPath]: profileApi.reducer,
   // discount: discountReducer,
 });

@@ -6,7 +6,7 @@ import routes from "./routes/routes";
 import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getUserInfos } from "./Redux/Store/auth";
+import { getUserInfos } from "./Redux/slices/auth";
 
 function App() {
   const route = useRoutes(routes);
@@ -23,14 +23,8 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-  return (
-    <div className="App">
-      <Header />
-      <Toaster />
-      {route}
-      <Footer />
-    </div>
-  );
+
+  return <div className="App">{route}</div>;
 }
 
 export default App;

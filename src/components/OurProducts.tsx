@@ -1,29 +1,16 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../Redux/Store";
+import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
-import { getProductsWithOrder } from "../Redux/Store/product";
+import { useGetProductsUserQuery } from "../Redux/apis/productApi";
 import Spinner from "./Spinner/Spinner";
+
 const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
 const Timer = lazy(() => import("./Timer"));
 
 function OurProducts() {
-  const [dataFetched, setDataFetched] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const { productsWithOrder } = useSelector(
-    (state: rootState) => state.product
+  const { data: expensiveProducts } = useGetProductsUserQuery(
+    "?page=1&limit=4&order=expensive"
   );
 
-  let url = "?page=1&limit=4&order=expensive";
-
-  useEffect(() => {
-    if (!dataFetched) {
-      dispatch(getProductsWithOrder(url) as any);
-      setDataFetched(true);
-    }
-  }, [dataFetched]);
-
-  const ourProducts = productsWithOrder[url];
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative px-2">
       <div>
@@ -42,7 +29,7 @@ function OurProducts() {
         </div>
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-        {ourProducts?.map((product) => (
+        {expensiveProducts?.data?.map((product: any) => (
           <Suspense fallback={<Spinner />}>
             <ProductTemplate {...product} />
           </Suspense>

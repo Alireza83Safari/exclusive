@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { categoryAdminType, editCategoryType } from "../../types/Category.type";
 
-export const categoryApiSlice = createApi({
+export const categoryApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "categoryApi",
   endpoints: (builder) => ({
@@ -9,7 +9,7 @@ export const categoryApiSlice = createApi({
       query: (url: string) => `admin/category${url}`,
     }),
     getCategorySelectList: builder.query({
-      query: (url: string) => `user/category${url}`,
+      query: (url: string) => `user/category/selectList${url}`,
     }),
     getCategory: builder.query({
       query: (id: string) => `admin/category/${id}`,
@@ -50,4 +50,4 @@ export const {
   useCreateCategoryMutation,
   useEditCategoryMutation,
   useDeleteCategoryMutation,
-} = categoryApiSlice;
+} = categoryApi;

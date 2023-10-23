@@ -1,6 +1,4 @@
 import React, { Suspense, lazy, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { rootState } from "../Redux/Store";
 import Spinner from "../components/Spinner/Spinner";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { usePagination } from "../hooks/usePagination";
@@ -10,9 +8,10 @@ const ProductTemplate = lazy(
 );
 const FilterProducts = lazy(() => import("../components/FilterProducts"));
 const Pagination = lazy(() => import("../components/Pagination"));
+const Header = lazy(() => import("./Header"));
+const Footer = lazy(() => import("../components/Footer"));
 
 function Products() {
-  const { productLoading } = useSelector((state: rootState) => state.product);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const limitShow = 12;
@@ -30,42 +29,49 @@ function Products() {
   };
 
   return (
-    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full min-h-[400px] px-4 mx-auto relative my-4">
+    <>
       <Suspense fallback={<Spinner />}>
-        <FilterProducts />
+        <Header />
       </Suspense>
-      {productLoading || loading ? (
-        <Spinner />
-      ) : (
-        <>
-          {getFilterProducts.length ? (
-            <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-              {getFilterProducts?.map((product) => (
-                <Suspense fallback={<Spinner />}>
-                  <ProductTemplate
-                    {...product}
-                    productsLoading={productLoading}
-                  />
-                </Suspense>
-              ))}
-            </div>
-          ) : (
-            <div className="text-5xl flex justify-center items-center mt-28">
-              No exact matches found
-            </div>
-          )}
-        </>
-      )}
-      {totalPages > 1 && (
+
+      <section className="xl:max-w-[1280px] md:max-w-[98%] w-full min-h-[400px] px-4 mx-auto relative my-4">
         <Suspense fallback={<Spinner />}>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <FilterProducts />
         </Suspense>
-      )}
-    </section>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            {getFilterProducts.length ? (
+              <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+                {getFilterProducts?.map((product) => (
+                  <Suspense fallback={<Spinner />}>
+                    <ProductTemplate {...product} />
+                  </Suspense>
+                ))}
+              </div>
+            ) : (
+              <div className="text-5xl flex justify-center items-center mt-28">
+                No exact matches found
+              </div>
+            )}
+          </>
+        )}
+        {totalPages > 1 && (
+          <Suspense fallback={<Spinner />}>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </Suspense>
+        )}
+      </section>
+
+      <Suspense fallback={<Spinner />}>
+        <Footer />
+      </Suspense>
+    </>
   );
 }
 

@@ -3,14 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { BiLogIn } from "react-icons/bi";
 import Profile from "../Profile";
-import { useSelector } from "react-redux";
 import ContentLoaders from "../ContentLoaders";
-import { rootState } from "../../Redux/Store";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 function MainHeader() {
-  const { userIsLogin, loading } = useSelector(
-    (state: rootState) => state?.auth
-  );
+  const { userIsLogin, loading } = useAppSelector((state) => state?.auth);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([
@@ -40,7 +37,7 @@ function MainHeader() {
   };
   return (
     <div className="border-b border-borderColor relative px-2">
-      <div className="xl:max-w-[1280px] md:max-w-[98%] w-full w-full h-[48px] flex justify-between items-center m-auto text-sm py-10 md:pt-14 lg:px-0 sm:px-4 px-1">
+      <div className="xl:max-w-[1280px] md:max-w-[98%] w-full h-[48px] flex justify-between items-center m-auto text-sm py-10 md:pt-14 lg:px-0 sm:px-4 px-1">
         {loading ? (
           <ContentLoaders width={100} height={40} />
         ) : (

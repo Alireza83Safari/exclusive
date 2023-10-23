@@ -1,32 +1,12 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
-import { getProducts, getProductsWithOrder } from "../Redux/Store/product";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../Redux/Store";
+import React, { Suspense, lazy } from "react";
+import { useGetProductsUserQuery } from "../Redux/apis/productApi"; 
 import { Link } from "react-router-dom";
 import { userProductType } from "../types/Product.type";
 import Spinner from "./Spinner/Spinner";
 const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
 
 function BestSelling() {
-  const { productsWithOrder } = useSelector(
-    (state: rootState) => state.product
-  );
-  const [dataFetched, setDataFetched] = useState<boolean>(false);
-
-  const dispatch = useDispatch();
-  let url = "?order=topSell";
-  useEffect(() => {
-    dispatch(getProductsWithOrder(url) as any);
-    setDataFetched(true);
-  }, [dataFetched]);
-
-  useEffect(() => {
-    if (!dataFetched) {
-      dispatch(getProducts(false) as any);
-      setDataFetched(true);
-    }
-  }, [dataFetched]);
-  const dataForExpensiveOrder = productsWithOrder[url];
+  const { data: topSellProducts } = useGetProductsUserQuery("?order=topSell");
 
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative px-4">
@@ -42,7 +22,7 @@ function BestSelling() {
         </Link>
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-        {dataForExpensiveOrder?.slice(0, 4).map((product: userProductType) => (
+        {topSellProducts?.data?.slice(0, 4).map((product: userProductType) => (
           <Suspense fallback={<Spinner />}>
             <ProductTemplate {...product} />
           </Suspense>

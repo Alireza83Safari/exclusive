@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAddresses } from "../../Redux/Store/address";
-import { rootState } from "../../Redux/Store";
+import React from "react";
+import { useGetAddressesQuery } from "../../Redux/apis/addressApi";
 
 function AccountAddress() {
-  const dispatch = useDispatch();
-  const { addresses } = useSelector((state: rootState) => state.address);
-  const [fetchData, setFetchData] = useState(false);
-
-  useEffect(() => {
-    if (!fetchData) {
-      dispatch(getAddresses() as any);
-      setFetchData(true);
-    }
-  }, [fetchData]);
+  const { data: addresses } = useGetAddressesQuery("");
 
   return (
     <div className="container mx-auto border border-borderColor rounded-md">
-      {addresses.length
-        ? addresses.map((address, index) => (
+      {addresses?.length
+        ? addresses?.map((address, index) => (
             <div
               className={`py-8 px-6 ${
                 index !== addresses.length - 1

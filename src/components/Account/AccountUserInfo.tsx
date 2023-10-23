@@ -1,16 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getProfileUserInfo } from "../../Redux/Store/profile";
-import { rootState } from "../../Redux/Store";
+import React from "react";
+import { useGetProfileQuery } from "../../Redux/apis/profileApi"; 
 
 function AccountUserInfo() {
-  const { profilesUserInfo } = useSelector((state: rootState) => state.profile);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getProfileUserInfo() as any);
-  }, []);
-
+  const { data: userInfo } = useGetProfileQuery("");
   return (
     <div className="md:col-span-5 col-span-7">
       <form className="grid grid-cols-2 shadow-xl md:px-10 px-4 py-8 relative">

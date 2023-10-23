@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import Reac from "react";
 import { Link } from "react-router-dom";
 import { userProductTypeWithLoading } from "../../types/Product.type";
-import { addOrderItem } from "../../Redux/Store/order";
-import { useDispatch } from "react-redux";
+import { useCreateOrderItemMutation } from "../../Redux/apis/orderApi"; 
 import { addOrderItemType } from "../../types/Order.type";
 import ContentLoaders from "../ContentLoaders";
+import toast from "react-hot-toast";
 
 function ProductTemplate({
   name,
@@ -17,14 +17,15 @@ function ProductTemplate({
   quantity,
   productsLoading,
 }: userProductTypeWithLoading) {
-  const dispatch = useDispatch();
-
+  const [createOrderItem] = useCreateOrderItemMutation();
   const addProductToBasket = () => {
     let orderItemInfo = {
       productItemId: itemId,
       quantity: 1,
     } as addOrderItemType;
-    dispatch(addOrderItem(orderItemInfo) as any);
+    createOrderItem(orderItemInfo)
+      .unwrap()
+      .then(() => toast.success("add to "));
   };
 
   return (

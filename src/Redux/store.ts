@@ -1,30 +1,30 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./reducer";
-import { productItemApiSlice } from "./store/productItem";
-import { ProductApiSlice } from "./store/product";
-import { colorApiSlice } from "./store/color";
-import { brandApiSlice } from "./store/brand";
-import { addressApiSlice } from "./store/address";
-import { categoryApiSlice } from "./store/category";
-import { commentApiSlice } from "./store/comment";
-import { favoriteApiSlice } from "./store/favotrie";
-import { orderApiSlice } from "./store/order";
-import { profileApiSlice } from "./store/profile";
+import { profileApi } from "./apis/profileApi";
+import { orderApi } from "./apis/orderApi";
+import { favoriteApi } from "./apis/favoriteApi";
+import { commentApi } from "./apis/commentApi";
+import { categoryApi } from "./apis/categoryApi";
+import { addressApi } from "./apis/addressApi";
+import { brandApi } from "./apis/brandApi";
+import { colorApi } from "./apis/colorApi";
+import { ProductApi } from "./apis/productApi";
+import { productItemApi } from "./apis/productItemApi";
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
-      productItemApiSlice.middleware,
-      ProductApiSlice.middleware,
-      colorApiSlice.middleware,
-      brandApiSlice.middleware,
-      addressApiSlice.middleware,
-      categoryApiSlice.middleware,
-      commentApiSlice.middleware,
-      favoriteApiSlice.middleware,
-      orderApiSlice.middleware,
-      profileApiSlice.middleware,
+      productItemApi.middleware,
+      ProductApi.middleware,
+      colorApi.middleware,
+      brandApi.middleware,
+      addressApi.middleware,
+      categoryApi.middleware,
+      commentApi.middleware,
+      favoriteApi.middleware,
+      orderApi.middleware,
+      profileApi.middleware,
     ]),
 });
 

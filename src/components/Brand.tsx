@@ -1,23 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
-import { useDispatch, useSelector } from "react-redux";
-import { getBrands } from "../Redux/Store/brand";
-import { rootState } from "../Redux/Store";
 import { Link } from "react-router-dom";
+import { useGetBrandsUserQuery } from "../Redux/apis/brandApi";
 
 function Brand() {
-  const dispatch = useDispatch();
-  const { brandsUser } = useSelector((state: rootState) => state.brand);
-  const [dateIsFetched, setDateIsFetched] = useState<boolean>(false);
-  useEffect(() => {
-    if (!dateIsFetched) {
-      dispatch(getBrands(false) as any);
-      setDateIsFetched(true);
-    }
-  }, [dateIsFetched]);
+  const { data: brands } = useGetBrandsUserQuery("");
 
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto min-h-[400px] my-20 border-b border-borderColor px-3">
@@ -46,7 +36,7 @@ function Brand() {
           modules={[Pagination]}
           className="mySwiper"
         >
-          {brandsUser.map((data, index) => (
+          {brands?.data.map((data, index) => (
             <SwiperSlide key={index}>
               <Link to={`/brand/product?brandId=${data.id}`}>
                 <div className="border border-borderColor rounded-md h-44 mx-2 text-center flex justify-center items-center my-10 hover:bg-red duration-200 hover:text-white">

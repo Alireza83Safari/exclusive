@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 
 export type selectListType = {
-  defaultValue: string;
+  defaultValue?: { value: string; label: string };
   onChange: (selectedOption: any) => void;
   options: any;
   name: string;
@@ -14,14 +14,19 @@ export default function SelectList({
   options,
   name,
 }: selectListType) {
-  const customStyles = {
+  type CustomStyles = {
+    control: (provided: any) => any;
+    placeholder: (provided: any) => any;
+  };
+
+  const customStyles: CustomStyles = {
     control: (provided) => ({
       ...provided,
-      height: "24px",
+      borderRadius: "8px",
     }),
     placeholder: (provided) => ({
       ...provided,
-      fontSize: "13px", // Adjust the font size as needed
+      fontSize: "13px",
     }),
   };
 
@@ -29,6 +34,7 @@ export default function SelectList({
     <Select
       name={name}
       defaultValue={defaultValue}
+      value={defaultValue}
       onChange={onChange}
       options={options}
       styles={customStyles}

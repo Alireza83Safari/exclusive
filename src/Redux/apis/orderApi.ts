@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { addOrderItemType } from "../../types/Order.type";
 
-export const orderApiSlice = createApi({
+export const orderApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "orderApi",
   endpoints: (builder) => ({
@@ -43,4 +43,4 @@ export const {
   useCreateOrderMutation,
   useCreateOrderItemMutation,
   useDeleteOrderItemMutation,
-} = orderApiSlice;
+} = orderApi;

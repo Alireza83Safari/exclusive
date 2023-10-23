@@ -1,12 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutHandler } from "../Redux/Store/auth";
+import { logoutHandler } from "../Redux/slices/auth";
+import { useAppDispatch } from "../hooks/reduxHooks";
 
 function Profile({ toggleProfile }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const logOut = () => {
-    dispatch(logoutHandler(false) as any);
+    dispatch(logoutHandler(false));
   };
 
   return (

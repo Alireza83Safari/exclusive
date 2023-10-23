@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { colorType } from "../../types/Color.type";
 
-export const colorApiSlice = createApi({
+export const colorApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "colorApi",
   endpoints: (builder) => ({
@@ -44,4 +44,4 @@ export const {
   useCreateColorMutation,
   useEditColorMutation,
   useDeleteColorMutation,
-} = colorApiSlice;
+} = colorApi;

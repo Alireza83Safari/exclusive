@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { profileUserInfo } from "../../types/Profile.type";
 
-export const profileApiSlice = createApi({
+export const profileApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "profileApi",
   endpoints: (builder) => ({
@@ -37,4 +37,4 @@ export const {
   useGetProfileFavoritesAdminQuery,
   useGetProfileFavoritesUserQuery,
   useEditProfileMutation,
-} = profileApiSlice;
+} = profileApi;

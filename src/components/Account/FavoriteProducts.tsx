@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../../Redux/Store";
-import { getProfileFavorite } from "../../Redux/Store/profile";
+import React from "react";
 import ProductTemplate from "../Product/ProductTemplate";
+import { useGetProfileFavoritesUserQuery } from "../../Redux/apis/profileApi"; 
 
 function FavoriteProducts() {
-  const dispatch = useDispatch();
-  const { profileFavorite } = useSelector((state: rootState) => state.profile);
-  useEffect(() => {
-    dispatch(getProfileFavorite() as any);
-  }, []);
+  const { data: favoriteProducts } = useGetProfileFavoritesUserQuery("");
   return (
     <section>
       <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-        {profileFavorite?.map((favorite) => (
+        {favoriteProducts?.data.map((favorite) => (
           <ProductTemplate {...favorite} />
         ))}
       </div>

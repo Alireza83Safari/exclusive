@@ -1,12 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const favoriteApiSlice = createApi({
+export const favoriteApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "favoriteApi",
   endpoints: (builder) => ({
-    getFavoriteProductItem: builder.query({
-      query: (id: string) => `user/favoriteProductItem/isFavorite/${id}`,
+    getFavoriteProductItem: builder.mutation({
+      query: (id: string) => ({
+        url: `user/favoriteProductItem/isFavorite/${id}`,
+        method: "GET",
+      }),
     }),
+
     createFavorite: builder.mutation({
       query: (itemId: string) => ({
         url: "/user/favoriteProductItem",
@@ -25,7 +29,7 @@ export const favoriteApiSlice = createApi({
 });
 
 export const {
-  useGetFavoriteProductItemQuery,
+  useGetFavoriteProductItemMutation,
   useDeleteFavoriteMutation,
   useCreateFavoriteMutation,
-} = favoriteApiSlice;
+} = favoriteApi;

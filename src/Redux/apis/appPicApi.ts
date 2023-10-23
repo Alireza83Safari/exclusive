@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { appPicType } from "../../types/AppPic.type";
 
-export const appPicApiSlice = createApi({
+export const appPicApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "appPicApi",
   endpoints: (builder) => ({
@@ -45,4 +45,4 @@ export const {
   useCreateAppPicMutation,
   useEditAppPicMutation,
   useDeleteAppPicMutation,
-} = appPicApiSlice;
+} = appPicApi;

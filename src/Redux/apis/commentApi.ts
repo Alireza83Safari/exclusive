@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { commentType } from "../../types/Comment.type";
 
-export const commentApiSlice = createApi({
+export const commentApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "commentApi",
   endpoints: (builder) => ({
@@ -53,4 +53,4 @@ export const {
   useCreateCommentMutation,
   useEditCommentMutation,
   useDeleteCommentMutation,
-} = commentApiSlice;
+} = commentApi;

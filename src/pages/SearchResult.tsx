@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+/* import React, { Suspense, lazy, useState } from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { userProductType } from "../types/Product.type";
 import { usePagination } from "../hooks/usePagination";
@@ -8,6 +8,8 @@ const ProductTemplate = lazy(
 );
 const FilterProducts = lazy(() => import("../components/FilterProducts"));
 const Pagination = lazy(() => import("../components/Pagination"));
+const Header = lazy(() => import("./Header"));
+const Footer = lazy(() => import("../components/Footer"));
 
 function SearchResult() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -20,38 +22,58 @@ function SearchResult() {
     setCurrentPage(page);
   };
   return (
-    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
+    <>
       <Suspense fallback={<Spinner />}>
-        <FilterProducts />
+        <Header />
       </Suspense>
-      {getFilterProducts.length ? (
-        <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-          {loading || loading ? (
-            <Spinner />
-          ) : (
-            getFilterProducts?.map((product) => (
-              <Suspense fallback={<Spinner />}>
-                <ProductTemplate {...product} />
-              </Suspense>
-            ))
-          )}
-        </div>
-      ) : (
-        <h2 className="text-4xl font-bold mt-32 text-center">
-          No exact matches found
-        </h2>
-      )}
-      {totalPages > 1 && (
+      <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
         <Suspense fallback={<Spinner />}>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <FilterProducts />
         </Suspense>
-      )}
-    </section>
+        {getFilterProducts.length ? (
+          <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+            {loading || loading ? (
+              <Spinner />
+            ) : (
+              getFilterProducts?.map((product) => (
+                <Suspense fallback={<Spinner />}>
+                  <ProductTemplate {...product} />
+                </Suspense>
+              ))
+            )}
+          </div>
+        ) : (
+          <h2 className="text-4xl font-bold mt-32 text-center">
+            No exact matches found
+          </h2>
+        )}
+        {totalPages > 1 && (
+          <Suspense fallback={<Spinner />}>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </Suspense>
+        )}
+      </section>
+
+      <Suspense fallback={<Spinner />}>
+        <Footer />
+      </Suspense>
+    </>
   );
 }
 
 export default SearchResult;
+ */
+
+import React from 'react'
+
+function SearchResult() {
+  return (
+    <div>SearchResult</div>
+  )
+}
+
+export default SearchResult

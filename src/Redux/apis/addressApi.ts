@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { addressType } from "../../types/Address.type";
 
-export const addressApiSlice = createApi({
+export const addressApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "addressApi",
   endpoints: (builder) => ({
@@ -22,7 +22,13 @@ export const addressApiSlice = createApi({
       }),
     }),
     editAddress: builder.mutation({
-      query: ({ id, addressInfo }: { id: string; addressInfo: addressType }) => ({
+      query: ({
+        id,
+        addressInfo,
+      }: {
+        id: string;
+        addressInfo: addressType;
+      }) => ({
         url: `/user/address/edit/${id}`,
         method: "POST",
         body: addressInfo,
@@ -44,4 +50,4 @@ export const {
   useCreateAddressMutation,
   useEditAddressMutation,
   useDeleteAddressMutation,
-} = addressApiSlice;
+} = addressApi;

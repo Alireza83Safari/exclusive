@@ -4,7 +4,7 @@ import {
   productItemType,
 } from "../../types/ProductItem.type";
 
-export const productItemApiSlice = createApi({
+export const productItemApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "productItemApi",
   endpoints: (builder) => ({
@@ -15,11 +15,12 @@ export const productItemApiSlice = createApi({
     getProductItemSelectList: builder.query({
       query: (productId: string) => `admin/productItem/selectList/${productId}`,
     }),
-
-    getProductItemUser: builder.query({
-      query: (id: string) => `user/productItem/${id}`,
+    getProductItemUser: builder.mutation({
+      query: (id: string) => ({
+        url: `user/productItem/${id}`,
+        method: "GET",
+      }),
     }),
-
     createProductItem: builder.mutation({
       query: (item: productItemProductType) => ({
         url: "/admin/productItem",
@@ -48,8 +49,8 @@ export const productItemApiSlice = createApi({
 export const {
   useGetProductItemAdminQuery,
   useGetProductItemSelectListQuery,
-  useGetProductItemUserQuery,
+  useGetProductItemUserMutation,
   useCreateProductItemMutation,
   useEditProductItemMutation,
   useDeleteProductItemMutation,
-} = productItemApiSlice;
+} = productItemApi;

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { productType } from "../../types/Product.type";
 
-export const ProductApiSlice = createApi({
+export const ProductApi= createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "productApi",
   endpoints: (builder) => ({
@@ -56,8 +57,9 @@ export const {
   useGetProductsSelectListQuery,
   useGetProductAdminQuery,
   useGetProductsUserQuery,
+  useGetProductUserQuery,
   useGetProductsSuggestionsQuery,
   useCreateProductMutation,
   useEditProductMutation,
   useDeleteProductMutation,
-} = ProductApiSlice;
+} = ProductApi;

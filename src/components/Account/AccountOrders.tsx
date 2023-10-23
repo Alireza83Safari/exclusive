@@ -1,39 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../../Redux/Store";
-import { getProfileOrders } from "../../Redux/Store/profile";
+import React, { useState } from "react";
 import { usePagination } from "../../hooks/usePagination";
 import Pagination from "../Pagination";
 import { useLocation } from "react-router-dom";
+import { useGetProfileOrdersUserQuery } from "../../Redux/apis/profileApi"; 
 
 function AccountOrders() {
-  const dispatch = useDispatch();
-  const [dataFatch, setDataFatch] = useState<boolean>(false);
-  const { profileOrders } = useSelector((state: rootState) => state.profile);
-  useEffect(() => {
-    if (!dataFatch) {
-      dispatch(getProfileOrders() as any);
-      setDataFatch(true);
-    }
-  }, [dataFatch]);
+  const { data: orders } = useGetProfileOrdersUserQuery("");
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const limitShow = 4;
-  const totalPages = Math.ceil(profileOrders.length / limitShow);
+  const totalPages = Math.ceil(orders?.length / limitShow);
   const {} = usePagination(currentPage, limitShow);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const page: number | null = parseInt(searchParams.get("page"));
-  const limit: number | null = parseInt(searchParams.get("limit"));
+  const page: number | null = parseInt(searchParams.get("page") as string);
+  const limit: number | null = parseInt(searchParams.get("limit") as string);
 
   const pageMinusOne = page - 1;
   const limitMinusOne = page + limit - 1;
 
   return (
     <div>
-      {profileOrders.slice(pageMinusOne, limitMinusOne).map((order) => (
+      {orders?.slice(pageMinusOne, limitMinusOne).map((order) => (
         <div key={order.id} className="bg-gray p-6 my-5 rounded-md">
           <div className="border-b border-borderColor pb-5 flex justify-between">
             <p>#{order.code}</p>

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { brandType } from "../../types/Brand.type";
 
-export const brandApiSlice = createApi({
+export const brandApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "brandApi",
   endpoints: (builder) => ({
@@ -48,4 +48,4 @@ export const {
   useCreateBrandMutation,
   useEditBrandMutation,
   useDeleteBrandMutation,
-} = brandApiSlice;
+} = brandApi;

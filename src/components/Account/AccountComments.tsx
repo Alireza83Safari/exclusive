@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../../Redux/Store";
-import { getComments } from "../../Redux/Store/comment";
+import React, { useState } from "react";
+import { useGetCommentsUserQuery } from "../../Redux/apis/commentApi"; 
 import { useFetchDataFromUrl } from "../../hooks/useFetchDataFromUrl";
 import { usePagination } from "../../hooks/usePagination";
 import { getCommentType } from "../../types/Comment.type";
@@ -9,17 +7,9 @@ import Pagination from "../Pagination";
 import ContentLoaders from "../ContentLoaders";
 
 function AccountAddress() {
-  const dispatch = useDispatch();
-  const { comments } = useSelector((state: rootState) => state.comment);
-  const [fetchData, setFetchData] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
-  useEffect(() => {
-    if (!fetchData) {
-      dispatch(getComments(false) as any);
-      setFetchData(true);
-    }
-  }, [fetchData]);
+  const { data: comments } = useGetCommentsUserQuery("");
   const {} = usePagination(currentPage, pageSize);
   const { getFilterProducts, totalProducts, loading } =
     useFetchDataFromUrl<getCommentType>("comment");
@@ -31,7 +21,7 @@ function AccountAddress() {
   return (
     <>
       <div className="container mx-auto border border-borderColor rounded-md">
-        {comments.length
+        {comments?.data.length
           ? getFilterProducts?.map((comment, index) => (
               <div
                 className={`py-8 px-6 ${
