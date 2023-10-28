@@ -10,6 +10,9 @@ import { brandApi } from "./apis/brandApi";
 import { colorApi } from "./apis/colorApi";
 import { ProductApi } from "./apis/productApi";
 import { productItemApi } from "./apis/productItemApi";
+import { appPicApi } from "./apis/appPicApi";
+import { userApi } from "./apis/userApi";
+import { roleApi } from "./apis/roleApi";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -25,6 +28,9 @@ const store = configureStore({
       favoriteApi.middleware,
       orderApi.middleware,
       profileApi.middleware,
+      appPicApi.middleware,
+      userApi.middleware,
+      roleApi.middleware,
     ]),
 });
 

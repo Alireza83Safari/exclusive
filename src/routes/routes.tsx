@@ -18,6 +18,15 @@ import AccountComments from "../components/Account/AccountComments";
 import AccountUserInfo from "../components/Account/AccountUserInfo";
 import SearchResult from "../pages/SearchResult";
 import Shipping from "../pages/Shipping";
+import IndexPanel from "../components/Admin/index";
+import AdminProducts from "../pages/Admin/Products";
+import Dashboard from "../pages/Admin/Dashboard";
+import Category from "../pages/Admin/Category";
+import Color from "../pages/Admin/Color";
+import BrandPanel from "../pages/Admin/Brand";
+import AppPic from "../pages/Admin/AppPic";
+import Comment from "../pages/Admin/Comment";
+import User from "../pages/Admin/User";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -44,6 +53,21 @@ const routes = [
       { path: "comment", element: <AccountComments /> },
       { path: "address", element: <AccountAddress /> },
       { path: "userInfo", element: <AccountUserInfo /> },
+    ],
+  },
+
+  {
+    path: "admin/*",
+    element: <IndexPanel />,
+    children: [
+      { path: "product", element: <AdminProducts /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "category", element: <Category /> },
+      { path: "color", element: <Color /> },
+      { path: "brand", element: <BrandPanel /> },
+      { path: "appPic", element: <AppPic /> },
+      { path: "comment", element: <Comment /> },
+      { path: "user", element: <User /> },
     ],
   },
 ];

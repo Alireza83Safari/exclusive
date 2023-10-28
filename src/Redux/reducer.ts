@@ -14,6 +14,8 @@ import { commentApi } from "./apis/commentApi";
 import { favoriteApi } from "./apis/favoriteApi";
 import { orderApi } from "./apis/orderApi";
 import { profileApi } from "./apis/profileApi";
+import { userApi } from "./apis/userApi";
+import { roleApi } from "./apis/roleApi";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -29,5 +31,7 @@ export const rootReducer = combineReducers({
   [favoriteApi.reducerPath]: favoriteApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
   [profileApi.reducerPath]: profileApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [roleApi.reducerPath]: roleApi.reducer,
   // discount: discountReducer,
 });
