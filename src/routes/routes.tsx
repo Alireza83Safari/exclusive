@@ -27,6 +27,7 @@ import BrandPanel from "../pages/Admin/Brand";
 import AppPic from "../pages/Admin/AppPic";
 import Comment from "../pages/Admin/Comment";
 import User from "../pages/Admin/User";
+import Order from "../pages/Admin/Order";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -68,6 +69,7 @@ const routes = [
       { path: "appPic", element: <AppPic /> },
       { path: "comment", element: <Comment /> },
       { path: "user", element: <User /> },
+      { path: "order", element: <Order /> },
     ],
   },
 ];
