@@ -11,10 +11,13 @@ export const appPicApi = createApi({
     getAppPicsAdmin: builder.query({
       query: () => `admin/appPic`,
     }),
-    getAppPic: builder.query({
-      query: (id: string) => `admin/appPic/${id}`,
-    }),
 
+    getAppPic: builder.mutation({
+      query: (id: string) => ({
+        url: `admin/appPic/${id}`,
+        method: "GET",
+      }),
+    }),
     createAppPic: builder.mutation({
       query: (appPicInfo: appPicType) => ({
         url: "/admin/appPic",
@@ -41,7 +44,7 @@ export const appPicApi = createApi({
 export const {
   useGetAppPicsAdminQuery,
   useGetAppPicsUserQuery,
-  useGetAppPicQuery,
+  useGetAppPicMutation,
   useCreateAppPicMutation,
   useEditAppPicMutation,
   useDeleteAppPicMutation,

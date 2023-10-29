@@ -15,17 +15,11 @@ export interface addressType {
   plaque: number | null;
   postalCode: string;
 }
+
 export interface errorAddressType extends Partial<addressType> {}
 
-export type getAddressType = {
-  address: string;
+export interface getAddressType extends addressType {
   createdAt: string;
-  firstName: string;
   id: string;
-  lastName: string;
-  nationalCode: string;
-  phoneNumber: string;
-  plaque: number;
-  postalCode: string;
   updatedAt: string;
-};
+}

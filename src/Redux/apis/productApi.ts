@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { productType } from "../../types/Product.type";
 
-export const ProductApi= createApi({
+export const ProductApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "productApi",
   endpoints: (builder) => ({
@@ -11,14 +11,22 @@ export const ProductApi= createApi({
     getProductsSelectList: builder.query({
       query: () => `admin/product/selectList`,
     }),
-    getProductAdmin: builder.query({
-      query: (id: string) => `admin/product/${id}`,
-    }),
+
     getProductsUser: builder.query({
       query: (url?: string) => `user/product${url ? url : ""}`,
     }),
-    getProductUser: builder.query({
-      query: (id: string) => `user/product/${id}`,
+
+    getProductUser: builder.mutation({
+      query: (id: string) => ({
+        url: `user/product/${id}`,
+        method: "GET",
+      }),
+    }),
+    getProductAdmin: builder.mutation({
+      query: (id: string) => ({
+        url: `admin/product/${id}`,
+        method: "GET",
+      }),
     }),
     getProductsSuggestions: builder.query({
       query: () => `user/product/suggestions`,
@@ -55,9 +63,9 @@ export const ProductApi= createApi({
 export const {
   useGetProductsAdminQuery,
   useGetProductsSelectListQuery,
-  useGetProductAdminQuery,
+  useGetProductAdminMutation,
   useGetProductsUserQuery,
-  useGetProductUserQuery,
+  useGetProductUserMutation,
   useGetProductsSuggestionsQuery,
   useCreateProductMutation,
   useEditProductMutation,

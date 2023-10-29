@@ -4,25 +4,20 @@ export type appPicStateType = {
   appPics: getAppPicType[];
 };
 
-export type getAppPicType = {
-  appPicType: number;
-  createdAt: string;
+export interface appPicType {
+  appPicType: number | null;
   description: string;
+  priority: number | null;
+  title: string;
+  url: string;
+}
+
+export interface getAppPicType extends appPicType {
+  createdAt: string;
   fileId: string;
   fileName: string;
   fileType: number;
   fileUrl: string;
   id: string;
-  priority: number;
-  title: string;
   updatedAt: string;
-  url: string;
-};
-
-export type appPicType = {
-  appPicType: number;
-  description: string;
-  priority: number;
-  title: string;
-  url: string;
-};
+}

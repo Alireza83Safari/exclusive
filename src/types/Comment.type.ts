@@ -8,39 +8,30 @@ export type commentStateType = {
 
 export type changeCommentStatusType = {
   note: string;
-  status: number;
+  status: number | null;
 };
 
-export type getCommentType = {
+export interface commentType {
+  productId: string;
+  rate: number;
+  strengthPoints: string[];
+  text: string;
+  weakPonits: string[];
+}
+
+export interface getCommentType extends commentType {
   adminNote: string;
   commentStatus: number;
   createdAt: string;
   id: string;
-  productId: string;
   productName: string;
-  rate: number;
-  strengthPoints: string[];
-  text: string;
   updatedAt: string;
   username: string;
-  weakPonits: string[];
-};
+}
 
-export type commentType = {
-  productId: string;
-  rate: number;
-  strengthPoints: string[];
-  text: string;
-  weakPonits: string[];
-};
-
-export type getProductCommentsType = {
+export interface getProductCommentsType extends commentType {
   createdAt: string;
   id: string;
-  rate: number;
-  strengthPoints: string[];
-  text: string;
   updatedAt: string;
   username: string;
-  weakPonits: string[];
 };

@@ -8,10 +8,12 @@ export const productItemApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
   reducerPath: "productItemApi",
   endpoints: (builder) => ({
-    getProductItemAdmin: builder.query({
-      query: (productId: string) => `admin/productItem/product/${productId}`,
+    getProductItemAdmin: builder.mutation({
+      query: (productId: string) => ({
+        url: `admin/productItem/product/${productId}`,
+        method: "GET",
+      }),
     }),
-
     getProductItemSelectList: builder.query({
       query: (productId: string) => `admin/productItem/selectList/${productId}`,
     }),
@@ -47,7 +49,7 @@ export const productItemApi = createApi({
 });
 
 export const {
-  useGetProductItemAdminQuery,
+  useGetProductItemAdminMutation,
   useGetProductItemSelectListQuery,
   useGetProductItemUserMutation,
   useCreateProductItemMutation,

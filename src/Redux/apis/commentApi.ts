@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { commentType } from "../../types/Comment.type";
+import { commentType, changeCommentStatusType } from "../../types/Comment.type";
 
 export const commentApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
@@ -20,6 +20,19 @@ export const commentApi = createApi({
     createComment: builder.mutation({
       query: (commentInfo: commentType) => ({
         url: "/user/comment",
+        method: "POST",
+        body: commentInfo,
+      }),
+    }),
+    changeCommentStatus: builder.mutation({
+      query: ({
+        id,
+        commentInfo,
+      }: {
+        id: string;
+        commentInfo: changeCommentStatusType;
+      }) => ({
+        url: `/admin/comment/changeStatus/${id}`,
         method: "POST",
         body: commentInfo,
       }),
@@ -52,5 +65,6 @@ export const {
   useGetCommentQuery,
   useCreateCommentMutation,
   useEditCommentMutation,
+  useChangeCommentStatusMutation,
   useDeleteCommentMutation,
 } = commentApi;

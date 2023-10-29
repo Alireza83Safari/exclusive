@@ -10,30 +10,29 @@ export type addOrderItemType = {
   quantity: number;
 };
 
-export type orderUserType = {
-  discountQuantity: number;
+export interface orderType {
   discountType: number;
   discountValue: number;
+  price: number;
+  totalPrice: number;
+}
+
+export interface orderUserType extends orderType {
+  discountQuantity: number;
   fileUrl: string;
   id: string;
-  price: number;
   productItemId: string;
   productName: string;
   quantity: number;
-  totalPrice: number;
-};
+}
 
-export type orderAdminType = {
+export interface orderAdminType extends orderType {
   createdAt: string;
   discountPrice: number;
-  discountType: number;
-  discountValue: number;
   orderId: string;
   paidAt: string;
-  price: number;
   status: number;
-  totalPrice: number;
   updatedAt: string;
   userId: string;
   username: string;
-};
+}

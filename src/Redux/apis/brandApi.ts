@@ -14,8 +14,12 @@ export const brandApi = createApi({
     getBrandsSelectList: builder.query({
       query: (url: string) => `user/brand/selectList${url ? url : ""}`,
     }),
-    getBrand: builder.query({
-      query: (id: string) => `admin/brand/${id}`,
+
+    getBrand: builder.mutation({
+      query: (id: string) => ({
+        url: `admin/brand/${id}`,
+        method: "POST",
+      }),
     }),
     createBrand: builder.mutation({
       query: (brandInfo: brandType) => ({
@@ -31,6 +35,13 @@ export const brandApi = createApi({
         body: brandInfo,
       }),
     }),
+    addBrandImage: builder.mutation({
+      query: ({ itemId, image }: { itemId: string; image: any }) => ({
+        url: `/user/file/uploadImage/${itemId}/2`,
+        method: "POST",
+        body: image,
+      }),
+    }),
     deleteBrand: builder.mutation({
       query: (id: string) => ({
         url: `/admin/brand/delete/${id}`,
@@ -44,8 +55,9 @@ export const {
   useGetBrandsAdminQuery,
   useGetBrandsUserQuery,
   useGetBrandsSelectListQuery,
-  useGetBrandQuery,
+  useGetBrandMutation,
   useCreateBrandMutation,
   useEditBrandMutation,
   useDeleteBrandMutation,
+  useAddBrandImageMutation,
 } = brandApi;

@@ -11,8 +11,11 @@ export const colorApi = createApi({
     getColorsSelectList: builder.query({
       query: () => `/user/color/selectList`,
     }),
-    getColor: builder.query({
-      query: (id: string) => `admin/color/${id}`,
+    getColor: builder.mutation({
+      query: (id: string) => ({
+        url: `admin/color/${id}`,
+        method: "GET",
+      }),
     }),
     createColor: builder.mutation({
       query: (colorInfo: colorType) => ({
@@ -40,7 +43,7 @@ export const colorApi = createApi({
 export const {
   useGetColorsQuery,
   useGetColorsSelectListQuery,
-  useGetColorQuery,
+  useGetColorMutation,
   useCreateColorMutation,
   useEditColorMutation,
   useDeleteColorMutation,

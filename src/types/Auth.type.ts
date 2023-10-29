@@ -7,13 +7,11 @@ export type authType = {
   registerError: string | null;
 };
 
-export type userRegisterType = {
-  password: string;
-  passwordConfirmation: string;
+export interface userLoginType {
   username: string;
-};
+  password: string;
+}
 
-export type userLoginType = {
-  username: string;
-  password: string;
-};
+export interface userRegisterType extends userLoginType {
+  passwordConfirmation: string;
+}

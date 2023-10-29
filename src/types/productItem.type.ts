@@ -1,36 +1,46 @@
 export type productItemStateType = {
   productItem: productItemItemIdType;
-  productItemProduct: productItemProductType[];
+  productItemProduct: productItemProductType[] | null;
   productItemSelectList: productItemSelectList[];
   adminProductItem: productItemProductType[];
   addProductItem: productItemType;
   productItemLoading: boolean;
+  addProductItemError: addProductItemErrorType;
+  addProductItemResponse: number;
 };
 
-export type productItemProductType = {
-  color: string;
-  colorId: string;
-  id: string;
-  price: number;
-  productCode: string;
-  productTitle: string;
-  quantity: number;
-  productId: string;
-  status: number;
-};
-export type productItemSelectList = {
-  color: string;
-  colorId: string;
-  id: string;
-  price: number;
-};
-export type productItemType = {
+export interface productItemType {
   colorId: string;
   isMainItem: boolean;
-  price: number;
+  price: number | null;
   productId: string;
-  quantity: number;
-  status: number;
+  quantity: number | null;
+  status: number | null;
+  productName?: string;
+  colorName: string;
+}
+
+export interface productItemProductType extends productItemType {
+  color: string;
+  id: string;
+  productCode: string;
+  productTitle: string;
+}
+export interface productItemSelectList extends productItemType {
+  color: string;
+  id: string;
+}
+
+export type addProductItemErrorType = {
+  message?: string;
+  errors?: {
+    productId: string;
+    colorId: string;
+    isMainItem: string;
+    price: string;
+    quantity: string;
+    status: string;
+  };
 };
 
 export type productItemItemIdType = {

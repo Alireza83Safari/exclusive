@@ -6,7 +6,7 @@ export const orderApi = createApi({
   reducerPath: "orderApi",
   endpoints: (builder) => ({
     getOrderAdmin: builder.query({
-      query: (url: string) => `admin/order${url}`,
+      query: (url: string) => `admin/order${url ? `/${url}` : ``}`,
     }),
     getOrderUser: builder.query({
       query: () => `user/order`,

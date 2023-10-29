@@ -5,20 +5,17 @@ export type colorStateType = {
   colorsSelectList: colorSelectListType[];
 };
 
-export type getColorType = {
+export interface colorType {
   code: string;
   colorHex: string;
+  name: string;
+}
+
+export interface getColorType extends colorType {
   createdAt: string;
   id: string;
-  name: string;
   updatedAt: string;
-};
-
-export type colorType = {
-  code: string;
-  colorHex: string;
-  name: string;
-};
+}
 
 export type colorSelectListType = {
   key: string;
