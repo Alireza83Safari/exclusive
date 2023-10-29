@@ -28,6 +28,7 @@ import AppPic from "../pages/Admin/AppPic";
 import Comment from "../pages/Admin/Comment";
 import User from "../pages/Admin/User";
 import Order from "../pages/Admin/Order";
+import Role from "../pages/Admin/Role";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -70,6 +71,7 @@ const routes = [
       { path: "comment", element: <Comment /> },
       { path: "user", element: <User /> },
       { path: "order", element: <Order /> },
+      { path: "role", element: <Role /> },
     ],
   },
 ];
