@@ -1,9 +1,6 @@
 import { useLocation, useRoutes } from "react-router-dom";
 import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./pages/Header";
 import routes from "./routes/routes";
-import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUserInfos } from "./Redux/slices/auth";

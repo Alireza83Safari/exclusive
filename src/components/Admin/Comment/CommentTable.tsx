@@ -5,18 +5,20 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Spinner from "../../Spinner/Spinner";
 import { FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
-import {
-  useChangeCommentStatusMutation,
-  useDeleteCommentMutation,
-} from "../../../Redux/apis/commentApi";
 import { changeCommentStatusType } from "../../../types/Comment.type";
+import { useDeleteCommentMutation } from "../../../Redux/apis/user/commentUserApi";
+import { useChangeCommentStatusMutation } from "../../../Redux/apis/admin/commentAdminApi";
+import Pagination from "../../Pagination";
+import { usePagination } from "../../../hooks/usePagination";
+import { useSearch } from "../../../hooks/useSearch";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box, TextField } from "@mui/material";
 
 interface Column {
   id:
@@ -43,17 +45,12 @@ const columns: readonly Column[] = [
 ];
 
 function CommentTable() {
-  const [page, setPage] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteCommentID, setDeleteCommentID] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { comments, commentsLoading, refetchComments } = useContext(
+  const { comments, commentsLoading, refetchComments, total } = useContext(
     CommentContext
   ) as commentContextType;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
   const [changeStatusId, setChangeStausId] = useState("");
 
   const [changeStatus, setChangeStatus] = useState({
@@ -61,12 +58,6 @@ function CommentTable() {
     status: null,
   } as changeCommentStatusType);
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
   const [deleteComment, { isSuccess: deleteCommentStatus }] =
     useDeleteCommentMutation();
 
@@ -93,6 +84,28 @@ function CommentTable() {
       refetchComments();
     }
   }, [isSuccess]);
+  //////
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const pageSize = 8;
+  const {} = usePagination(currentPage, pageSize);
+  const totalPages = Math.ceil(total / pageSize);
+  const changePageHandler = (id: number) => {
+    setCurrentPage(id);
+  };
+
+  const { searchHandler } = useSearch();
+  const setInputValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearchQuery(e.target.value);
+  };
+  const submitSearch = () => {
+    setCurrentPage(1);
+    searchHandler(searchQuery);
+    setSearchQuery("");
+  };
   return (
     <div className="col-span-12 m-3 lg:order-1 order-2">
       <Paper
@@ -104,111 +117,138 @@ function CommentTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 650 }}>
+        <div className="h-8  md:mx-8 mb-4">
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <SearchIcon
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              onClick={submitSearch}
+            />
+            <TextField
+              id="input-with-sx"
+              label="search"
+              variant="standard"
+              onChange={setInputValue}
+              value={searchQuery}
+              onKeyPress={(e) => e.key === "Enter" && submitSearch()}
+            />
+          </Box>
+        </div>
+        <TableContainer sx={{ minHeight: 500 }}>
           <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id} align="center">
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {commentsLoading ? (
-                <Spinner />
-              ) : (
-                (rowsPerPage > 0
-                  ? comments?.data?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : comments?.data
-                )?.map((row: any, index: any) => (
-                  <TableRow key={row.id}>
-                    <TableCell style={{ width: 10 }} align="center">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell align="center">{row.productName}</TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        color: `${
-                          row.commentStatus === 1
-                            ? `green`
-                            : row.commentStatus === 2
-                            ? `red`
-                            : ``
-                        }`,
-                      }}
-                    >
-                      {row.commentStatus === 1
-                        ? "success"
-                        : row.commentStatus === 2
-                        ? "reject"
-                        : ""}
-                      {row.commentStatus === 0 && (
-                        <div className="rounded-xl">
-                          <button
-                            className="bg-green p-1 text-xs rounded-l-md"
-                            onClick={() => {
-                              setChangeStatus({ ...changeStatus, status: 1 });
-                              setChangeStausId(row.id);
-                            }}
-                          >
-                            accept
-                          </button>
-                          <button
-                            className="bg-red p-1 text-xs rounded-r-md"
-                            onClick={() => {
-                              setChangeStatus({ ...changeStatus, status: 2 });
-                              setChangeStausId(row.id);
-                            }}
-                          >
-                            reject
-                          </button>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell align="center">{row.username}</TableCell>
-                    <TableCell align="center">{row.rate}/5</TableCell>
-                    <TableCell align="center">
-                      {row.createdAt.slice(0, 10)}
-                    </TableCell>
-                    <TableCell align="center">{row.text}</TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      className="sm:mt-2 mt-2"
-                    >
-                      <FaTrash
-                        className="text-red mr-3 cursor-pointer"
-                        onClick={() => {
-                          setDeleteCommentID(row.id);
-                          setShowDeleteModal(true);
-                        }}
-                      />
-                    </TableCell>
+            {commentsLoading ? (
+              <Spinner />
+            ) : comments?.length ? (
+              <>
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell key={column.id} align="center">
+                        {column.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))
-              )}
-            </TableBody>
+                </TableHead>
+                <TableBody>
+                  {commentsLoading ? (
+                    <Spinner />
+                  ) : (
+                    comments.map((row: any, index: any) => (
+                      <TableRow key={row.id}>
+                        <TableCell style={{ width: 10 }} align="center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell align="center">{row.productName}</TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            color: `${
+                              row.commentStatus === 1
+                                ? `green`
+                                : row.commentStatus === 2
+                                ? `red`
+                                : ``
+                            }`,
+                          }}
+                        >
+                          {row.commentStatus === 1
+                            ? "success"
+                            : row.commentStatus === 2
+                            ? "reject"
+                            : ""}
+                          {row.commentStatus === 0 && (
+                            <div className="rounded-xl">
+                              <button
+                                className="bg-green p-1 text-xs rounded-l-md"
+                                onClick={() => {
+                                  setChangeStatus({
+                                    ...changeStatus,
+                                    status: 1,
+                                  });
+                                  setChangeStausId(row.id);
+                                }}
+                              >
+                                accept
+                              </button>
+                              <button
+                                className="bg-red p-1 text-xs rounded-r-md"
+                                onClick={() => {
+                                  setChangeStatus({
+                                    ...changeStatus,
+                                    status: 2,
+                                  });
+                                  setChangeStausId(row.id);
+                                }}
+                              >
+                                reject
+                              </button>
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell align="center">{row.username}</TableCell>
+                        <TableCell align="center">{row.rate}/5</TableCell>
+                        <TableCell align="center">
+                          {row.createdAt.slice(0, 10)}
+                        </TableCell>
+                        <TableCell align="center">{row.text}</TableCell>
+                        <TableCell
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          className="sm:mt-2 mt-2"
+                        >
+                          <FaTrash
+                            className="text-red mr-3 cursor-pointer"
+                            onClick={() => {
+                              setDeleteCommentID(row.id);
+                              setShowDeleteModal(true);
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </>
+            ) : (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <p className="text-xl text-center font-semibold">
+                    We couldn't find a comment with these specifications.
+                  </p>
+                </TableCell>
+              </TableRow>
+            )}
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={comments?.total}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={changePageHandler}
+          />
+        )}
       </Paper>
       {showDeleteModal && (
         <DeleteModal

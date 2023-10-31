@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { usePagination } from "../../hooks/usePagination";
 import Pagination from "../Pagination";
 import { useLocation } from "react-router-dom";
-import { useGetProfileOrdersUserQuery } from "../../Redux/apis/profileApi"; 
+import { useGetProfileOrdersUserQuery } from "../../Redux/apis/user/prodileUserApi";
 
 function AccountOrders() {
   const { data: orders } = useGetProfileOrdersUserQuery("");
@@ -24,7 +24,7 @@ function AccountOrders() {
 
   return (
     <div>
-      {orders?.slice(pageMinusOne, limitMinusOne).map((order) => (
+      {orders?.slice(pageMinusOne, limitMinusOne).map((order: any) => (
         <div key={order.id} className="bg-gray p-6 my-5 rounded-md">
           <div className="border-b border-borderColor pb-5 flex justify-between">
             <p>#{order.code}</p>

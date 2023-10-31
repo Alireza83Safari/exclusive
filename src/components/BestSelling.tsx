@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from "react";
-import { useGetProductsUserQuery } from "../Redux/apis/productApi"; 
 import { Link } from "react-router-dom";
 import { userProductType } from "../types/Product.type";
 import Spinner from "./Spinner/Spinner";
+import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
 const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
 
 function BestSelling() {

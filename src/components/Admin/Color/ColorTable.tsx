@@ -5,15 +5,19 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useDeleteColorMutation } from "../../../Redux/apis/colorApi";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
 import EditColor from "./EditColor";
 import DeleteModal from "../DeleteModal";
+import { useDeleteColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
+import { usePagination } from "../../../hooks/usePagination";
+import { useSearch } from "../../../hooks/useSearch";
+import { Box, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import Pagination from "../../Pagination";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions" | "colorHex";
@@ -30,28 +34,17 @@ const columns: readonly Column[] = [
 ];
 
 function ColorTable() {
-  const [page, setPage] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteColorID, setDeleteColorID] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const {
     colors,
     colorsLoading,
     refetchColor,
     setEditColorId,
     setOpenEditModal,
+    total,
   } = useContext(ColorContext) as colorContextType;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
   const [deleteColor] = useDeleteColorMutation();
 
   const deleteColorHandler = async (id: string) => {
@@ -60,6 +53,27 @@ function ColorTable() {
       refetchColor();
       setShowDeleteModal(false);
     });
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const pageSize = 9;
+  const {} = usePagination(currentPage, pageSize);
+  const totalPages = Math.ceil(total / pageSize);
+  const changePageHandler = (id: number) => {
+    setCurrentPage(id);
+  };
+
+  const { searchHandler } = useSearch();
+  const setInputValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearchQuery(e.target.value);
+  };
+  const submitSearch = () => {
+    setCurrentPage(1);
+    searchHandler(searchQuery);
+    setSearchQuery("");
   };
 
   return (
@@ -73,84 +87,103 @@ function ColorTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 650 }}>
+        <TableContainer sx={{ minHeight: colors?.length ? 600 : 650 }}>
+          <div className="h-8 md:mx-3 mb-4">
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <SearchIcon
+                sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                onClick={submitSearch}
+              />
+              <TextField
+                id="input-with-sx"
+                label="search"
+                variant="standard"
+                onChange={setInputValue}
+                value={searchQuery}
+                onKeyPress={(e) => e.key === "Enter" && submitSearch()}
+              />
+            </Box>
+          </div>
           <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id} align="center">
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {colorsLoading ? (
-                <Spinner />
-              ) : (
-                (rowsPerPage > 0
-                  ? colors?.data?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : colors?.data
-                )?.map((row: any, index: any) => (
-                  <TableRow key={row.id}>
-                    <TableCell style={{ width: 10 }} align="center">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell align="center">{row.name}</TableCell>
-                    <TableCell align="center">{row.code}</TableCell>
-                    <TableCell align="center">
-                      #{row.colorHex.slice(0, 10)}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      style={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {row.createdAt.slice(0, 10)}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      className="sm:mt-2 mt-2"
-                    >
-                      <FaTrash
-                        className="text-red mr-3 cursor-pointer"
-                        onClick={() => {
-                          setDeleteColorID(row.id);
-                          setShowDeleteModal(true);
-                        }}
-                      />
-                      <FaPen
-                        className="text-orange-500 cursor-pointer"
-                        onClick={() => {
-                          setEditColorId(row.id);
-                          setOpenEditModal(true);
-                        }}
-                      />
-                    </TableCell>
+            {colorsLoading ? (
+              <Spinner />
+            ) : (
+              <>
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell key={column.id} align="center">
+                        {column.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))
-              )}
-            </TableBody>
+                </TableHead>
+                <TableBody>
+                  {colors?.length ? (
+                    colors?.map((row: any, index: any) => (
+                      <TableRow key={row.id}>
+                        <TableCell style={{ width: 10 }} align="center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell align="center">{row.name}</TableCell>
+                        <TableCell align="center">{row.code}</TableCell>
+                        <TableCell align="center">
+                          #{row.colorHex.slice(0, 10)}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {row.createdAt.slice(0, 10)}
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          className="sm:mt-2 mt-2"
+                        >
+                          <FaTrash
+                            className="text-red mr-3 cursor-pointer"
+                            onClick={() => {
+                              setDeleteColorID(row.id);
+                              setShowDeleteModal(true);
+                            }}
+                          />
+                          <FaPen
+                            className="text-orange-500 cursor-pointer"
+                            onClick={() => {
+                              setEditColorId(row.id);
+                              setOpenEditModal(true);
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={7}>
+                        <p className="text-xl text-center font-semibold">
+                          We couldn't find a color with these specifications.
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </>
+            )}
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={colors?.total}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={changePageHandler}
+          />
+        )}
       </Paper>
       <EditColor />
       {showDeleteModal && (

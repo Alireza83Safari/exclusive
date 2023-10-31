@@ -1,10 +1,11 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import { useGetBrandsSelectListQuery } from "../Redux/apis/brandApi"; 
-import { useGetCategorySelectListQuery } from "../Redux/apis/categoryApi"; 
 import { useNavigate } from "react-router-dom";
-import { useGetProductsUserQuery } from "../Redux/apis/productApi"; 
 import { BsFilterLeft } from "react-icons/bs";
 import Spinner from "./Spinner/Spinner";
+import { useGetBrandsSelectListQuery } from "../Redux/apis/user/brandUserApi";
+import { useGetCategorySelectListQuery } from "../Redux/apis/user/categoryUserApi";
+import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
+
 const SelectList = lazy(() => import("./SelectList"));
 
 type filterType = {
@@ -30,7 +31,6 @@ const FilterProducts = () => {
 
   const navigate = useNavigate();
 
-
   const { data: brands } = useGetBrandsSelectListQuery("");
   const { data: products } = useGetProductsUserQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
@@ -53,7 +53,6 @@ const FilterProducts = () => {
     },
     products?.data[0]
   );
-
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();

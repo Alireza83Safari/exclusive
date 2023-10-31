@@ -6,20 +6,21 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { useParams } from "react-router-dom";
-import { useGetProductsUserQuery } from "../Redux/apis/productApi";
 import Spinner from "../components/Spinner/Spinner";
 import { userProductType } from "../types/Product.type";
-import {
-  useCreateFavoriteMutation,
-  useGetFavoriteProductItemMutation,
-} from "../Redux/apis/favoriteApi";
-import { useCreateOrderItemMutation } from "../Redux/apis/orderApi";
+
 import { addOrderItemType } from "../types/Order.type";
 import ContentLoaders from "../components/ContentLoaders";
 import ProductTemplate from "../components/Product/ProductTemplate";
 import toast, { Toaster } from "react-hot-toast";
 import { colorType } from "../types/Color.type";
-import { useGetProductItemUserMutation } from "../Redux/apis/productItemApi";
+import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
+import {
+  useCreateFavoriteMutation,
+  useGetFavoriteProductItemMutation,
+} from "../Redux/apis/user/favoriteUserApi";
+import { useCreateOrderItemMutation } from "../Redux/apis/user/orderUserApi";
+import { useGetProductItemUserMutation } from "../Redux/apis/user/productItemUserApi";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 

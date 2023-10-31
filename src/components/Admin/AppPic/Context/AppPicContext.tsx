@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { useGetAppPicsUserQuery } from "../../../../Redux/apis/appPicApi";
+import { useGetAppPicsUserQuery } from "../../../../Redux/apis/user/appPicUserApi";
 export type appPicContextProviderType = {
   children: React.ReactNode;
 };

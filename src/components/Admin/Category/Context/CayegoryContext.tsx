@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
-import { useGetCategoriesQuery } from "../../../../Redux/apis/categoryApi";
+import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
+import { adminAxios } from "../../../../services/adminInterceptor";
 export type categoryContextProviderType = {
   children: React.ReactNode;
 };
@@ -11,6 +12,7 @@ export type categoryContextType = {
   setOpenEditModal: (value: boolean) => void;
   editCategoryId: string;
   setEditCategoryId: (value: string) => void;
+  total: number;
 };
 
 export const CategoryContext = createContext<categoryContextType | null>(null);
@@ -18,13 +20,14 @@ export const CategoryContext = createContext<categoryContextType | null>(null);
 export const CategoryContextProvider = ({
   children,
 }: categoryContextProviderType) => {
-  const {
-    data: category,
-    isLoading: categoryLoading,
-    refetch: refetchCategory,
-  } = useGetCategoriesQuery("");
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState("");
+  const {
+    getFilterData: category,
+    total,
+    loading: categoryLoading,
+    fetchDataFormUrl: refetchCategory,
+  } = useFetchDataFromUrl("category", adminAxios);
 
   return (
     <CategoryContext.Provider
@@ -36,6 +39,7 @@ export const CategoryContextProvider = ({
         setOpenEditModal,
         editCategoryId,
         setEditCategoryId,
+        total,
       }}
     >
       {children}

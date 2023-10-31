@@ -1,10 +1,10 @@
 import Reac from "react";
 import { Link } from "react-router-dom";
 import { userProductTypeWithLoading } from "../../types/Product.type";
-import { useCreateOrderItemMutation } from "../../Redux/apis/orderApi"; 
 import { addOrderItemType } from "../../types/Order.type";
 import ContentLoaders from "../ContentLoaders";
 import toast from "react-hot-toast";
+import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
 
 function ProductTemplate({
   name,

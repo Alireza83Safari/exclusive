@@ -5,11 +5,13 @@ export type InputPropsType = {
   name: string;
   placeholder?: string;
   value: string | null | number;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   labelText?: string;
   Error?: string;
   callback?: () => void;
+  min?: number;
+  max?: number;
 };
 export default function Input({
   className,
@@ -21,6 +23,8 @@ export default function Input({
   labelText,
   Error,
   callback,
+  max,
+  min,
 }: InputPropsType) {
   return (
     <>
@@ -38,6 +42,8 @@ export default function Input({
         value={value}
         onChange={onChange}
         onFocus={callback}
+        min={min}
+        max={max}
       />
       <p className="text-sm text-red">{Error}</p>
     </>

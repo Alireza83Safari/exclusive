@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
-import { useGetColorsQuery } from "../../../../Redux/apis/colorApi";
+import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
+import { adminAxios } from "../../../../services/adminInterceptor";
 export type colorContextProviderType = {
   children: React.ReactNode;
 };
@@ -11,6 +12,7 @@ export type colorContextType = {
   setOpenEditModal: (value: boolean) => void;
   editColorId: string;
   setEditColorId: (value: string) => void;
+  total: number;
 };
 
 export const ColorContext = createContext<colorContextType | null>(null);
@@ -18,13 +20,15 @@ export const ColorContext = createContext<colorContextType | null>(null);
 export const ColorContextProvider = ({
   children,
 }: colorContextProviderType) => {
-  const {
-    data: colors,
-    isLoading: colorsLoading,
-    refetch: refetchColor,
-  } = useGetColorsQuery("");
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editColorId, setEditColorId] = useState("");
+
+  const {
+    getFilterData: colors,
+    total,
+    loading: colorsLoading,
+    fetchDataFormUrl: refetchColor,
+  } = useFetchDataFromUrl("color", adminAxios);
 
   return (
     <ColorContext.Provider
@@ -36,6 +40,7 @@ export const ColorContextProvider = ({
         setOpenEditModal,
         editColorId,
         setEditColorId,
+        total,
       }}
     >
       {children}

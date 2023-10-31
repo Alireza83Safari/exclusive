@@ -3,7 +3,7 @@ import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
 import { appPicType } from "../../../types/AppPic.type";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
-import { useCreateAppPicMutation } from "../../../Redux/apis/appPicApi";
+import { useCreateAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 
 function AddAppPic() {
   const inintialAppPicState = {

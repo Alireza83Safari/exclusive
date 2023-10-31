@@ -1,17 +1,12 @@
 import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
-import {
-  useCreateOrderMutation,
-  useGetOrderUserQuery,
-} from "../Redux/apis/orderApi";
-import {
-  useCreateAddressMutation,
-  useGetAddressesQuery,
-} from "../Redux/apis/addressApi";
 import { addressType } from "../types/Address.type";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner/Spinner";
 import { addressErrorType } from "../types/Error.type";
 import { useNavigate } from "react-router-dom";
+import { useGetOrderUserQuery } from "../Redux/apis/user/orderUserApi";
+import { useCreateAddressMutation, useGetAddressesQuery } from "../Redux/apis/user/addressUserApi";
+import { useCreateOrderMutation } from "../Redux/apis/admin/orderAdminApi";
 
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));

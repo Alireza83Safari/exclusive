@@ -1,28 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import { deleteProduct, getProducts } from "../../../Redux/store/product";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
-  TablePagination,
   TableRow,
   Paper,
-  Button,
   TextField,
   TableHead,
+  Button,
 } from "@mui/material";
 import { FaTrash } from "react-icons/fa";
 import DeleteModal from "../DeleteModal";
-import { TablePaginationActions } from "./TablePagination";
 import {
   ProductsContext,
   ProductsContextType,
 } from "./Context/ProductsContext";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import Spinner from "../../Spinner/Spinner";
+import toast from "react-hot-toast";
+import SearchIcon from "@mui/icons-material/Search";
+import { useDeleteProductMutation } from "../../../Redux/apis/admin/productAdminApi";
+import Pagination from "../../Pagination";
+import { usePagination } from "../../../hooks/usePagination";
+import { useSearch } from "../../../hooks/useSearch";
 
 export default function ProductsTable() {
   const {
@@ -31,212 +32,204 @@ export default function ProductsTable() {
     setShowAddProductModal,
     setShowProductInfoModal,
     setEditProductId,
+    total,
+    refetchProducts,
+    loading,
+    products,
   } = useContext(ProductsContext) as ProductsContextType;
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const dispatch = useAppDispatch();
-
-  const [isDataFetched, setIsDtaFetched] = useState(false);
-  useEffect(() => {
-    if (!isDataFetched) {
-      dispatch(getProducts(true));
-      setIsDtaFetched(true);
-    }
-  }, [isDataFetched]);
-
-  const { adminProducts, productLoading } = useAppSelector(
-    (state) => state.product
-  );
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - adminProducts.length) : 0;
-
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
+  const [deleteProduct] = useDeleteProductMutation();
   const [deleteId, setDeleteId] = useState("");
-  const handleDeleteProduct = (id: string) => {
-    dispatch(deleteProduct(id));
-    dispatch(getProducts(true));
-    setShowDeleteModal(false);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchValue(value);
   };
+  const { searchHandler } = useSearch();
+
+  const submitSearch = () => {
+    setCurrentPage(1);
+    searchHandler(searchValue);
+    setSearchValue("");
+  };
+  const pageSize = 8;
+  const totalPages = Math.ceil(total / pageSize);
+  const {} = usePagination(currentPage, pageSize);
+
+  const changePageHandler = (id: number) => {
+    setCurrentPage(id);
+  };
+
+  const deleteProductHandler = async (id: string) => {
+    await deleteProduct(id).then(() => {
+      toast.success("delete product is success");
+      refetchProducts();
+      setShowDeleteModal(false);
+    });
+  };
+
   return (
     <>
-      <Box>
-        <div className="mt-5 md:mx-12 flex justify-between h-16">
-          <TextField
-            placeholder="Search"
-            variant="outlined"
-            sx={{
-              height: "10px",
-              padding: "1px",
-              "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
-                paddingY: "7px",
-              },
-            }}
-          />
+      <Box sx={{ backgroundColor: "white", paddingBottom: "1rem" }}>
+        <div className="flex justify-between h-10 mt-5 md:mx-8 mb-3">
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <SearchIcon
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              onClick={submitSearch}
+            />
+            <TextField
+              id="input-with-sx"
+              label="search"
+              variant="standard"
+              onChange={setInputValue}
+              value={searchValue}
+              onKeyPress={(e) => e.key === "Enter" && submitSearch()}
+            />
+          </Box>
 
-          <button
-            className="bg-black text-white h-9 text-sm px-3"
+          <Button
+            sx={{ backgroundColor: "black", color: "white" }}
             onClick={() => setShowAddProductModal(true)}
           >
             Add New Product
-          </button>
+          </Button>
         </div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  #
-                </TableCell>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  Name
-                </TableCell>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  Code
-                </TableCell>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  Brand
-                </TableCell>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  Category Name
-                </TableCell>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  Actions
-                </TableCell>
-                <TableCell
-                  style={{ width: 160, fontWeight: "bold" }}
-                  align="center"
-                >
-                  Infos
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {productLoading ? (
-                <Spinner />
-              ) : (
-                (rowsPerPage > 0
-                  ? adminProducts.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : adminProducts
-                ).map((row, index) => (
-                  <TableRow key={row.id}>
-                    <TableCell style={{ width: 160 }} align="center">
-                      {index + 1}
+        <TableContainer component={Paper} sx={{ boxShadow: "0" }}>
+          <Table
+            sx={{ minWidth: 500 }}
+            aria-label="custom pagination table "
+            className={`${loading && `min-h-[30rem]`}`}
+          >
+            {loading ? (
+              <Spinner />
+            ) : (
+              <>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      #
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align="center">
-                      {row.name}
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      Name
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align="center">
-                      {row.code}
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      Code
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align="center">
-                      <div className=" flex justify-center">
-                        <img
-                          src={`http://127.0.0.1:6060/${row.brandFileUrl}`}
-                          className="w-8 h-8 object-contain"
-                        />
-                      </div>
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      Brand
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align="center">
-                      {row.categoryName}
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      Category Name
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align="center">
-                      <div className="flex justify-center gap-x-2">
-                        <FaTrash
-                          className="text-red"
-                          onClick={() => {
-                            setShowDeleteModal(true);
-                            setDeleteId(row.id);
-                          }}
-                        />
-                      </div>
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      Actions
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align="center">
-                      <div className="flex justify-center">
-                        <button
-                          className="flex justify-center gap-x-2 border border-borderColor rounded-md px-2 text-xs py-1"
-                          onClick={() => {
-                            setEditProductId(row.id);
-                            setShowProductInfoModal(true);
-                          }}
-                        >
-                          Infos
-                        </button>
-                      </div>
+                    <TableCell
+                      style={{ width: 160, fontWeight: "bold" }}
+                      align="center"
+                    >
+                      Infos
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={7} />
-                </TableRow>
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[10, 10, 25, { label: "All", value: -1 }]}
-                  colSpan={3}
-                  count={adminProducts.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: {
-                      "aria-label": "rows per page",
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
+                </TableHead>
+                <TableBody>
+                  {products?.length > 0 ? (
+                    products?.map((row: any, index: number) => (
+                      <TableRow key={row.id}>
+                        <TableCell style={{ width: 160 }} align="center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }} align="center">
+                          {row.name}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }} align="center">
+                          {row.code}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }} align="center">
+                          <div className=" flex justify-center">
+                            <img
+                              src={`http://127.0.0.1:6060/${row.brandFileUrl}`}
+                              className="w-8 h-8 object-contain"
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell style={{ width: 160 }} align="center">
+                          {row.categoryName}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }} align="center">
+                          <div className="flex justify-center gap-x-2">
+                            <FaTrash
+                              className="text-red"
+                              onClick={() => {
+                                setShowDeleteModal(true);
+                                setDeleteId(row.id);
+                              }}
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell style={{ width: 160 }} align="center">
+                          <div className="flex justify-center">
+                            <button
+                              className="flex justify-center gap-x-2 border border-borderColor rounded-md px-2 text-xs py-1"
+                              onClick={() => {
+                                setEditProductId(row.id);
+                                setShowProductInfoModal(true);
+                              }}
+                            >
+                              Infos
+                            </button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={7}>
+                        <p className="text-xl text-center font-semibold">
+                          We couldn't find a product with these specifications.
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </>
+            )}
           </Table>
         </TableContainer>
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={changePageHandler}
+          />
+        )}
       </Box>
 
       {showDeleteModal && (
         <DeleteModal
           setShowDeleteModal={setShowDeleteModal}
           id={deleteId}
-          deleteUrl={handleDeleteProduct}
+          deleteUrl={deleteProductHandler}
         />
       )}
     </>

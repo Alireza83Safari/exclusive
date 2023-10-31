@@ -1,9 +1,9 @@
 import React from "react";
-import { useGetProductsSelectListQuery } from "../../../Redux/apis/productApi";
-import { useGetBrandsAdminQuery } from "../../../Redux/apis/brandApi";
 import Spinner from "../../Spinner/Spinner";
-import { useGetOrderAdminQuery } from "../../../Redux/apis/orderApi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { useGetBrandsAdminQuery } from "../../../Redux/apis/admin/brandAdminApi";
+import { useGetProductsSelectListQuery } from "../../../Redux/apis/admin/productAdminApi";
+import { useGetOrderAdminQuery } from "../../../Redux/apis/admin/orderAdminApi";
 
 export default function Topbar() {
   const { data: orders } = useGetOrderAdminQuery("");

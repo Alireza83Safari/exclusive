@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner/Spinner";
-import { useGetProductsUserQuery } from "../Redux/apis/productApi";
+import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
 
 const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
 const Timer = lazy(() => import("./Timer"));

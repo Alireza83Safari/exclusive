@@ -2,16 +2,16 @@ import React, { useState, useEffect, useMemo, useContext } from "react";
 import toast from "react-hot-toast";
 import { UserContext, UserContextType } from "./Context/UserContext";
 import { userType } from "../../../types/user.type";
-import {
-  useEditUserMutation,
-  useGetUserMutation,
-} from "../../../Redux/apis/userApi";
 import Input from "../../Input";
 import reactDOM from "react-dom";
 import SelectList from "../../SelectList";
-import { useGetRolesQuery } from "../../../Redux/apis/roleApi";
 import { roleType } from "../../../types/Role.type";
 import Spinner from "../../Spinner/Spinner";
+import {
+  useEditUserMutation,
+  useGetUserMutation,
+} from "../../../Redux/apis/admin/userAdminApi";
+import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
 
 export default function EditUser() {
   const { showEditModal, setShowEditModal, editUserId, refetchUser } =

@@ -16,6 +16,7 @@ export default function AddProductFile() {
     createProductId,
     setShowAddFile,
     setShowAddInfoModal,
+    refetchProducts
   } = useContext(ProductsContext) as ProductsContextType;
   const [imageURLs, setImageURLs] = useState([]);
   const [showUrl, setShowUrl] = useState([]);
@@ -41,10 +42,11 @@ export default function AddProductFile() {
         setShowAddProductModal(false);
         toast.success("create product is successfully");
         setLoading(false);
+        refetchProducts()
       }
     } catch (error) {
       setLoading(false);
-      if (error?.response && error?.response.status === 403) {
+      if (error?.response.status === 403) {
         setServerError("You haven't access to add an image");
       } else if (error?.response.data.message) {
         setServerError(error.response.data.message);
@@ -54,7 +56,7 @@ export default function AddProductFile() {
     }
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const formData = new FormData();

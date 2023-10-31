@@ -12,8 +12,8 @@ import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
-import { useDeleteAppPicMutation } from "../../../Redux/apis/appPicApi";
 import EditAppPic from "./EditAppPic";
+import { useDeleteAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 
 interface Column {
   id: "index" | "fileName" | "createAt" | "actions" | "url" | "title";

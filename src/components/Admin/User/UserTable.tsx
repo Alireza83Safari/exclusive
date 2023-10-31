@@ -5,18 +5,20 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useDeleteColorMutation } from "../../../Redux/apis/colorApi";
 import DeleteModal from "../DeleteModal";
 import { UserContext, UserContextType } from "./Context/UserContext";
 import EditUser from "./EditUser";
-import { useDeleteUserMutation } from "../../../Redux/apis/userApi";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import AddUser from "./AddUser";
+import { useDeleteUserMutation } from "../../../Redux/apis/admin/userAdminApi";
+import { usePagination } from "../../../hooks/usePagination";
+import { useSearch } from "../../../hooks/useSearch";
+import Pagination from "../../Pagination";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface Column {
   id:
@@ -41,29 +43,18 @@ const columns: readonly Column[] = [
 ];
 
 function UserTable() {
-  const [page, setPage] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteColorID, setDeleteColorID] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const {
     users,
     userLoading,
     refetchUser,
     setEditUserId,
     setShowEditModal,
+    total,
     setShowAddModal,
   } = useContext(UserContext) as UserContextType;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
   const [deleteUser] = useDeleteUserMutation();
 
   const deleteColorHandler = async (id: string) => {
@@ -73,29 +64,53 @@ function UserTable() {
       setShowDeleteModal(false);
     });
   };
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const pageSize = 8;
+  const {} = usePagination(currentPage, pageSize);
+  const totalPages = Math.ceil(total / pageSize);
+  const changePageHandler = (id: number) => {
+    setCurrentPage(id);
+  };
+
+  const { searchHandler } = useSearch();
+  const setInputValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearchQuery(e.target.value);
+  };
+  const submitSearch = () => {
+    setCurrentPage(1);
+    searchHandler(searchQuery);
+    setSearchQuery("");
+  };
 
   return (
     <div className="col-span-12 m-3 bg-white p-2">
-      <div className="flex justify-between my-1">
-        <TextField
-          placeholder="Search"
-          variant="outlined"
-          sx={{
-            height: "10px",
-            padding: "1px",
-            "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
-              paddingY: "7px",
-            },
-          }}
-        />
-
-        <button
-          className="bg-black text-white h-9 text-sm px-3"
+      <div className="h-8 md:mx-3 mb-4 flex justify-between">
+        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <SearchIcon
+            sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            onClick={submitSearch}
+          />
+          <TextField
+            id="input-with-sx"
+            label="search"
+            variant="standard"
+            onChange={setInputValue}
+            value={searchQuery}
+            onKeyPress={(e) => e.key === "Enter" && submitSearch()}
+          />
+        </Box>
+        <Button
           onClick={() => setShowAddModal(true)}
+          sx={{ backgroundColor: "black", color: "white" }}
         >
           Add New User
-        </button>
+        </Button>
       </div>
+
       <Paper
         sx={{
           width: "100%",
@@ -105,7 +120,7 @@ function UserTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 650 }}>
+        <TableContainer sx={{ minHeight: 550 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -119,14 +134,8 @@ function UserTable() {
             <TableBody>
               {userLoading ? (
                 <Spinner />
-              ) : (
-                (rowsPerPage > 0
-                  ? users?.data?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : users?.data
-                )?.map((row: any, index: any) => (
+              ) : users?.length ? (
+                users?.map((row: any, index: any) => (
                   <TableRow key={row.id}>
                     <TableCell style={{ width: 10 }} align="center">
                       {index + 1}
@@ -168,20 +177,25 @@ function UserTable() {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <p className="text-xl text-center font-semibold">
+                      We couldn't find a user with these specifications.
+                    </p>
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={users?.total}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={changePageHandler}
+          />
+        )}
       </Paper>
       <EditUser />
       <AddUser />

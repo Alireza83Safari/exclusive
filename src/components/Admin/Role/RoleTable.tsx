@@ -1,22 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useDeleteBrandMutation } from "../../../Redux/apis/brandApi";
 import DeleteModal from "../DeleteModal";
 import { RoleContext, roleContextType } from "./Context/RoleContext";
 import Permissions from "./Permissions";
-import { TextField } from "@mui/material";
 import AddRole from "./AddRole";
 import EditRole from "./EditRole";
+import { useDeleteRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions" | "permissions";
@@ -33,10 +31,8 @@ const columns: readonly Column[] = [
 ];
 
 function RoleTable() {
-  const [page, setPage] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteBrandID, setDeleteBrandId] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(9);
   const {
     roles,
     rolesLoading,
@@ -48,26 +44,19 @@ function RoleTable() {
     setShowEditModal,
   } = useContext(RoleContext) as roleContextType;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+  const [deleteRole, { isSuccess }] = useDeleteRoleMutation();
+
+  const deleteBrandHandler = (id: string) => {
+    deleteRole(id);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-  const [deleteBrand] = useDeleteBrandMutation();
-
-  const deleteBrandHandler = async (id: string) => {
-    deleteBrand(id);
-    await deleteBrand(id).then(() => {
+  useEffect(() => {
+    if (isSuccess) {
       toast.success("Delete Role Is Success");
       refetchRoles();
       setShowDeleteModal(false);
-    });
-  };
+    }
+  }, [isSuccess]);
 
   return (
     <div className="col-span-12 m-3 lg:order-1 order-2">
@@ -80,19 +69,7 @@ function RoleTable() {
           borderRadius: "12px",
         }}
       >
-        <div className="mt-5 md:mx-12 flex justify-between h-16">
-          <TextField
-            placeholder="Search"
-            variant="outlined"
-            sx={{
-              height: "10px",
-              padding: "1px",
-              "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
-                paddingY: "7px",
-              },
-            }}
-          />
-
+        <div className="mt-3 md:mx-12">
           <button
             className="bg-black text-white h-9 text-sm px-3"
             onClick={() => setShowAddModal(true)}
@@ -115,13 +92,7 @@ function RoleTable() {
               {rolesLoading ? (
                 <Spinner />
               ) : (
-                (rowsPerPage > 0
-                  ? roles?.data?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : roles?.data
-                )?.map((row: any, index: any) => (
+                roles?.data?.map((row: any, index: any) => (
                   <TableRow key={row.id}>
                     <TableCell align="center">{index + 1}</TableCell>
                     <TableCell align="center">{row.name}</TableCell>
@@ -169,18 +140,7 @@ function RoleTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={roles?.total}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
       </Paper>
-      {/* <EditBrand /> */}
       <EditRole />
       <AddRole />
       <Permissions />

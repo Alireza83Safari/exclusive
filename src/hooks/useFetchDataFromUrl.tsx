@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { userAxios } from "../services/userInterceptor";
 
-export const useFetchDataFromUrl = <T,>(urlName: string | null) => {
+export const useFetchDataFromUrl = <T,>(
+  urlName: string | null,
+  axiosInstance: any
+) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [getFilterProducts, setFilterProducts] = useState<T[]>([]);
-  const [totalProducts, setTotalProducts] = useState<number>(0);
+  const [getFilterData, setFilterProducts] = useState<T[]>([]);
+  const [total, settotal] = useState<number>(0);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get("searchTerm");
@@ -17,7 +19,7 @@ export const useFetchDataFromUrl = <T,>(urlName: string | null) => {
   const page = searchParams.get("page");
   const limit = searchParams.get("limit");
 
-  const fetchProductFormUrl = useCallback(async () => {
+  const fetchDataFormUrl = useCallback(async () => {
     let url = `${
       urlName !== null ? urlName : `product`
     }?page=${page}&limit=${limit}`;
@@ -47,10 +49,10 @@ export const useFetchDataFromUrl = <T,>(urlName: string | null) => {
 
     try {
       setLoading(true);
-      const response = await userAxios.get(url);
+      const response = await axiosInstance.get(url);
       if (response.status === 200) {
         setFilterProducts(response.data.data);
-        setTotalProducts(response.data.total);
+        settotal(response.data.total);
         setLoading(false);
       }
     } catch (error) {
@@ -70,13 +72,13 @@ export const useFetchDataFromUrl = <T,>(urlName: string | null) => {
 
   useEffect(() => {
     if (page != null) {
-      fetchProductFormUrl();
+      fetchDataFormUrl();
     }
-  }, [fetchProductFormUrl]);
+  }, [fetchDataFormUrl]);
 
   const memoizedData = useMemo(
-    () => ({ getFilterProducts, totalProducts, loading }),
-    [getFilterProducts, totalProducts, loading]
+    () => ({ getFilterData, total, loading, fetchDataFormUrl }),
+    [getFilterData, total, loading]
   );
   return memoizedData;
 };

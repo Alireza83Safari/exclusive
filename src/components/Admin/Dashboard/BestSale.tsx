@@ -1,6 +1,6 @@
 import React from "react";
 import Spinner from "../../Spinner/Spinner";
-import { useGetProductsUserQuery } from "../../../Redux/apis/productApi";
+import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
 
 function BestSale() {
   const { data: product, isLoading: productLoading } =

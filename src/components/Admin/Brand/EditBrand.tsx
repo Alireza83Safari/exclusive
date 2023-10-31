@@ -7,10 +7,7 @@ import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
 import { brandType } from "../../../types/Brand.type";
-import {
-  useEditBrandMutation,
-  useGetBrandMutation,
-} from "../../../Redux/apis/brandApi";
+import { useEditBrandMutation, useGetBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
 
 const style = {
   position: "absolute" as "absolute",

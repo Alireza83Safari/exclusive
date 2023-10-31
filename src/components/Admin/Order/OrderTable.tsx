@@ -5,11 +5,14 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Spinner from "../../Spinner/Spinner";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { OrderContext, orderContextType } from "./Context/OrderContext";
+import Pagination from "../../Pagination";
+import { usePagination } from "../../../hooks/usePagination";
+import { useSearch } from "../../../hooks/useSearch";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface Column {
   id: "index" | "username" | "totalPrice" | "paidAt" | "status" | "price";
@@ -26,35 +29,47 @@ const columns: readonly Column[] = [
 ];
 
 function OrderTable() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { orders, orderLoading } = useContext(OrderContext) as orderContextType;
+  const { orders, orderLoading, total } = useContext(
+    OrderContext
+  ) as orderContextType;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const {} = usePagination(currentPage, pageSize);
+  const totalPages = Math.ceil(total / pageSize);
+  const changePageHandler = (id: number) => {
+    setCurrentPage(id);
   };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+  const [searchQuery, setSearchQuery] = useState("");
+  const { searchHandler } = useSearch();
+  const setInputValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    setSearchQuery(e.target.value);
+  };
+  const submitSearch = () => {
+    setCurrentPage(1);
+    searchHandler(searchQuery);
+    setSearchQuery("");
   };
 
   return (
     <div className="col-span-12 m-3 bg-white p-2">
-      <div className="flex justify-between mb-8">
-        <TextField
-          placeholder="Search"
-          variant="outlined"
-          sx={{
-            height: "10px",
-            padding: "1px",
-            "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
-              paddingY: "7px",
-            },
-          }}
-        />
+      <div className="h-8 md:mx-3 mb-4">
+        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <SearchIcon
+            sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            onClick={submitSearch}
+          />
+          <TextField
+            id="input-with-sx"
+            label="search"
+            variant="standard"
+            onChange={setInputValue}
+            value={searchQuery}
+            onKeyPress={(e) => e.key === "Enter" && submitSearch()}
+          />
+        </Box>
       </div>
       <Paper
         sx={{
@@ -65,7 +80,7 @@ function OrderTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 650 }}>
+        <TableContainer sx={{ minHeight: 550 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -79,14 +94,8 @@ function OrderTable() {
             <TableBody>
               {orderLoading ? (
                 <Spinner />
-              ) : (
-                (rowsPerPage > 0
-                  ? orders?.data?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : orders?.data
-                )?.map((row: any, index: any) => (
+              ) : orders?.length ? (
+                orders?.map((row: any, index: any) => (
                   <TableRow key={row.id}>
                     <TableCell style={{ width: 10 }} align="center">
                       {index + 1}
@@ -112,20 +121,25 @@ function OrderTable() {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <p className="text-xl text-center font-semibold">
+                      We couldn't find a order with these specifications.
+                    </p>
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={orders?.total}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={changePageHandler}
+          />
+        )}
       </Paper>
     </div>
   );

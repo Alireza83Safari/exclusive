@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetProfileQuery } from "../../Redux/apis/profileApi"; 
+import { useGetProfileQuery } from "../../Redux/apis/user/prodileUserApi";
 
 function AccountUserInfo() {
   const { data: userInfo } = useGetProfileQuery("");

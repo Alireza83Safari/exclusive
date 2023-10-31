@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState, useContext } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import { categoryType } from "../../../types/Category.type";
-import { useCreateCategoryMutation } from "../../../Redux/apis/categoryApi";
 import toast from "react-hot-toast";
 import {
   CategoryContext,
   categoryContextType,
 } from "./Context/CayegoryContext";
+import { useCreateCategoryMutation } from "../../../Redux/apis/admin/categoryAdminApi";
 
 function AddCategory() {
   const inintialCategoryState = {
@@ -33,7 +33,7 @@ function AddCategory() {
   const createCategoryHandler = () => {
     createCategory(createCategoryValue);
   };
-  
+
   useEffect(() => {
     if (isSuccess) {
       toast.success("create category is success");

@@ -7,10 +7,7 @@ import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import { appPicType } from "../../../types/AppPic.type";
-import {
-  useEditAppPicMutation,
-  useGetAppPicMutation,
-} from "../../../Redux/apis/appPicApi";
+import { useEditAppPicMutation, useGetAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 
 const style = {
   position: "absolute" as "absolute",

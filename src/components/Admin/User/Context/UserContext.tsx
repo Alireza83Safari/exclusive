@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
-import { useGetUserListQuery } from "../../../../Redux/apis/userApi";
+import { useGetUserListQuery } from "../../../../Redux/apis/admin/userAdminApi";
+import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
+import { adminAxios } from "../../../../services/adminInterceptor";
 
 type UserContextProviderType = { children: React.ReactNode };
 
@@ -15,22 +17,23 @@ export type UserContextType = {
   users: any;
   userLoading: boolean;
   refetchUser: () => void;
+  total: number;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);
 
-export const UserContextProvider = ({
-  children,
-}: UserContextProviderType) => {
+export const UserContextProvider = ({ children }: UserContextProviderType) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editUserId, setEditUserId] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const {
-    data: users,
-    isLoading: userLoading,
-    refetch: refetchUser,
-  } = useGetUserListQuery("");
+    getFilterData: users,
+    total,
+    loading: userLoading,
+    fetchDataFormUrl: refetchUser,
+  } = useFetchDataFromUrl("user", adminAxios);
   return (
     <UserContext.Provider
       value={{
@@ -44,7 +47,8 @@ export const UserContextProvider = ({
         setEditUserId,
         users,
         userLoading,
-        refetchUser
+        refetchUser,
+        total,
       }}
     >
       {children}

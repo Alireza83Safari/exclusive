@@ -35,7 +35,7 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-center mt-10">
+    <div className="flex items-center justify-center mt-4 min-w-screen">
       {canGoBack && (
         <button
           className="px-3 py-1 mx-1 bg-black text-white"

@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
-import { useGetCommentsAdminQuery } from "../../../../Redux/apis/commentApi";
+import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
+import { adminAxios } from "../../../../services/adminInterceptor";
+import { useGetCommentsUserQuery } from "../../../../Redux/apis/user/commentUserApi";
 export type commentContextProviderType = {
   children: React.ReactNode;
 };
@@ -11,6 +13,8 @@ export type commentContextType = {
   setOpenEditModal: (value: boolean) => void;
   editCommentId: string;
   setDditCommentId: (value: string) => void;
+  total: number;
+  commentsTotal: any;
 };
 
 export const CommentContext = createContext<commentContextType | null>(null);
@@ -18,14 +22,17 @@ export const CommentContext = createContext<commentContextType | null>(null);
 export const CommentContextProvider = ({
   children,
 }: commentContextProviderType) => {
-  const {
-    data: comments,
-    isLoading: commentsLoading,
-    refetch: refetchComments,
-  } = useGetCommentsAdminQuery("");
-
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editCommentId, setDditCommentId] = useState("");
+
+  const {
+    getFilterData: comments,
+    total,
+    loading: commentsLoading,
+    fetchDataFormUrl: refetchComments,
+  } = useFetchDataFromUrl("comment", adminAxios);
+
+  const { data: commentsTotal } = useGetCommentsUserQuery("");
 
   return (
     <CommentContext.Provider
@@ -37,6 +44,8 @@ export const CommentContextProvider = ({
         setOpenEditModal,
         editCommentId,
         setDditCommentId,
+        total,
+        commentsTotal,
       }}
     >
       {children}

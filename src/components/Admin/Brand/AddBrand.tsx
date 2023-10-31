@@ -3,7 +3,7 @@ import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
 import { brandType } from "../../../types/Brand.type";
-import { useCreateBrandMutation } from "../../../Redux/apis/brandApi";
+import { useCreateBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
 
 function AddBrand() {
   const inintialBrandState = {
@@ -32,6 +32,8 @@ function AddBrand() {
     useCreateBrandMutation();
 
   const createBrandHandler = () => {
+    console.log(createBrandValue);
+
     createBrand(createBrandValue);
   };
 
@@ -58,67 +60,69 @@ function AddBrand() {
   }, [createBrandValue]);
 
   return (
-    <div className="col-span-4 px-4">
-      {showAddBrand && (
-        <Paper
-          style={{
-            margin: "0 auto",
-            boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
-            borderRadius: "12px",
-          }}
-          className="text-center p-4"
-        >
-          <Typography
-            variant="h5"
-            sx={{
-              marginY: "24px",
-              fontWeight: "bold",
+    <>
+      {showAddBrand ? (
+        <div className="col-span-4 px-4">
+          <Paper
+            style={{
+              margin: "0 auto",
+              boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
+              borderRadius: "12px",
             }}
+            className="text-center p-4"
           >
-            Create Brand
-          </Typography>
-          <Typography variant="body1" className="text-red">
-            {createbrandError?.message}
-          </Typography>
-          <TextField
-            label="Name"
-            name="name"
-            fullWidth
-            value={createBrandValue.name}
-            sx={{ marginY: "22px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {createbrandError?.errors?.name}
-          </Typography>
-          <TextField
-            label="Code"
-            name="code"
-            fullWidth
-            value={createBrandValue.code}
-            sx={{ marginY: "22px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {createbrandError?.errors?.code}
-          </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                marginY: "24px",
+                fontWeight: "bold",
+              }}
+            >
+              Create Brand
+            </Typography>
+            <Typography variant="body1" className="text-red">
+              {createbrandError?.message}
+            </Typography>
+            <TextField
+              label="Name"
+              name="name"
+              fullWidth
+              value={createBrandValue.name}
+              sx={{ marginY: "24px" }}
+              onChange={setInputValue}
+            />
+            <Typography variant="body1" className="text-red">
+              {createbrandError?.errors?.name}
+            </Typography>
+            <TextField
+              label="Code"
+              name="code"
+              fullWidth
+              value={createBrandValue.code}
+              sx={{ marginY: "24px" }}
+              onChange={setInputValue}
+            />
+            <Typography variant="body1" className="text-red">
+              {createbrandError?.errors?.code}
+            </Typography>
 
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "black",
-              width: "100%",
-              paddingY: "12px",
-              marginTop: "20px",
-            }}
-            onClick={createBrandHandler}
-            disabled={getDisbledBtn}
-          >
-            Add Brand
-          </Button>
-        </Paper>
-      )}
-    </div>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "black",
+                width: "100%",
+                paddingY: "12px",
+                marginTop: "20px",
+              }}
+              onClick={createBrandHandler}
+              disabled={getDisbledBtn}
+            >
+              Add Brand
+            </Button>
+          </Paper>
+        </div>
+      ) : null}
+    </>
   );
 }
 

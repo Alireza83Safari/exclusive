@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { useGetBrandsUserQuery } from "../Redux/apis/brandApi";
+import { useGetBrandsUserQuery } from "../Redux/apis/user/brandUserApi";
 
 function Brand() {
   const { data: brands } = useGetBrandsUserQuery("");

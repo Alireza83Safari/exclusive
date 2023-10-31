@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
 import { colorType } from "../../../types/Color.type";
-import { useCreateColorMutation } from "../../../Redux/apis/colorApi";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
+import { useCreateColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
 
 function AddColor() {
   const inintialColorState = {

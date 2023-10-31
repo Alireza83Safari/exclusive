@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import Spinner from "../components/Spinner/Spinner";
 import { userLoginHandler } from "../Redux/slices/auth";
 import { userLoginType } from "../types/Auth.type";
@@ -32,7 +32,10 @@ function Login() {
 
   return (
     <>
-      <Header />
+      <Suspense fallback={<Spinner />}>
+        <Header />
+      </Suspense>
+
       <section className="max-w-[1170px] mx-auto relative lg:mt-10">
         {loading ? (
           <Spinner />
@@ -88,7 +91,10 @@ function Login() {
           </div>
         )}
       </section>
-      <Footer />
+
+      <Suspense fallback={<Spinner />}>
+        <Footer />
+      </Suspense>
     </>
   );
 }

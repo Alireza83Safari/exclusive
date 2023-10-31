@@ -8,7 +8,7 @@ import {
 } from "./Context/CayegoryContext";
 
 function TotalCategory() {
-  const { category } = useContext(CategoryContext) as categoryContextType;
+  const { total } = useContext(CategoryContext) as categoryContextType;
   return (
     <Card
       sx={{
@@ -30,7 +30,7 @@ function TotalCategory() {
           style={{ fontWeight: "bold", color: "blue", margin: "16px" }}
           gutterBottom
         >
-          {category?.total}
+          {total}
         </Typography>
       </CardContent>
     </Card>

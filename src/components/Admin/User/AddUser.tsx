@@ -5,10 +5,10 @@ import reactDOM from "react-dom";
 import Input from "../../Input";
 import SelectList from "../../SelectList";
 import { userType } from "../../../types/user.type";
-import { useCreateUserMutation } from "../../../Redux/apis/userApi";
-import { useGetRolesQuery } from "../../../Redux/apis/roleApi";
 import { roleType } from "../../../types/Role.type";
 import Spinner from "../../Spinner/Spinner";
+import { useCreateUserMutation } from "../../../Redux/apis/admin/userAdminApi";
+import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
 
 function AddUser() {
   const { showAddModal, refetchUser, setShowAddModal } = useContext(

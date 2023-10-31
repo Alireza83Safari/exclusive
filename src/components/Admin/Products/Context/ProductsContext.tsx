@@ -1,4 +1,6 @@
 import { createContext, useState } from "react";
+import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
+import { adminAxios } from "../../../../services/adminInterceptor";
 
 type ProductsContextProviderType = { children: React.ReactNode };
 
@@ -31,6 +33,10 @@ export type ProductsContextType = {
   setShowEditFeature: (value: boolean) => void;
   setShowProductInfoModal: (value: boolean) => void;
   setEditProductId: (value: string) => void;
+  refetchProducts: () => void;
+  loading: boolean;
+  products: any;
+  total: number;
 };
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -53,6 +59,13 @@ export const ProductsContextProvider = ({
   const [showEditFeature, setShowEditFeature] = useState(false);
   const [showProductInfoModal, setShowProductInfoModal] = useState(false);
   const [editProductId, setEditProductId] = useState<string>("");
+  //
+  const {
+    getFilterData: products,
+    fetchDataFormUrl: refetchProducts,
+    loading,
+    total,
+  } = useFetchDataFromUrl(null, adminAxios);
   return (
     <ProductsContext.Provider
       value={{
@@ -82,6 +95,10 @@ export const ProductsContextProvider = ({
         setShowEditItem,
         showInfo,
         setShowInfo,
+        refetchProducts,
+        products,
+        loading,
+        total,
       }}
     >
       {children}

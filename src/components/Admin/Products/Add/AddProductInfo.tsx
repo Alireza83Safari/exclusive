@@ -2,21 +2,19 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { productType } from "../../../../types/Product.type";
 import Input from "../../../Input";
 import SelectList from "../../../SelectList";
-import { getAdminCategory } from "../../../../Redux/store/category";
-import { getBrandsSelectList } from "../../../../Redux/store/brand";
-import {
-  addProduct,
-  resetAddProductResponse,
-} from "../../../../Redux/store/product";
 import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import toast from "react-hot-toast";
+import { productError } from "../../../../types/Error.type";
+import { categoryUserType } from "../../../../types/Category.type";
+import { brandSelectListType } from "../../../../types/Brand.type";
+import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
+import { useCreateProductMutation } from "../../../../Redux/apis/admin/productAdminApi";
+import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
 
 function AddProductInfo() {
-  const [dataFethed, setDataFetched] = useState(false);
   const [addProductInfo, setAddProductInfo] = useState({
     brandId: "",
     categoryId: "",
@@ -34,6 +32,8 @@ function AddProductInfo() {
     setShowAddItem,
     setCreateProductId,
     setShowAddProductModal,
+    createProductId,
+    refetchProducts,
   } = useContext(ProductsContext) as ProductsContextType;
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,38 +41,20 @@ function AddProductInfo() {
     setAddProductInfo({ ...addProductInfo, [name]: value });
   };
 
-  const dispatch = useAppDispatch();
+  const { data: brands } = useGetBrandsSelectListQuery("");
+  const { data: category } = useGetCategorySelectListQuery("");
 
-  const { adminCategory } = useAppSelector((state) => state.category);
-  const { brandsSelectList } = useAppSelector((state) => state.brand);
-  const { addProductError, addProductResponse, createProductId } =
-    useAppSelector((state) => state.product);
+  const [
+    createProduct,
+    { error: createProductError, isLoading: createProductLoading, isSuccess },
+  ] = useCreateProductMutation();
 
-  useEffect(() => {
-    if (!dataFethed) {
-      dispatch(getAdminCategory());
-      dispatch(getBrandsSelectList());
-      setDataFetched(true);
-    }
-  }, [dataFethed]);
-
-  const addNewProductHandler = () => {
-    dispatch(addProduct(addProductInfo));
+  const addNewProductHandler = async () => {
+    try {
+      const response = await createProduct(addProductInfo);
+      setCreateProductId(response?.data?.data);
+    } catch (error) {}
   };
-
-  useEffect(() => {
-    if (addProductResponse === 200) {
-      setShowAddInfoModal(false);
-      setShowAddItem(true);
-      setCreateProductId(createProductId as string);
-
-      dispatch(resetAddProductResponse());
-    } else if (addProductResponse === 500) {
-      toast.error(
-        "It seems you encountered an error while adding a product. Please try again later."
-      );
-    }
-  }, [addProductResponse]);
 
   const getDisbledBtn = useMemo(() => {
     const { name, brandId, categoryId, code, shortDescription, description } =
@@ -91,6 +73,18 @@ function AddProductInfo() {
     }
   }, [addProductInfo]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      setShowAddInfoModal(false);
+      setShowAddItem(true);
+      setCreateProductId(createProductId as string);
+      toast.success("Add product is successful");
+      refetchProducts();
+    }
+  }, [isSuccess]);
+
+  const addProductError = createProductError?.data as productError;
+
   return (
     <div className="rounded-xl">
       <h1 className="text-center py-3 text-lg font-semibold">
@@ -107,11 +101,7 @@ function AddProductInfo() {
               className="border"
               value={addProductInfo.name}
               onChange={setInputValue}
-              Error={
-                addProductError?.errors?.name
-                  ? String(addProductError?.errors?.name)
-                  : ""
-              }
+              Error={addProductError?.errors?.name}
             />
           </div>
 
@@ -123,11 +113,7 @@ function AddProductInfo() {
               className="border"
               value={addProductInfo.code}
               onChange={setInputValue}
-              Error={
-                addProductError?.errors?.code
-                  ? String(addProductError?.errors?.code)
-                  : ""
-              }
+              Error={addProductError?.errors?.code}
             />
           </div>
 
@@ -139,11 +125,7 @@ function AddProductInfo() {
               className="border"
               value={addProductInfo.description}
               onChange={setInputValue}
-              Error={
-                addProductError?.errors?.description
-                  ? String(addProductError?.errors?.description)
-                  : ""
-              }
+              Error={addProductError?.errors?.description}
             />
           </div>
           <div>
@@ -154,11 +136,7 @@ function AddProductInfo() {
               className="border"
               value={addProductInfo.topFeatures}
               onChange={setInputValue}
-              Error={
-                addProductError?.errors?.topFeatures
-                  ? String(addProductError?.errors?.topFeatures)
-                  : ""
-              }
+              Error={addProductError?.errors?.topFeatures}
             />
           </div>
 
@@ -170,11 +148,7 @@ function AddProductInfo() {
               className="border"
               value={addProductInfo.shortDescription}
               onChange={setInputValue}
-              Error={
-                addProductError?.errors?.shortDescription
-                  ? String(addProductError?.errors?.shortDescription)
-                  : ""
-              }
+              Error={addProductError?.errors?.shortDescription}
             />
           </div>
 
@@ -189,9 +163,9 @@ function AddProductInfo() {
                 })
               }
               name="categoryId"
-              options={adminCategory?.map((category) => ({
-                label: category.name,
-                value: category.id,
+              options={category?.data.map((category: categoryUserType) => ({
+                label: category.value,
+                value: category.key,
               }))}
             />
           </div>
@@ -206,9 +180,9 @@ function AddProductInfo() {
                 })
               }
               name="brandId"
-              options={brandsSelectList?.map((category) => ({
-                label: category.value,
-                value: category.key,
+              options={brands?.data.map((brand: brandSelectListType) => ({
+                label: brand.value,
+                value: brand.key,
               }))}
             />
           </div>

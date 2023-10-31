@@ -7,10 +7,7 @@ import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
 import { colorType } from "../../../types/Color.type";
-import {
-  useEditColorMutation,
-  useGetColorMutation,
-} from "../../../Redux/apis/colorApi";
+import { useEditColorMutation, useGetColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
 
 const style = {
   position: "absolute" as "absolute",

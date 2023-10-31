@@ -5,12 +5,9 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
-import {
-  useEditColorMutation,
-  useGetColorMutation,
-} from "../../../Redux/apis/colorApi";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
 import { commentType } from "../../../types/Comment.type";
+import { useEditColorMutation, useGetColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
 
 const style = {
   position: "absolute" as "absolute",

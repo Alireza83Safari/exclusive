@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useGetCommentsUserQuery } from "../../Redux/apis/commentApi"; 
 import { useFetchDataFromUrl } from "../../hooks/useFetchDataFromUrl";
 import { usePagination } from "../../hooks/usePagination";
 import { getCommentType } from "../../types/Comment.type";
 import Pagination from "../Pagination";
 import ContentLoaders from "../ContentLoaders";
+import { useGetCommentsUserQuery } from "../../Redux/apis/user/commentUserApi";
 
 function AccountAddress() {
   const [currentPage, setCurrentPage] = useState(1);

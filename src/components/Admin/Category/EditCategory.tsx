@@ -9,11 +9,12 @@ import {
 } from "./Context/CayegoryContext";
 import { TextField } from "@mui/material";
 import { categoryType } from "../../../types/Category.type";
+
+import toast from "react-hot-toast";
 import {
   useEditCategoryMutation,
   useGetCategoryMutation,
-} from "../../../Redux/apis/categoryApi";
-import toast from "react-hot-toast";
+} from "../../../Redux/apis/admin/categoryAdminApi";
 
 const style = {
   position: "absolute" as "absolute",
@@ -46,10 +47,10 @@ export default function EditCategory() {
   };
 
   const [editCategory, { error, isSuccess }] = useEditCategoryMutation();
-  
+
   const [getCategory, { data: category, isSuccess: isSuccessGetCategory }] =
     useGetCategoryMutation();
-    
+
   const editCategoryHandler = () => {
     editCategory({ id: editCategoryId, categoryInfo: editCategoryValue });
   };

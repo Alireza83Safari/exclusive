@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
-import { useGetOrderUserQuery } from "../Redux/apis/orderApi"; 
 import Spinner from "../components/Spinner/Spinner";
 import { orderUserType } from "../types/Order.type";
+import { useGetOrderUserQuery } from "../Redux/apis/user/orderUserApi";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 

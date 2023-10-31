@@ -1,8 +1,6 @@
 import { createContext, useState } from "react";
-import {
-  useGetRolePermissionsQuery,
-  useGetRolesQuery,
-} from "../../../../Redux/apis/roleApi";
+import { useGetRolePermissionsQuery, useGetRolesQuery } from "../../../../Redux/apis/admin/roleAdminApi";
+
 export type roleContextProviderType = {
   children: React.ReactNode;
 };

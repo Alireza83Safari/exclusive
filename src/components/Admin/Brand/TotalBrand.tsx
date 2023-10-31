@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
 
 function TotalBrand() {
-  const { brands } = useContext(BrandContext) as brandContextType;
+  const { total } = useContext(BrandContext) as brandContextType;
   return (
     <Card
       sx={{
@@ -27,7 +27,7 @@ function TotalBrand() {
           style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
           gutterBottom
         >
-          {brands?.total}
+          {total}
         </Typography>
       </CardContent>
     </Card>

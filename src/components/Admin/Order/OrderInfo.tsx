@@ -5,15 +5,15 @@ import { useContext } from "react";
 import { OrderContext, orderContextType } from "./Context/OrderContext";
 
 function OrderInfo() {
-  const { orders } = useContext(OrderContext) as orderContextType;
-  const totalOrderPriceWithDiscount = orders?.data.reduce(
+  const { totalOrders } = useContext(OrderContext) as orderContextType;
+  const totalOrderPriceWithDiscount = totalOrders?.data.reduce(
     (prev: any, next: any) => {
       return prev + next.totalPrice;
     },
     0
   );
 
-  const totalOrderPrice = orders?.data.reduce((prev: any, next: any) => {
+  const totalOrderPrice = totalOrders?.data.reduce((prev: any, next: any) => {
     return prev + next.price;
   }, 0);
 
@@ -35,7 +35,7 @@ function OrderInfo() {
             style={{ fontWeight: "bold", color: "blue", margin: "10px" }}
             gutterBottom
           >
-            {orders?.total}
+            {totalOrders?.total}
           </Typography>
         </CardContent>
       </Card>

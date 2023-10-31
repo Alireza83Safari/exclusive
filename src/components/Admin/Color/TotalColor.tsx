@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
 
 function TotalColor() {
-  const { colors } = useContext(ColorContext) as colorContextType;
+  const { total } = useContext(ColorContext) as colorContextType;
   return (
     <Card
       sx={{
@@ -27,7 +27,7 @@ function TotalColor() {
           style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
           gutterBottom
         >
-          {colors?.total}
+          {total}
         </Typography>
       </CardContent>
     </Card>

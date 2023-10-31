@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetAddressesQuery } from "../../Redux/apis/addressApi";
+import { useGetAddressesQuery } from "../../Redux/apis/user/addressUserApi";
 
 function AccountAddress() {
   const { data: addresses } = useGetAddressesQuery("");
@@ -7,7 +7,7 @@ function AccountAddress() {
   return (
     <div className="container mx-auto border border-borderColor rounded-md">
       {addresses?.length
-        ? addresses?.map((address, index) => (
+        ? addresses?.map((address: any, index: number) => (
             <div
               className={`py-8 px-6 ${
                 index !== addresses.length - 1

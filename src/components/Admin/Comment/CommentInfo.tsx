@@ -6,25 +6,26 @@ import { CommentContext, commentContextType } from "./Context/CommentContext";
 import { getCommentType } from "../../../types/Comment.type";
 
 function CommentInfo() {
-  const { comments } = useContext(CommentContext) as commentContextType;
+  const { commentsTotal } = useContext(CommentContext) as commentContextType;
+console.log(commentsTotal);
 
   const totalPendingComments = useMemo(() => {
-    return comments?.data.filter(
+    return commentsTotal?.data.filter(
       (comment: getCommentType) => comment.commentStatus === 0
     );
-  }, [comments]);
+  }, [commentsTotal]);
 
   const totalAcceptComments = useMemo(() => {
-    return comments?.data.filter(
+    return commentsTotal?.data.filter(
       (comment: getCommentType) => comment.commentStatus === 1
     );
-  }, [comments]);
+  }, [commentsTotal]);
 
   const totalRejectComments = useMemo(() => {
-    return comments?.data.filter(
+    return commentsTotal?.data.filter(
       (comment: getCommentType) => comment.commentStatus === 2
     );
-  }, [comments]);
+  }, [commentsTotal]);
 
   return (
     <div className="grid grid-cols-4 col-span-12">
@@ -48,7 +49,7 @@ function CommentInfo() {
             style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
             gutterBottom
           >
-            {comments?.total}
+            {commentsTotal?.total}
           </Typography>
         </CardContent>
       </Card>

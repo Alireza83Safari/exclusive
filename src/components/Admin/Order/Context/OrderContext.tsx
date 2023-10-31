@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
-import { useGetOrderAdminQuery } from "../../../../Redux/apis/orderApi";
+import { useGetOrderAdminQuery } from "../../../../Redux/apis/admin/orderAdminApi";
+import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
+import { adminAxios } from "../../../../services/adminInterceptor";
 
 type orderContextProviderType = { children: React.ReactNode };
 
@@ -13,6 +15,8 @@ export type orderContextType = {
   orders: any;
   orderLoading: boolean;
   refetchOrder: () => void;
+  total: number;
+  totalOrders: any;
 };
 
 export const OrderContext = createContext<orderContextType | null>(null);
@@ -23,11 +27,14 @@ export const OrderContextProvider = ({
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { data: totalOrders } = useGetOrderAdminQuery("");
+
   const {
-    data: orders,
-    isLoading: orderLoading,
-    refetch: refetchOrder,
-  } = useGetOrderAdminQuery("");
+    getFilterData: orders,
+    total,
+    loading: orderLoading,
+    fetchDataFormUrl: refetchOrder,
+  } = useFetchDataFromUrl("order", adminAxios);
   return (
     <OrderContext.Provider
       value={{
@@ -40,6 +47,8 @@ export const OrderContextProvider = ({
         orders,
         orderLoading,
         refetchOrder,
+        total,
+        totalOrders,
       }}
     >
       {children}

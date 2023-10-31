@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RoleContext, roleContextType } from "./Context/RoleContext";
-import { useCreateRoleMutation } from "../../../Redux/apis/roleApi";
 import Input from "../../Input";
 import toast from "react-hot-toast";
 import reactDOM from "react-dom";
+import { useCreateRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
 
 function AddRole() {
   const { showAddModal, setShowAddModal, refetchRoles, permissions } =

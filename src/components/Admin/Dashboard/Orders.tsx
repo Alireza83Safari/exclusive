@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useGetOrderAdminQuery } from "../../../Redux/apis/orderApi";
+import { useGetOrderAdminQuery } from "../../../Redux/apis/admin/orderAdminApi";
 
 function Orders() {
   const { data: orders } = useGetOrderAdminQuery("");

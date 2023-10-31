@@ -1,22 +1,17 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import Input from "../../../Input";
 import SelectList from "../../../SelectList";
 import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { productItemType } from "../../../../types/ProductItem.type";
-import {
-  addProductItem,
-  resetAddProductItemResponse,
-  setAddProductItemResponse,
-} from "../../../../Redux/store/productItem";
-import { getColorsSelectList } from "../../../../Redux/store/color";
+import { productItemError } from "../../../../types/Error.type";
+import toast from "react-hot-toast";
+import { useCreateProductItemMutation } from "../../../../Redux/apis/admin/productItemAdminApi";
+import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
 
 function AddProductItem() {
-  const dispatch = useAppDispatch();
-  const [dataFethed, setDataFetched] = useState(false);
   const {
     setShowAddItem,
     setShowAddFeature,
@@ -24,6 +19,7 @@ function AddProductItem() {
     showAddItem,
     setShowAddProductModal,
     setShowAddInfoModal,
+    refetchProducts,
   } = useContext(ProductsContext) as ProductsContextType;
 
   const [productItemInfo, setProductItemInfo] = useState({
@@ -43,33 +39,26 @@ function AddProductItem() {
     });
   };
 
-  const { colorsSelectList } = useAppSelector((state) => state.color);
-  const { addProductItemError, addProductItemResponse } = useAppSelector(
-    (state) => state.productItem
-  );
+  const [createProductItem, { error: createItemError }] =
+    useCreateProductItemMutation();
 
-  useEffect(() => {
-    if (!dataFethed) {
-      dispatch(getColorsSelectList());
-      setDataFetched(true);
-    }
-  }, [dataFethed]);
+  const { data: colors } = useGetColorsSelectListQuery("");
 
-  const addNewProductHandler = () => {
+  const addProductItemHandler = async () => {
     const cloneInfo = { ...productItemInfo };
     delete cloneInfo.productName;
     delete cloneInfo.productName;
 
-    dispatch(addProductItem(cloneInfo));
+    await createProductItem(cloneInfo as any)
+      .unwrap()
+      .then(() => {
+        toast.success("Add product item is successful");
+        setShowAddItem(false);
+        setShowAddFeature(true);
+        refetchProducts();
+      });
   };
-  useEffect(() => {
-    if (addProductItemResponse === 200) {
-      setShowAddItem(false);
-      setShowAddFeature(true);
-      setAddProductItemResponse(0);
-      dispatch(resetAddProductItemResponse());
-    }
-  }, [addProductItemResponse]);
+  const addItemError = createItemError?.data as productItemError;
 
   const getDisabledBtn = useMemo(() => {
     const { colorId, price, quantity, status } = productItemInfo;
@@ -85,9 +74,7 @@ function AddProductItem() {
       <h1 className="text-center py-3 text-lg font-semibold">
         Add New Product Item
       </h1>
-      <p className="text-red text-center text-xs">
-        {addProductItemError?.message}
-      </p>
+      <p className="text-red text-center text-xs">{addItemError?.message}</p>
       <form action="" onSubmit={(e) => e.preventDefault()}>
         <div className="grid grid-cols-2 p-4 rounded-lg gap-x-4 gap-y-6">
           <div>
@@ -99,11 +86,7 @@ function AddProductItem() {
               className="border"
               value={productItemInfo.quantity}
               onChange={setInputValue}
-              Error={
-                addProductItemError?.errors?.quantity
-                  ? String(addProductItemError?.errors?.quantity)
-                  : ""
-              }
+              Error={addItemError?.errors?.quantity}
             />
           </div>
 
@@ -116,11 +99,7 @@ function AddProductItem() {
               className="border"
               value={productItemInfo.price}
               onChange={setInputValue}
-              Error={
-                addProductItemError?.errors?.price
-                  ? String(addProductItemError?.errors?.price)
-                  : ""
-              }
+              Error={addItemError?.errors?.price}
             />
           </div>
 
@@ -135,11 +114,14 @@ function AddProductItem() {
                 })
               }
               name="brandId"
-              options={colorsSelectList?.map((category) => ({
-                label: category.value,
-                value: category.key,
+              options={colors?.data.map((color: any) => ({
+                label: color.value,
+                value: color.key,
               }))}
             />
+            <p className="text-red text-center text-xs">
+              {addItemError?.errors?.colorId}
+            </p>
           </div>
 
           <div>
@@ -157,11 +139,14 @@ function AddProductItem() {
                 value: status,
               }))}
             />
+            <p className="text-red text-center text-xs">
+              {addItemError?.errors?.status}
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-2 mt-4">
           <button
-            onClick={addNewProductHandler}
+            onClick={addProductItemHandler}
             disabled={getDisabledBtn}
             className="bg-black text-white py-2 disabled:bg-gray disabled:text-black"
           >

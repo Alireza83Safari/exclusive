@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
-import productFeatureReducer, {
-  resetAddProductFeatureKeyResponse,
-} from "../../../../Redux/store/feature";
+import { resetAddProductFeatureKeyResponse } from "../../../../Redux/slices/feature";
 import {
   addProductFeatureValue,
   getProductFeatureKey,
-} from "../../../../Redux/store/feature";
+} from "../../../../Redux/slices/feature";
 import {
   ProductsContext,
   ProductsContextType,
@@ -20,6 +18,7 @@ export default function AddProductFeature() {
     setShowAddFeature,
     setShowAddProductModal,
     setShowAddInfoModal,
+    refetchProducts
   } = useContext(ProductsContext) as ProductsContextType;
 
   const dispatch = useAppDispatch();
@@ -47,6 +46,7 @@ export default function AddProductFeature() {
       dispatch(resetAddProductFeatureKeyResponse());
       setShowAddFile(true);
       setShowAddFeature(false);
+      refetchProducts()
     }
   }, [addProductFeatureKeyResponse]);
 

@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { RoleContext, roleContextType } from "./Context/RoleContext";
-import {
-  useEditRoleMutation,
-  useGetRoleMutation,
-} from "../../../Redux/apis/roleApi";
 import toast from "react-hot-toast";
 import Input from "../../Input";
+import { useEditRoleMutation, useGetRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
 
 export default function EditRole() {
   const { setShowEditModal, editRoleId, permissions, showEditModal } =
