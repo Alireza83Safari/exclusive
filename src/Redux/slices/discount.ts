@@ -2,7 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { adminAxios } from "../../services/adminInterceptor";
 import toast from "react-hot-toast";
 import { userAxios } from "../../services/userInterceptor";
-import { discountProductType, discountStateType, discountUserType, editDiscountType, getDiscountAdminType, getDiscountUserType } from '../../types/Discount.type';
+import {
+  discountProductType,
+  discountStateType,
+  discountUserType,
+  editDiscountType,
+  getDiscountAdminType,
+  getDiscountUserType,
+} from "../../types/Discount.type";
 
 export const getdiscount = createAsyncThunk(
   "discount/getWithId",
@@ -22,15 +29,17 @@ export const getdiscount = createAsyncThunk(
 
 export const getDiscounts = createAsyncThunk(
   "discount/get",
-  async (isAdmin:boolean, { dispatch }) => {
+  async (isAdmin: boolean, { dispatch }) => {
     try {
       dispatch(discountSlice.actions.setLoading(true));
-      const axiosInstance = isAdmin ? adminAxios : userAxios
+      const axiosInstance = isAdmin ? adminAxios : userAxios;
       const response = await axiosInstance.get("/address");
       if (response.status === 200) {
-        isAdmin ? 
-        dispatch(discountSlice.actions.setAdminDiscounts(response.data)):
-        dispatch(discountSlice.actions.setUserDiscounts(response.data.data))
+        isAdmin
+          ? dispatch(discountSlice.actions.setAdminDiscounts(response.data))
+          : dispatch(
+              discountSlice.actions.setUserDiscounts(response.data.data)
+            );
         dispatch(discountSlice.actions.setLoading(false));
       }
     } catch (error) {
@@ -73,16 +82,25 @@ export const addProductDiscount = createAsyncThunk(
 
 export const editDiscount = createAsyncThunk(
   "discount/edit",
-  async ({ discountInfo, discountId, type }: editDiscountType, { dispatch }) => {
+  async (
+    { discountInfo, discountId, type }: editDiscountType,
+    { dispatch }
+  ) => {
     try {
-      dispatch(discountSlice.actions.setLoading(true))
+      dispatch(discountSlice.actions.setLoading(true));
 
       let response;
 
       if (type === "user") {
-        response = await userAxios.post(`/discount/edit/${discountId}`, discountInfo as discountUserType);
+        response = await userAxios.post(
+          `/discount/edit/${discountId}`,
+          discountInfo as discountUserType
+        );
       } else if (type === "product") {
-        response = await adminAxios.post(`/discount/edit/${discountId}`, discountInfo as discountProductType);
+        response = await adminAxios.post(
+          `/discount/edit/${discountId}`,
+          discountInfo as discountProductType
+        );
       }
 
       if (response?.status === 200) {
@@ -135,11 +153,11 @@ const discountSlice = createSlice({
   name: "discount",
   initialState: {
     discountLoading: false,
-    discount: {} as getDiscountAdminType, 
+    discount: {} as getDiscountAdminType,
     adminDiscounts: [] as getDiscountAdminType[],
     userDiscounts: [] as getDiscountUserType[],
-    discountCode : null,
-    discountCodeError: null
+    discountCode: null,
+    discountCodeError: null,
   } as discountStateType,
   reducers: {
     setLoading: (state, action) => {

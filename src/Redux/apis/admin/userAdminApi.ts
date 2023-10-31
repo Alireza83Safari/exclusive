@@ -1,36 +1,37 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userType } from "../../types/user.type";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { userType } from "../../../types/user.type";
+import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
-export const userApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
-  reducerPath: "userApi",
+export const userAdminApi = createApi({
+  baseQuery: axiosBaseQueryAdmin({ baseUrl: "/user" }),
+  reducerPath: "userAdminApi",
   endpoints: (builder) => ({
     getUserList: builder.query({
-      query: () => `admin/user`,
+      query: () => ({ url: "", method: "get" }),
     }),
     getUser: builder.mutation({
       query: (id: string) => ({
-        url: `admin/user/${id}`,
-        method: "GET",
+        url: `/${id}`,
+        method: "get",
       }),
     }),
     createUser: builder.mutation({
       query: (userInfo) => ({
-        url: `/admin/user`,
+        url: ``,
         method: "POST",
-        body: userInfo,
+        data: userInfo,
       }),
     }),
     editUser: builder.mutation({
       query: ({ id, userInfo }: { id: string; userInfo: userType }) => ({
-        url: `/admin/user/edit/${id}`,
+        url: `/edit/${id}`,
         method: "POST",
-        body: userInfo,
+        data: userInfo,
       }),
     }),
     deleteUser: builder.mutation({
       query: (id: string) => ({
-        url: `/admin/user/delete/${id}`,
+        url: `/delete/${id}`,
         method: "POST",
       }),
     }),
@@ -43,4 +44,4 @@ export const {
   useCreateUserMutation,
   useEditUserMutation,
   useDeleteUserMutation,
-} = userApi;
+} = userAdminApi;

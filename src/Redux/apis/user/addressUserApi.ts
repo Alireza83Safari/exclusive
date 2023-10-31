@@ -1,26 +1,26 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { addressType } from "../../types/Address.type";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { addressType } from "../../../types/Address.type";
+import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
 
-export const addressApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
-  reducerPath: "addressApi",
+export const addressUserApi = createApi({
+  baseQuery: axiosBaseQueryUser({ baseUrl: "/address" }),
+  reducerPath: "addressUserApi",
   endpoints: (builder) => ({
     getAddresses: builder.query({
-      query: () => `user/address`,
+      query: () => ({ url: "", method: "get" }),
     }),
     getAddressWithId: builder.query({
-      query: (id: string) => `user/address/${id}`,
+      query: (id: string) => ({ url: `/${id}`, method: "get" }),
     }),
-    getAddressWithUserID: builder.query({
-      query: (userId: string) => `admin/address/${userId}`,
-    }),
+
     createAddress: builder.mutation({
       query: (addressInfo: addressType) => ({
-        url: "/user/address",
+        url: "",
         method: "POST",
-        body: addressInfo,
+        data: addressInfo,
       }),
     }),
+
     editAddress: builder.mutation({
       query: ({
         id,
@@ -29,14 +29,14 @@ export const addressApi = createApi({
         id: string;
         addressInfo: addressType;
       }) => ({
-        url: `/user/address/edit/${id}`,
+        url: `/edit/${id}`,
         method: "POST",
-        body: addressInfo,
+        data: addressInfo,
       }),
     }),
     deleteAddress: builder.mutation({
       query: (id: string) => ({
-        url: `/user/address/delete/${id}`,
+        url: `/delete/${id}`,
         method: "POST",
       }),
     }),
@@ -46,8 +46,7 @@ export const addressApi = createApi({
 export const {
   useGetAddressesQuery,
   useGetAddressWithIdQuery,
-  useGetAddressWithUserIDQuery,
   useCreateAddressMutation,
   useEditAddressMutation,
   useDeleteAddressMutation,
-} = addressApi;
+} = addressUserApi;

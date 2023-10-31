@@ -2,46 +2,43 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   productItemProductType,
   productItemType,
-} from "../../types/ProductItem.type";
+} from "../../../types/ProductItem.type";
+import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
-export const productItemApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
-  reducerPath: "productItemApi",
+export const productItemAdminApi = createApi({
+  baseQuery: axiosBaseQueryAdmin({ baseUrl: "/productItem" }),
+  reducerPath: "productItemAdminApi",
   endpoints: (builder) => ({
-    getProductItemAdmin: builder.mutation({
+    getProductItemAdmin: builder.query({
       query: (productId: string) => ({
-        url: `admin/productItem/product/${productId}`,
-        method: "GET",
+        url: `/product/${productId}`,
+        method: "get",
       }),
     }),
+
     getProductItemSelectList: builder.query({
-      query: (productId: string) => `admin/productItem/selectList/${productId}`,
+      query: (productId: string) => `/selectList/${productId}`,
     }),
-    getProductItemUser: builder.mutation({
-      query: (id: string) => ({
-        url: `user/productItem/${id}`,
-        method: "GET",
-      }),
-    }),
+
     createProductItem: builder.mutation({
       query: (item: productItemProductType) => ({
-        url: "/admin/productItem",
+        url: "",
         method: "POST",
-        body: item,
+        data: item,
       }),
     }),
 
     editProductItem: builder.mutation({
       query: ({ id, itemInfo }: { id: string; itemInfo: productItemType }) => ({
-        url: `/admin/productItem/edit/${id}`,
+        url: `/edit/${id}`,
         method: "POST",
-        body: itemInfo,
+        data: itemInfo,
       }),
     }),
 
     deleteProductItem: builder.mutation({
       query: (id: string) => ({
-        url: `/admin/productItem/delete/${id}`,
+        url: `/delete/${id}`,
         method: "POST",
       }),
     }),
@@ -49,10 +46,9 @@ export const productItemApi = createApi({
 });
 
 export const {
-  useGetProductItemAdminMutation,
+  useGetProductItemAdminQuery,
   useGetProductItemSelectListQuery,
-  useGetProductItemUserMutation,
   useCreateProductItemMutation,
   useEditProductItemMutation,
   useDeleteProductItemMutation,
-} = productItemApi;
+} = productItemAdminApi;

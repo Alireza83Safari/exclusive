@@ -1,39 +1,37 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { colorType } from "../../types/Color.type";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { colorType } from "../../../types/Color.type";
+import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
-export const colorApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
-  reducerPath: "colorApi",
+export const colorAdminApi = createApi({
+  baseQuery: axiosBaseQueryAdmin({ baseUrl: "/color" }),
+  reducerPath: "colorAdminApi",
   endpoints: (builder) => ({
     getColors: builder.query({
-      query: () => `admin/color`,
-    }),
-    getColorsSelectList: builder.query({
-      query: () => `/user/color/selectList`,
+      query: () => ({ url: ``, method: "get" }),
     }),
     getColor: builder.mutation({
       query: (id: string) => ({
-        url: `admin/color/${id}`,
+        url: `/${id}`,
         method: "GET",
       }),
     }),
     createColor: builder.mutation({
       query: (colorInfo: colorType) => ({
-        url: "/admin/color",
+        url: "",
         method: "POST",
-        body: colorInfo,
+        data: colorInfo,
       }),
     }),
     editColor: builder.mutation({
       query: ({ id, colorInfo }: { id: string; colorInfo: colorType }) => ({
-        url: `/admin/color/edit/${id}`,
+        url: `/edit/${id}`,
         method: "POST",
-        body: colorInfo,
+        data: colorInfo,
       }),
     }),
     deleteColor: builder.mutation({
       query: (id: string) => ({
-        url: `/admin/color/delete/${id}`,
+        url: `/delete/${id}`,
         method: "POST",
       }),
     }),
@@ -42,9 +40,8 @@ export const colorApi = createApi({
 
 export const {
   useGetColorsQuery,
-  useGetColorsSelectListQuery,
   useGetColorMutation,
   useCreateColorMutation,
   useEditColorMutation,
   useDeleteColorMutation,
-} = colorApi;
+} = colorAdminApi;

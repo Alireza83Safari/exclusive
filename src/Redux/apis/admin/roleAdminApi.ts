@@ -1,41 +1,39 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { roleType } from "../../types/Role.type";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
+import { roleType } from "../../../types/Role.type";
 
-export const roleApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
-  reducerPath: "roleApi",
+export const roleAdminApi = createApi({
+  baseQuery: axiosBaseQueryAdmin({ baseUrl: "/role" }),
+  reducerPath: "roleAdminApi",
   endpoints: (builder) => ({
     getRoles: builder.query({
-      query: (url: string) => `admin/role${url && `/${url}`}`,
+      query: (url: string) => ({ url: `${url && `/${url}`}`, method: "get" }),
     }),
     getRolePermissions: builder.query({
-      query: () => `admin/role/permissions`,
+      query: () => ({ url: `/permissions`, method: "get" }),
     }),
     getRole: builder.mutation({
-      query: (id: string) => ({
-        url: `admin/role/${id}`,
-        method: "GET",
-      }),
+      query: (id: string) => ({ url: `/${id}`, method: "get" }),
     }),
     createRole: builder.mutation({
       query: (roleInfo) => ({
-        url: `/admin/role`,
+        url: ``,
         method: "POST",
-        body: roleInfo,
+        data: roleInfo,
       }),
     }),
 
     editRole: builder.mutation({
       query: ({ id, roleInfo }: { id: string; roleInfo: roleType }) => ({
-        url: `/admin/role/edit/${id}`,
+        url: `/edit/${id}`,
         method: "POST",
-        body: roleInfo,
+        data: roleInfo,
       }),
     }),
 
     deleteRole: builder.mutation({
       query: (id: string) => ({
-        url: `/admin/role/delete/${id}`,
+        url: `/delete/${id}`,
         method: "POST",
       }),
     }),
@@ -49,4 +47,4 @@ export const {
   useCreateRoleMutation,
   useEditRoleMutation,
   useDeleteRoleMutation,
-} = roleApi;
+} = roleAdminApi;
