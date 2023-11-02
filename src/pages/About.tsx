@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import Options from "../components/Options";
 import { Link } from "react-router-dom";
-import Spinner from "../components/Spinner/Spinner";
+import HeaderSkelton from "../skelton/HeaderSkelton";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
@@ -25,7 +25,7 @@ function About() {
   ];
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative">
@@ -193,7 +193,7 @@ function About() {
         </div>
         <Options />
       </section>
-      <Suspense fallback={<Spinner />}>
+      <Suspense>
         <Footer />
       </Suspense>
     </>

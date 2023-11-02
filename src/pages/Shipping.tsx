@@ -1,17 +1,22 @@
 import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { addressType } from "../types/Address.type";
-import toast from "react-hot-toast";
-import Spinner from "../components/Spinner/Spinner";
+import toast, { Toaster } from "react-hot-toast";
 import { addressErrorType } from "../types/Error.type";
 import { useNavigate } from "react-router-dom";
 import { useGetOrderUserQuery } from "../Redux/apis/user/orderUserApi";
-import { useCreateAddressMutation, useGetAddressesQuery } from "../Redux/apis/user/addressUserApi";
-import { useCreateOrderMutation } from "../Redux/apis/admin/orderAdminApi";
+import {
+  useCreateAddressMutation,
+  useGetAddressesQuery,
+} from "../Redux/apis/user/addressUserApi";
+import HeaderSkelton from "../skelton/HeaderSkelton";
+import { useValidateCopunMutation } from "../Redux/apis/user/discountUserApi";
+import { userAxios } from "../services/userInterceptor";
 
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Shipping() {
+  const navigate = useNavigate();
   const [copunValue, setCopunValue] = useState<string>("");
   const [chooseAddress, setChooseAddress] = useState<string>("");
   const [newAddress, setNewAddress] = useState<addressType>({
@@ -26,11 +31,9 @@ function Shipping() {
 
   const { data: order } = useGetOrderUserQuery("");
   const { data: addresses } = useGetAddressesQuery("");
-  const [createOrder, { isSuccess }] = useCreateOrderMutation();
 
   const [createAddress, { error: createAddressError }] =
     useCreateAddressMutation();
-  const navigate = useNavigate();
 
   // check if inputs havent value get disabled button
   const btnDisabled = useMemo(() => {
@@ -53,35 +56,41 @@ function Shipping() {
       setNewAddress({ ...newAddress, [name]: value });
     }
   };
+  const [validateCopun, { status }] = useValidateCopunMutation();
 
-  /*   const addCopounHandler = () => {
-    dispatch(codeDiscountValidate(copunValue));
-  }; */
-  const addOrderHandler = () => {
-    if (!chooseAddress) {
+  const addCopounHandler = () => {
+    validateCopun(copunValue);
+  };
+
+  useEffect(() => {
+    if (status == "rejected") {
+      toast.success("copun is not valid");
+    }
+  }, [status]);
+
+  const addOrderHandler = async () => {
+    if (chooseAddress) {
+      const response = await userAxios.post(`/order/checkout/${chooseAddress}`);
+      if (response.status === 200) {
+        toast.success("add order is success");
+        navigate("/");
+      }
+    } else if (!chooseAddress) {
       toast.error("please choose address");
-    } else {
-      createOrder(chooseAddress);
     }
   };
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("add order is success");
-      navigate("/");
-    }
-  }, [isSuccess]);
 
   const addAddressError = createAddressError?.data as addressErrorType;
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto my-10 relative sm:px-5 px-2">
         <div className="grid md:grid-cols-2 md:mt-20 mt-10">
           <div>
             {addresses?.length ? (
-              addresses?.map((address) => (
+              addresses?.map((address: any) => (
                 <div
                   className={`grid grid-cols-2 mb-5 border border-borderColor p-3 rounded-md hover:bg-gray duration-300 sm:text-base text-sm ${
                     address.id === chooseAddress && `bg-gray`
@@ -241,8 +250,8 @@ function Shipping() {
             )}
           </div>
           <div className="lg:pl-28 md:pl-8 md:mt-0 mt-10">
-            {order?.items.map((order) => (
-              <div className="flex items-center justify-between my-7">
+            {order?.items.map((order: any) => (
+              <div className="flex items-center justify-between my-7" key={order.id}>
                 <div className="flex items-center">
                   <img
                     src={`http://127.0.0.1:6060/${order.fileUrl}`}
@@ -311,7 +320,8 @@ function Shipping() {
         </div>
       </section>
 
-      <Suspense fallback={<Spinner />}>
+      <Toaster />
+      <Suspense>
         <Footer />
       </Suspense>
     </>

@@ -39,8 +39,8 @@ function DashboardChart() {
               onChange={valueHandler}
               value={selectedDataType}
             >
-              {Object.values(DataType).map((dataType) => (
-                <option key={dataType} value={dataType}>
+              {Object.values(DataType).map((dataType, index) => (
+                <option key={index} value={dataType}>
                   {dataType}
                 </option>
               ))}

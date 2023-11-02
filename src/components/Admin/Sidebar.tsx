@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
     <Drawer open={open} onClose={onClose}>
       <List>
         {mentItem.map((menu) => (
-          <Link to={menu.key}>
+          <Link to={menu.key} key={menu.key}>
             <ListItem button key={menu.key}>
               <ListItemText primary={menu.key} />
             </ListItem>

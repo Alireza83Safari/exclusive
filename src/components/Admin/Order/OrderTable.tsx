@@ -96,7 +96,7 @@ function OrderTable() {
                 <Spinner />
               ) : orders?.length ? (
                 orders?.map((row: any, index: any) => (
-                  <TableRow key={row.id}>
+                  <TableRow key={index}>
                     <TableCell style={{ width: 10 }} align="center">
                       {index + 1}
                     </TableCell>
