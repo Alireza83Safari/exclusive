@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import { userProductType } from "../types/Product.type";
 import Spinner from "./Spinner/Spinner";
 import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
+import ProductSkelton from "../skelton/ProductSkelton";
 const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
 
 function BestSelling() {
-  const { data: topSellProducts } = useGetProductsUserQuery("?order=topSell");
+  const { data: topSellProducts, isLoading } =
+    useGetProductsUserQuery("?order=topSell");
+  const totalSkeletonShow = Array.from(Array(4).keys());
 
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative px-4">
@@ -21,13 +24,28 @@ function BestSelling() {
           </button>
         </Link>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-        {topSellProducts?.data?.slice(0, 4).map((product: userProductType) => (
-          <Suspense fallback={<Spinner />}>
-            <ProductTemplate {...product} />
-          </Suspense>
-        ))}
-      </div>
+
+      {isLoading ? (
+        <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+          {totalSkeletonShow.map((index) => (
+            <React.Fragment key={index}>
+              <ProductSkelton />
+            </React.Fragment>
+          ))}
+        </div>
+      ) : (
+        <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+          {topSellProducts?.data
+            ?.slice(0, 4)
+            .map((product: userProductType) => (
+              <React.Fragment key={product.id}>
+                <Suspense fallback={<ProductSkelton />}>
+                  <ProductTemplate {...product} />
+                </Suspense>
+              </React.Fragment>
+            ))}
+        </div>
+      )}
     </section>
   );
 }

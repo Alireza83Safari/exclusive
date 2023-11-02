@@ -1,11 +1,11 @@
 import React, { Suspense, lazy, useMemo, useState } from "react";
-import Spinner from "../components/Spinner/Spinner";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { usePagination } from "../hooks/usePagination";
 import { userProductType } from "../types/Product.type";
-const ProductTemplate = lazy(
-  () => import("../components/Product/ProductTemplate")
-);
+import { userAxios } from "../services/userInterceptor";
+import ProductSkelton from "../skelton/ProductSkelton";
+import ProductTemplate from "../components/Product/ProductTemplate";
+import HeaderSkelton from "../skelton/HeaderSkelton";
 const FilterProducts = lazy(() => import("../components/FilterProducts"));
 const Pagination = lazy(() => import("../components/Pagination"));
 const Header = lazy(() => import("./Header"));
@@ -13,52 +13,59 @@ const Footer = lazy(() => import("../components/Footer"));
 
 function Products() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const limitShow = 12;
-  const { getFilterProducts, totalProducts, loading } =
-    useFetchDataFromUrl<userProductType>(null);
+  const { getFilterData, total, loading } =
+    useFetchDataFromUrl<userProductType>(null, userAxios);
 
   const {} = usePagination(currentPage, limitShow);
 
   const totalPages = useMemo(() => {
-    return Math.ceil(totalProducts / limitShow);
-  }, [limitShow, totalProducts]);
+    return Math.ceil(total / limitShow);
+  }, [limitShow, total]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
+  const totalSkeletonShow = Array.from(Array(12).keys());
+
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
-
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full min-h-[400px] px-4 mx-auto relative my-4">
-        <Suspense fallback={<Spinner />}>
+        <Suspense>
           <FilterProducts />
         </Suspense>
+
         {loading ? (
-          <Spinner />
+          <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+            {totalSkeletonShow?.map((index) => (
+              <React.Fragment key={index}>
+                <ProductSkelton />
+              </React.Fragment>
+            ))}
+          </div>
         ) : (
           <>
-            {getFilterProducts.length ? (
+            {getFilterData.length ? (
               <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-                {getFilterProducts?.map((product) => (
-                  <Suspense fallback={<Spinner />}>
+                {getFilterData?.map((product) => (
+                  <React.Fragment key={product.id}>
                     <ProductTemplate {...product} />
-                  </Suspense>
+                  </React.Fragment>
                 ))}
               </div>
-            ) : (
+            ) : getFilterData.length >= 1 ? (
               <div className="text-5xl flex justify-center items-center mt-28">
                 No exact matches found
               </div>
-            )}
+            ) : null}
           </>
         )}
         {totalPages > 1 && (
-          <Suspense fallback={<Spinner />}>
+          <Suspense>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -67,8 +74,7 @@ function Products() {
           </Suspense>
         )}
       </section>
-
-      <Suspense fallback={<Spinner />}>
+      <Suspense>
         <Footer />
       </Suspense>
     </>

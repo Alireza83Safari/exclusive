@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from "react";
 import { Toaster } from "react-hot-toast";
-import Spinner from "../components/Spinner/Spinner";
 const Content = lazy(() => import("../components/Content/Content"));
 const Promotion = lazy(() => import("../components/Promotion"));
 const Brand = lazy(() => import("../components/Brand"));
@@ -15,7 +14,7 @@ const Footer = lazy(() => import("../components/Footer"));
 function Home() {
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense>
         <Header />
         <Content />
         <Promotion />

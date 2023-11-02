@@ -1,12 +1,20 @@
 import React from "react";
 import { useGetAddressesQuery } from "../../Redux/apis/user/addressUserApi";
+import AccountSkelton from "../../skelton/AccountSkelton";
 
 function AccountAddress() {
-  const { data: addresses } = useGetAddressesQuery("");
+  const { data: addresses, isLoading } = useGetAddressesQuery("");
+  const totalSkeletonShow = Array.from(Array(5).keys());
 
   return (
     <div className="container mx-auto border border-borderColor rounded-md">
-      {addresses?.length
+      {isLoading
+        ? totalSkeletonShow.map((index) => (
+            <React.Fragment key={index}>
+              <AccountSkelton />
+            </React.Fragment>
+          ))
+        : addresses?.length
         ? addresses?.map((address: any, index: number) => (
             <div
               className={`py-8 px-6 ${

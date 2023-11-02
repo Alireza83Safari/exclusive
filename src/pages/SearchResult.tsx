@@ -1,8 +1,11 @@
-/* import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { userProductType } from "../types/Product.type";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "../components/Spinner/Spinner";
+import { userAxios } from "../services/userInterceptor";
+import HeaderSkelton from "../skelton/HeaderSkelton";
+import ProductSkelton from "../skelton/ProductSkelton";
 const ProductTemplate = lazy(
   () => import("../components/Product/ProductTemplate")
 );
@@ -14,39 +17,50 @@ const Footer = lazy(() => import("../components/Footer"));
 function SearchResult() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const limitShow = 12;
-  const { getFilterProducts, totalProducts, loading } =
-    useFetchDataFromUrl<userProductType>(null);
+  const { getFilterData, total, loading } =
+    useFetchDataFromUrl<userProductType>(null, userAxios);
   const {} = usePagination(1, 2);
-  const totalPages = Math.ceil(totalProducts / limitShow);
+  const totalPages = Math.ceil(total / limitShow);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const totalSkeletonShow = Array.from(Array(12).keys());
+
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
-        <Suspense fallback={<Spinner />}>
+        <Suspense>
           <FilterProducts />
         </Suspense>
-        {getFilterProducts.length ? (
+        {loading || loading ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-            {loading || loading ? (
-              <Spinner />
-            ) : (
-              getFilterProducts?.map((product) => (
-                <Suspense fallback={<Spinner />}>
-                  <ProductTemplate {...product} />
-                </Suspense>
-              ))
-            )}
+            {totalSkeletonShow?.map((_, index) => (
+              <React.Fragment key={index}>
+                <ProductSkelton />
+              </React.Fragment>
+            ))}
           </div>
         ) : (
-          <h2 className="text-4xl font-bold mt-32 text-center">
-            No exact matches found
-          </h2>
+          <>
+            {getFilterData.length ? (
+              <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+                {getFilterData?.map((product) => (
+                  <React.Fragment key={product.id}>
+                    <ProductTemplate {...product} />
+                  </React.Fragment>
+                ))}
+              </div>
+            ) : getFilterData.length >= 1 ? (
+              <div className="text-5xl flex justify-center items-center mt-28">
+                No exact matches found
+              </div>
+            ) : null}
+          </>
         )}
+
         {totalPages > 1 && (
           <Suspense fallback={<Spinner />}>
             <Pagination
@@ -66,14 +80,3 @@ function SearchResult() {
 }
 
 export default SearchResult;
- */
-
-import React from 'react'
-
-function SearchResult() {
-  return (
-    <div>SearchResult</div>
-  )
-}
-
-export default SearchResult

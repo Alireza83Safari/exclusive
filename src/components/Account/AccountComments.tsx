@@ -5,29 +5,37 @@ import { getCommentType } from "../../types/Comment.type";
 import Pagination from "../Pagination";
 import ContentLoaders from "../ContentLoaders";
 import { useGetCommentsUserQuery } from "../../Redux/apis/user/commentUserApi";
+import { userAxios } from "../../services/userInterceptor";
+import AccountSkelton from "../../skelton/AccountSkelton";
 
 function AccountAddress() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
   const { data: comments } = useGetCommentsUserQuery("");
   const {} = usePagination(currentPage, pageSize);
-  const { getFilterProducts, totalProducts, loading } =
-    useFetchDataFromUrl<getCommentType>("comment");
-  const totalPages = Math.ceil(totalProducts / pageSize);
+  const { getFilterData, total, loading } = useFetchDataFromUrl<getCommentType>(
+    "comment",
+    userAxios
+  );
+  const totalPages = Math.ceil(total / pageSize);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
+  const totalSkeletonShow = Array.from(Array(pageSize).keys());
   return (
     <>
       <div className="container mx-auto border border-borderColor rounded-md">
-        {comments?.data.length
-          ? getFilterProducts?.map((comment, index) => (
+        {loading
+          ? totalSkeletonShow.map((index) => (
+              <React.Fragment key={index}>
+                <AccountSkelton />
+              </React.Fragment>
+            ))
+          : comments?.data.length
+          ? getFilterData?.map((comment, index) => (
               <div
                 className={`py-8 px-6 ${
-                  index !== totalProducts - 1
-                    ? "border-b border-borderColor"
-                    : ""
+                  index !== total - 1 ? "border-b border-borderColor" : ""
                 }`}
                 key={index}
               >
