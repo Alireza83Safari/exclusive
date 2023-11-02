@@ -7,7 +7,6 @@ import { getCommentType } from "../../../types/Comment.type";
 
 function CommentInfo() {
   const { commentsTotal } = useContext(CommentContext) as commentContextType;
-console.log(commentsTotal);
 
   const totalPendingComments = useMemo(() => {
     return commentsTotal?.data.filter(

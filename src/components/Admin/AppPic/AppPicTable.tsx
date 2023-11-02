@@ -5,7 +5,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
@@ -30,10 +29,8 @@ const columns: readonly Column[] = [
 ];
 
 function AppPicTable() {
-  const [page, setPage] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteAppPicID, setDeleteAppPicID] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const {
     appPics,
     appPicLoading,
@@ -42,16 +39,6 @@ function AppPicTable() {
     setOpenEditModal,
   } = useContext(AppPicContext) as appPicContextType;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
   const [deleteAppPic] = useDeleteAppPicMutation();
 
   const deleteAppPicHandler = async (id: string) => {
@@ -73,7 +60,7 @@ function AppPicTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 650, minHeight: 650 }}>
+        <TableContainer sx={{ maxHeight: 750, minHeight: 710 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -88,13 +75,7 @@ function AppPicTable() {
               {appPicLoading ? (
                 <Spinner />
               ) : (
-                (rowsPerPage > 0
-                  ? appPics?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : appPics
-                )?.map((row: any, index: any) => (
+                appPics?.map((row: any, index: any) => (
                   <TableRow key={row.id}>
                     <TableCell style={{ width: 10 }} align="center">
                       {index + 1}
@@ -141,16 +122,6 @@ function AppPicTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={appPics?.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
       </Paper>
       <EditAppPic />
       {showDeleteModal && (

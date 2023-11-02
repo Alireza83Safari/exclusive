@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import {
   productItemProductType,
   productItemType,
@@ -9,7 +9,7 @@ export const productItemAdminApi = createApi({
   baseQuery: axiosBaseQueryAdmin({ baseUrl: "/productItem" }),
   reducerPath: "productItemAdminApi",
   endpoints: (builder) => ({
-    getProductItemAdmin: builder.query({
+    getProductItemAdmin: builder.mutation({
       query: (productId: string) => ({
         url: `/product/${productId}`,
         method: "get",
@@ -17,7 +17,10 @@ export const productItemAdminApi = createApi({
     }),
 
     getProductItemSelectList: builder.query({
-      query: (productId: string) => `/selectList/${productId}`,
+      query: (productId: string) => ({
+        url: `/selectList/${productId}`,
+        method: "get",
+      }),
     }),
 
     createProductItem: builder.mutation({
@@ -46,7 +49,7 @@ export const productItemAdminApi = createApi({
 });
 
 export const {
-  useGetProductItemAdminQuery,
+  useGetProductItemAdminMutation,
   useGetProductItemSelectListQuery,
   useCreateProductItemMutation,
   useEditProductItemMutation,

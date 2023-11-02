@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 
 import authReducer from "./slices/auth";
 import featureReducer from "./slices/feature";
-// import discountReducer from './Store/discount';
 import { userAdminApi } from "./apis/admin/userAdminApi";
 import { brandAdminApi } from "./apis/admin/brandAdminApi";
 import { brandUserApi } from "./apis/user/brandUserApi";
@@ -26,6 +25,9 @@ import { orderAdminApi } from "./apis/admin/orderAdminApi";
 import { orderUserApi } from "./apis/user/orderUserApi";
 import { profileAdminApi } from "./apis/admin/profileAdminApi";
 import { profileUserApi } from "./apis/user/prodileUserApi";
+import { fileUserApi } from "./apis/user/fileUserApi";
+import { discountAdminApi } from "./apis/admin/discountAdminApi";
+import { discountUserApi } from "./apis/user/discountUserApi";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -53,5 +55,7 @@ export const rootReducer = combineReducers({
   [orderUserApi.reducerPath]: orderUserApi.reducer,
   [profileAdminApi.reducerPath]: profileAdminApi.reducer,
   [profileUserApi.reducerPath]: profileUserApi.reducer,
-  // discount: discountReducer,
+  [fileUserApi.reducerPath]: fileUserApi.reducer,
+  [discountAdminApi.reducerPath]: discountAdminApi.reducer,
+  [discountUserApi.reducerPath]: discountUserApi.reducer,
 });

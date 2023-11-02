@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner/Spinner";
+import HeaderSkelton from "../skelton/HeaderSkelton";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
@@ -40,7 +41,7 @@ function Contact() {
   };
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative md:my-20">

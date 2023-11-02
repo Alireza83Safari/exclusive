@@ -23,6 +23,9 @@ import { orderUserApi } from "./apis/user/orderUserApi";
 import { profileAdminApi } from "./apis/admin/profileAdminApi";
 import { profileUserApi } from "./apis/user/prodileUserApi";
 import { appPicUserApi } from "./apis/user/appPicUserApi";
+import { fileUserApi } from "./apis/user/fileUserApi";
+import { discountAdminApi } from "./apis/admin/discountAdminApi";
+import { discountUserApi } from "./apis/user/discountUserApi";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -51,6 +54,9 @@ const store = configureStore({
       orderUserApi.middleware,
       profileAdminApi.middleware,
       profileUserApi.middleware,
+      fileUserApi.middleware,
+      discountAdminApi.middleware,
+      discountUserApi.middleware,
     ]),
 });
 

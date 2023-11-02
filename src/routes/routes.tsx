@@ -49,6 +49,7 @@ const routes = [
     path: "account/*",
     element: <Account />,
     children: [
+      { path: "", element: <UserInfo /> },
       { path: "userInfo", element: <UserInfo /> },
       { path: "favorite", element: <FavoriteProducts /> },
       { path: "order", element: <AccountOrders /> },
@@ -62,8 +63,9 @@ const routes = [
     path: "admin/*",
     element: <IndexPanel />,
     children: [
-      { path: "product", element: <AdminProducts /> },
+      { path: "", element: <Dashboard /> },
       { path: "dashboard", element: <Dashboard /> },
+      { path: "product", element: <AdminProducts /> },
       { path: "category", element: <Category /> },
       { path: "color", element: <Color /> },
       { path: "brand", element: <BrandPanel /> },

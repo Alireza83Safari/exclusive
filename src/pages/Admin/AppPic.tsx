@@ -1,20 +1,28 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { AppPicContextProvider } from "../../components/Admin/AppPic/Context/AppPicContext";
-import AddAppPic from "../../components/Admin/AppPic/AddAppPic";
-import TotalAppPic from "../../components/Admin/AppPic/TotalAppPic";
-import AppPicTable from "../../components/Admin/AppPic/AppPicTable";
+import Spinner from "../../components/Spinner/Spinner";
+
+const AppPicTable = React.lazy(() => import("../../components/Admin/AppPic/AppPicTable"));
+const TotalAppPic = React.lazy(() => import("../../components/Admin/AppPic/TotalAppPic"));
+const AddAppPic = React.lazy(() => import("../../components/Admin/AppPic/AddAppPic"));
 
 function AppPic() {
   return (
     <AppPicContextProvider>
       <div className="grid grid-cols-12 mt-4">
-        <AppPicTable />
+        <Suspense fallback={<Spinner/>}>
+          <AppPicTable />
+        </Suspense>
         <div className="lg:col-span-4 col-span-12 grid grid-cols-1 lg:order-2 order-1">
           <div className="lg:col-span-2 cols-span-1">
-            <TotalAppPic />
+            <Suspense fallback={<div>Loading...</div>}>
+              <TotalAppPic />
+            </Suspense>
           </div>
           <div className="lg:col-span-2 cols-span-1">
-            <AddAppPic />
+            <Suspense fallback={<div>Loading...</div>}>
+              <AddAppPic />
+            </Suspense>
           </div>
         </div>
       </div>

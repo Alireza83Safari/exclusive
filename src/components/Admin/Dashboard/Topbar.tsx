@@ -33,7 +33,7 @@ export default function Topbar() {
             <Spinner />
           </div>
         ) : (
-          <h1 className="font-bold 2xl:text-5xl xl:text-4xl text-2xl 2xl:my-6 my-3 text-blue-600 text-center">
+          <h1 className="font-black 2xl:text-5xl xl:text-4xl text-2xl 2xl:my-6 my-3 text-blue-600 text-center">
             {brands?.total}
           </h1>
         )}

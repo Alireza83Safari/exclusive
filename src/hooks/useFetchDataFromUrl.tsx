@@ -5,7 +5,7 @@ export const useFetchDataFromUrl = <T,>(
   urlName: string | null,
   axiosInstance: any
 ) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [getFilterData, setFilterProducts] = useState<T[]>([]);
   const [total, settotal] = useState<number>(0);
   const location = useLocation();
@@ -20,35 +20,36 @@ export const useFetchDataFromUrl = <T,>(
   const limit = searchParams.get("limit");
 
   const fetchDataFormUrl = useCallback(async () => {
+    setLoading(true);
     let url = `${
       urlName !== null ? urlName : `product`
     }?page=${page}&limit=${limit}`;
 
-    switch (true) {
-      case Boolean(searchTerm):
-        url += `&searchTerm=${searchTerm}`;
-        break;
-      case Boolean(categoryId):
-        url += `&categoryId=${categoryId}`;
-        break;
-      case Boolean(brandId):
-        url += `&brandId=${brandId}`;
-        break;
-      case Boolean(order):
-        url += `&order=${order}`;
-        break;
-      case Boolean(minPrice):
-        url += `&minPrice=${minPrice}`;
-        break;
-      case Boolean(maxPrice):
-        url += `&maxPrice=${maxPrice}`;
-        break;
-      default:
-        break;
+    if (searchTerm) {
+      url += `&searchTerm=${searchTerm}`;
+    }
+
+    if (categoryId) {
+      url += `&categoryId=${categoryId}`;
+    }
+
+    if (brandId) {
+      url += `&brandId=${brandId}`;
+    }
+
+    if (order) {
+      url += `&order=${order}`;
+    }
+
+    if (minPrice) {
+      url += `&minPrice=${minPrice}`;
+    }
+
+    if (maxPrice) {
+      url += `&maxPrice=${maxPrice}`;
     }
 
     try {
-      setLoading(true);
       const response = await axiosInstance.get(url);
       if (response.status === 200) {
         setFilterProducts(response.data.data);
@@ -57,6 +58,12 @@ export const useFetchDataFromUrl = <T,>(
       }
     } catch (error) {
       setLoading(false);
+    }
+  }, [categoryId, brandId, order, minPrice, maxPrice, searchTerm, page, limit]);
+
+  useEffect(() => {
+    if (page != null) {
+      fetchDataFormUrl();
     }
   }, [
     location.search,
@@ -69,12 +76,6 @@ export const useFetchDataFromUrl = <T,>(
     page,
     limit,
   ]);
-
-  useEffect(() => {
-    if (page != null) {
-      fetchDataFormUrl();
-    }
-  }, [fetchDataFormUrl]);
 
   const memoizedData = useMemo(
     () => ({ getFilterData, total, loading, fetchDataFormUrl }),

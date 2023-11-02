@@ -1,12 +1,11 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsFilterLeft } from "react-icons/bs";
-import Spinner from "./Spinner/Spinner";
 import { useGetBrandsSelectListQuery } from "../Redux/apis/user/brandUserApi";
 import { useGetCategorySelectListQuery } from "../Redux/apis/user/categoryUserApi";
 import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
-
-const SelectList = lazy(() => import("./SelectList"));
+import { categoryUserType } from "../types/Category.type";
+import SelectList from "./SelectList";
 
 type filterType = {
   brandId: string;
@@ -109,19 +108,17 @@ const FilterProducts = () => {
         <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-x-4 mb-2">
           <div>
             <label className="text-xs">Category:</label>
-            <Suspense fallback={<Spinner />}>
-              <SelectList
-                name="categoryId"
-                defaultValue={filterValue.categoryId}
-                onChange={(selected) =>
-                  setFilterValue({ ...filterValue, categoryId: selected.value })
-                }
-                options={category?.data.map((data) => ({
-                  value: data.key,
-                  label: data.value,
-                }))}
-              />
-            </Suspense>
+            <SelectList
+              name="categoryId"
+              defaultValue={filterValue.categoryId}
+              onChange={(selected) =>
+                setFilterValue({ ...filterValue, categoryId: selected.value })
+              }
+              options={category?.data.map((data: categoryUserType) => ({
+                value: data.key,
+                label: data.value,
+              }))}
+            />
           </div>
 
           <div>
@@ -147,19 +144,17 @@ const FilterProducts = () => {
 
           <div>
             <label className="text-xs">Brand:</label>
-            <Suspense fallback={<Spinner />}>
-              <SelectList
-                name="brandId"
-                defaultValue={filterValue.brandId}
-                onChange={(selected) =>
-                  setFilterValue({ ...filterValue, brandId: selected.value })
-                }
-                options={brands?.data?.map((data) => ({
-                  value: data.key,
-                  label: data.value,
-                }))}
-              />
-            </Suspense>
+            <SelectList
+              name="brandId"
+              defaultValue={filterValue.brandId}
+              onChange={(selected) =>
+                setFilterValue({ ...filterValue, brandId: selected.value })
+              }
+              options={brands?.data?.map((data: any) => ({
+                value: data.key,
+                label: data.value,
+              }))}
+            />
           </div>
 
           <div className="mt-4 flex">

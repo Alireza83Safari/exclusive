@@ -9,7 +9,8 @@ export const commentUserApi = createApi({
     getCommentsUser: builder.query({
       query: (url: string) => ({ url: `${url}`, method: "get" }),
     }),
-    getCommentsProudct: builder.query({
+
+    getCommentsProudct: builder.mutation({
       query: (productId: string) => ({
         url: `/product/${productId}`,
         method: "get",
@@ -51,6 +52,7 @@ export const commentUserApi = createApi({
 
 export const {
   useGetCommentsUserQuery,
+  useGetCommentsProudctMutation,
   useCreateCommentMutation,
   useEditCommentMutation,
   useDeleteCommentMutation,

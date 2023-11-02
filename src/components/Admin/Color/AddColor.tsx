@@ -13,18 +13,14 @@ function AddColor() {
   };
   const { refetchColor } = useContext(ColorContext) as colorContextType;
 
-  const [createColorValue, setCreateColorValue] =
-    useState<colorType>(inintialColorState);
+  const [createColorValue, setCreateColorValue] = useState<colorType>(inintialColorState);
 
-  const setInputValue = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const setInputValue = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value, name } = event.target;
     setCreateColorValue({ ...createColorValue, [name]: value });
   };
 
-  const [createColor, { error: colorError, isSuccess }] =
-    useCreateColorMutation();
+  const [createColor, { error: colorError, isSuccess }] = useCreateColorMutation();
 
   const createColorHandler = () => {
     createColor(createColorValue);
@@ -94,13 +90,20 @@ function AddColor() {
           {createColorError?.errors.code}
         </Typography>
         <TextField
+          type="color"
           label="Color Hex"
           name="colorHex"
           fullWidth
           value={createColorValue.colorHex}
           sx={{ marginY: "16px" }}
           onChange={setInputValue}
+          style={{
+            backgroundColor: createColorValue.colorHex,
+            borderRadius: "4px",
+            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
+          }}
         />
+        
         <Typography variant="body1" className="text-red">
           {createColorError?.errors.colorHex}
         </Typography>

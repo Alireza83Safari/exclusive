@@ -36,6 +36,7 @@ export default function ProductsTable() {
     refetchProducts,
     loading,
     products,
+    setProductInfo,
   } = useContext(ProductsContext) as ProductsContextType;
 
   const [deleteProduct] = useDeleteProductMutation();
@@ -54,7 +55,7 @@ export default function ProductsTable() {
     searchHandler(searchValue);
     setSearchValue("");
   };
-  const pageSize = 8;
+  const pageSize = 10;
   const totalPages = Math.ceil(total / pageSize);
   const {} = usePagination(currentPage, pageSize);
 
@@ -194,6 +195,7 @@ export default function ProductsTable() {
                               onClick={() => {
                                 setEditProductId(row.id);
                                 setShowProductInfoModal(true);
+                                setProductInfo(row);
                               }}
                             >
                               Infos

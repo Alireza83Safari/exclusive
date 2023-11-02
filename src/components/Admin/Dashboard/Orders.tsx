@@ -26,7 +26,7 @@ function Orders() {
             {orders?.data?.slice(0, 6).map((order: any, index: string) => (
               <tr
                 className="md:text-sm sm:text-xs text-[10px] text-center"
-                key={order.id}
+                key={index}
               >
                 <td className="py-3">{index + 1}</td>
                 <td className="py-3">{order?.username}</td>

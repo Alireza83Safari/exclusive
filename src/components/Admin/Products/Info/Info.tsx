@@ -1,22 +1,26 @@
-import React, { useContext, useState, lazy, Suspense } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
 import Spinner from "../../../Spinner/Spinner";
-
 import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
+import { AiFillCloseCircle } from "react-icons/ai";
 const ProductInfo = lazy(() => import("./ProductInfo"));
 const ProductItemInfo = lazy(() => import("./ProductItemInfo"));
-/* const AddProductInfo = lazy(() => import("./AddProductInfo"));
-const AddProductItem = lazy(() => import("./AddProductItem"));
-const AddProductFeature = lazy(() => import("./AddProductFeature"));
-const AddProductFile = lazy(() => import("./AddProductFile")); */
+const ProductImage = lazy(() => import("./ProductImage"));
 
 export default function Info() {
-  const { showProductInfoModal } = useContext(
-    ProductsContext
-  ) as ProductsContextType;
+  const {
+    showProductInfoModal,
+    setShowInfo,
+    setShowEditItem,
+    setShowEditFile,
+    showInfo,
+    showEditItem,
+    showEditFile,
+    setShowProductInfoModal,
+  } = useContext(ProductsContext) as ProductsContextType;
 
   return ReactDOM.createPortal(
     <section
@@ -24,14 +28,63 @@ export default function Info() {
         showProductInfoModal ? "visible" : "invisible"
       }`}
     >
-      <div className="w-auto bg-white min-h-5/6 rounded-lg">
+      <div className="w-auto bg-white min-h-5/6 rounded-lg relative">
+        <button
+          className=" absolute right-1 top-1"
+          onClick={() => {
+            setShowProductInfoModal(false);
+            setShowEditItem(false);
+            setShowEditFile(false);
+            setShowInfo(true);
+          }}
+        >
+          <AiFillCloseCircle className="text-red text-2xl" />
+        </button>
+        <div className="flex gap-x-5 text-sm text-current justify-center py-4">
+          <button
+            className={`${showInfo === true && "text-blue-600 font-semibold"}`}
+            onClick={() => {
+              setShowInfo(true);
+              setShowEditItem(false);
+              setShowEditFile(false);
+            }}
+          >
+            1 product info
+          </button>
+          <button
+            className={`${
+              showEditItem === true && "text-blue-600 font-semibold"
+            }`}
+            onClick={() => {
+              setShowInfo(false);
+              setShowEditItem(true);
+              setShowEditFile(false);
+            }}
+          >
+            2 product Item
+          </button>
+          <button
+            className={`${
+              showEditFile === true && "text-blue-600 font-semibold"
+            }`}
+            onClick={() => {
+              setShowInfo(false);
+              setShowEditItem(false);
+              setShowEditFile(true);
+            }}
+          >
+            3 product File
+          </button>
+        </div>
         <Suspense fallback={<Spinner />}>
           <ProductInfo />
         </Suspense>
         <Suspense fallback={<Spinner />}>
-        <ProductItemInfo />
+          <ProductItemInfo />
         </Suspense>
-      
+        <Suspense fallback={<Spinner />}>
+          <ProductImage />
+        </Suspense>
         {/*
           {showAddFeature && <AddProductFeature />}
           {showAddFile && <AddProductFile />} */}

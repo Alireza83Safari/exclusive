@@ -3,6 +3,7 @@ import Spinner from "../components/Spinner/Spinner";
 import { userLoginHandler } from "../Redux/slices/auth";
 import { userLoginType } from "../types/Auth.type";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import HeaderSkelton from "../skelton/HeaderSkelton";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
@@ -32,7 +33,7 @@ function Login() {
 
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+     <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
 

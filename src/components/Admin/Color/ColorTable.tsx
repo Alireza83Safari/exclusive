@@ -70,6 +70,7 @@ function ColorTable() {
   ) => {
     setSearchQuery(e.target.value);
   };
+
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
@@ -128,7 +129,7 @@ function ColorTable() {
                         <TableCell align="center">{row.name}</TableCell>
                         <TableCell align="center">{row.code}</TableCell>
                         <TableCell align="center">
-                          #{row.colorHex.slice(0, 10)}
+                          {row.colorHex.slice(0, 10)}
                         </TableCell>
                         <TableCell
                           align="center"

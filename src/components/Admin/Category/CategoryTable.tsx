@@ -109,7 +109,7 @@ function CategoryTable() {
             />
           </Box>
         </div>
-        <TableContainer sx={{ minHeight: 500 }}>
+        <TableContainer sx={{ minHeight: 490 }}>
           <Table stickyHeader aria-label="sticky table">
             {categoryLoading ? (
               <Spinner />

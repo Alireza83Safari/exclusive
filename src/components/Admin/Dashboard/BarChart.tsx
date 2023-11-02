@@ -14,6 +14,7 @@ export type barChartPropsType = {
 };
 
 const BarChartComponent = ({ datas }: barChartPropsType[]) => {
+
   return (
     <ResponsiveContainer width="100%" height={310}>
       <BarChart data={datas}>

@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 
 export type selectListType = {
-  defaultValue?: { value: string; label: string };
+  defaultValue?:any;
   onChange: (selectedOption: any) => void;
   options: any;
   name: string;

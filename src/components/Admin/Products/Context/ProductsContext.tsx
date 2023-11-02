@@ -34,9 +34,12 @@ export type ProductsContextType = {
   setShowProductInfoModal: (value: boolean) => void;
   setEditProductId: (value: string) => void;
   refetchProducts: () => void;
+
   loading: boolean;
   products: any;
   total: number;
+  setProductInfo: (value: any) => void;
+  productInfo: any;
 };
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -59,7 +62,8 @@ export const ProductsContextProvider = ({
   const [showEditFeature, setShowEditFeature] = useState(false);
   const [showProductInfoModal, setShowProductInfoModal] = useState(false);
   const [editProductId, setEditProductId] = useState<string>("");
-  //
+  
+  const [productInfo, setProductInfo] = useState({});
   const {
     getFilterData: products,
     fetchDataFormUrl: refetchProducts,
@@ -99,6 +103,8 @@ export const ProductsContextProvider = ({
         products,
         loading,
         total,
+        setProductInfo,
+        productInfo,
       }}
     >
       {children}

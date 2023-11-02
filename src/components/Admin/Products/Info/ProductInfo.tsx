@@ -3,7 +3,6 @@ import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
-import { AiFillCloseCircle } from "react-icons/ai";
 import Spinner from "../../../Spinner/Spinner";
 import Input from "../../../Input";
 import { productType } from "../../../../types/Product.type";
@@ -13,12 +12,14 @@ import { categoryUserType } from "../../../../types/Category.type";
 import { brandSelectListType } from "../../../../types/Brand.type";
 import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
 import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
-import { useEditProductMutation, useGetProductAdminMutation } from "../../../../Redux/apis/admin/productAdminApi";
+import {
+  useEditProductMutation,
+  useGetProductAdminMutation,
+} from "../../../../Redux/apis/admin/productAdminApi";
 
 function ProductInfo() {
   const { editProductId } = useContext(ProductsContext) as ProductsContextType;
-  const { setShowProductInfoModal, setShowEditItem, setShowInfo, showInfo } =
-    useContext(ProductsContext) as ProductsContextType;
+  const { showInfo } = useContext(ProductsContext) as ProductsContextType;
 
   const [getProductAdmin, { data: product, isLoading: productLoading }] =
     useGetProductAdminMutation();
@@ -77,24 +78,17 @@ function ProductInfo() {
       );
     } else if (editProductResponse) {
       toast.success("Edit Product Is Success");
-      setShowInfo(false);
-      setShowEditItem(true);
     }
   }, [editProductResponse]);
-
   return (
     <div
       className={`relative min-w-[34rem] ${showInfo ? `visible` : `hidden`}`}
     >
       <div className="px-5 py-3">
-        <button
-          className=" absolute right-3"
-          onClick={() => setShowProductInfoModal(false)}
-        >
-          <AiFillCloseCircle className="text-red text-2xl" />
-        </button>
         {productLoading ? (
-          <Spinner />
+          <div className="min-h-[23rem]">
+            <Spinner />
+          </div>
         ) : (
           <>
             <div className="grid grid-cols-2">

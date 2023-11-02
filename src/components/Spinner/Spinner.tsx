@@ -3,8 +3,21 @@ import "./Spinner.css";
 
 function Spinner() {
   return (
-    <div className="flex justify-center items-center min-w-full">
-      <span className="loader"></span>
+    <div className="flex justify-center items-center">
+      <div className="lds-default">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 }

@@ -11,7 +11,6 @@ export function useSearch() {
     } else if (searchQuery === "") {
       searchParams.delete("searchTerm");
     }
-    console.log(searchQuery);
     navigate(`?${searchParams.toString()}`);
   };
 

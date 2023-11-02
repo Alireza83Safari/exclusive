@@ -128,19 +128,8 @@ function AddProductInfo() {
               Error={addProductError?.errors?.description}
             />
           </div>
-          <div>
-            <Input
-              labelText="topFeatures"
-              placeholder="topFeatures"
-              name="topFeatures"
-              className="border"
-              value={addProductInfo.topFeatures}
-              onChange={setInputValue}
-              Error={addProductError?.errors?.topFeatures}
-            />
-          </div>
 
-          <div>
+          <div className="col-span-2">
             <Input
               labelText="shortDescription"
               placeholder="shortDescription"
@@ -196,7 +185,7 @@ function AddProductInfo() {
             Add Product
           </button>
           <button
-            className="py-2 border border-borderColor"
+            className="py-2 border border-gray"
             onClick={() => setShowAddProductModal(false)}
           >
             Cancel

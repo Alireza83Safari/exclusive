@@ -4,6 +4,7 @@ import { userRegisterType } from "../types/Auth.type";
 import { userRegisterHandler } from "../Redux/slices/auth";
 import Spinner from "../components/Spinner/Spinner";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import HeaderSkelton from "../skelton/HeaderSkelton";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
@@ -31,7 +32,7 @@ function Register() {
   };
   return (
     <>
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
 

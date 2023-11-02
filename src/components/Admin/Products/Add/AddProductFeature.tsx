@@ -18,16 +18,14 @@ export default function AddProductFeature() {
     setShowAddFeature,
     setShowAddProductModal,
     setShowAddInfoModal,
-    refetchProducts
+    refetchProducts,
   } = useContext(ProductsContext) as ProductsContextType;
 
   const dispatch = useAppDispatch();
 
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState<any>([]);
 
   const addNewProducts = () => {
-    console.log("addNewProducts");
-
     dispatch(addProductFeatureValue({ createProductId, values }));
   };
 
@@ -46,12 +44,14 @@ export default function AddProductFeature() {
       dispatch(resetAddProductFeatureKeyResponse());
       setShowAddFile(true);
       setShowAddFeature(false);
-      refetchProducts()
+      refetchProducts();
     }
   }, [addProductFeatureKeyResponse]);
 
   const handleInputChange = (id: string, value: string | number) => {
-    const index = values.findIndex((item) => item.productFeatureKeyId === id);
+    const index = values.findIndex(
+      (item: any) => item.productFeatureKeyId === id
+    );
 
     if (index !== -1) {
       const updatedValues = [...values];
@@ -74,7 +74,7 @@ export default function AddProductFeature() {
             featureLoading && "opacity-20"
           }`}
         >
-          {productFeatureKey?.map((item) => (
+          {productFeatureKey?.map((item: any) => (
             <div key={item.id}>
               <label className="dark:text-white-100">{item.name}: </label>
               <input
@@ -82,7 +82,7 @@ export default function AddProductFeature() {
                 className="border border-borderColor p-2 w-full rounded-lg outline-none mt-1 focus:border-blue-600  dark:text-white-100"
                 placeholder={item.name}
                 value={
-                  values?.find((v) => v.productFeatureKeyId === item.id)
+                  values?.find((v: any) => v.productFeatureKeyId === item.id)
                     ?.value || ""
                 }
                 onChange={(e) => handleInputChange(item.id, e.target.value)}
