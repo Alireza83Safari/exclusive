@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useGetOrderAdminQuery } from "../../../Redux/apis/admin/orderAdminApi";
 
@@ -23,7 +22,7 @@ function Orders() {
           </thead>
 
           <tbody>
-            {orders?.data?.slice(0, 6).map((order: any, index: string) => (
+            {orders?.data?.slice(0, 6)?.map((order: any, index: string) => (
               <tr
                 className="md:text-sm sm:text-xs text-[10px] text-center"
                 key={index}

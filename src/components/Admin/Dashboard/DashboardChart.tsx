@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { adminAxios } from "../../../services/adminInterceptor";
-import BarChartComponent, { barChartPropsType } from "./BarChart";
+import BarChartComponent from "./BarChart";
 enum DataType {
   Hour = "hour",
   Daily = "daily",
   Weekly = "weekly",
   Monthly = "monthly",
 }
+export type barChartPropsType = {
+  key: any;
+  value: any;
+};
 
 function DashboardChart() {
   const [chartData, setChartData] = useState<barChartPropsType[]>([]);
@@ -39,7 +43,7 @@ function DashboardChart() {
               onChange={valueHandler}
               value={selectedDataType}
             >
-              {Object.values(DataType).map((dataType, index) => (
+              {Object.values(DataType)?.map((dataType, index) => (
                 <option key={index} value={dataType}>
                   {dataType}
                 </option>

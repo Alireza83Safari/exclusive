@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function Suggestion() {
   return (
@@ -10,24 +10,25 @@ function Suggestion() {
             Enhance Your Music Experience
           </h2>
           <div className="flex md:justify-start justify-center md:my-14 my-10 bg-gradient-to-br">
-            <div className="text-sm mr-2 bg-white rounded-full w-12 h-12 text-center">
+            <div className="text-sm mr-2 bg-white rounded-full w-14 h-14 text-center">
               <p>23</p>
               <p>Hours</p>
             </div>
-            <div className="text-sm mr-2 bg-white rounded-full w-12 h-12 text-center">
-              <p>23</p>
-              <p>Hours</p>
+            <div className="text-sm mr-2 bg-white rounded-full w-14 h-14 text-center">
+              <p>12</p>
+              <p>minutes</p>
             </div>
-            <div className="text-sm mr-2 bg-white rounded-full w-12 h-12 text-center">
-              <p>23</p>
-              <p>Hours</p>
-            </div>
-            <div className="text-sm mr-2 bg-white rounded-full w-12 h-12 text-center">
-              <p>23</p>
-              <p>Hours</p>
+            <div className="text-sm mr-2 bg-white rounded-full w-14 h-14 text-center">
+              <p>48</p>
+              <p>second</p>
             </div>
           </div>
-          <button className="bg-green text-white px-10 py-3">Buy Now!</button>
+          <Link
+            to="/search/product?searchTerm=jbl"
+            className="bg-green text-white px-10 py-3"
+          >
+            Buy Now!
+          </Link>
         </div>
         <div className="md:w-full  m-auto md:h-[344px] h-[220px] md:order-2 order-1">
           <img src="/images/Suggestion.png" className="h-full object-contain" />

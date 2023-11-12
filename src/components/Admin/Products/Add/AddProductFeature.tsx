@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
+/* import { useContext, useEffect, useState } from "react";
 import { resetAddProductFeatureKeyResponse } from "../../../../Redux/slices/feature";
 import {
   addProductFeatureValue,
@@ -9,6 +8,7 @@ import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AddProductFeature() {
   const [dataIsFetched, setDataIsFetched] = useState(false);
@@ -21,20 +21,20 @@ export default function AddProductFeature() {
     refetchProducts,
   } = useContext(ProductsContext) as ProductsContextType;
 
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   const [values, setValues] = useState<any>([]);
 
   const addNewProducts = () => {
-    dispatch(addProductFeatureValue({ createProductId, values }));
+    dispatch(addProductFeatureValue({ createProductId, values }) as any);
   };
 
   const { productFeatureKey, addProductFeatureKeyResponse, featureLoading } =
-    useAppSelector((state) => state.feature);
+    useSelector((state) => state?.feature)
 
   useEffect(() => {
     if (!dataIsFetched) {
-      dispatch(getProductFeatureKey());
+      dispatch(getProductFeatureKey() as any);
       setDataIsFetched(true);
     }
   }, [dataIsFetched]);
@@ -115,3 +115,10 @@ export default function AddProductFeature() {
     </div>
   );
 }
+ */
+
+function AddProductFeature() {
+  return <div>AddProductFeature</div>;
+}
+
+export default AddProductFeature;

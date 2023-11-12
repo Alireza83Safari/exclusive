@@ -1,4 +1,3 @@
-import React from "react";
 import { UserContextProvider } from "../../components/Admin/User/Context/UserContext";
 import UserTable from "../../components/Admin/User/UserTable";
 

@@ -1,5 +1,4 @@
-import React, { lazy, Suspense } from "react";
-import { Toaster } from "react-hot-toast";
+import  { lazy, Suspense } from "react";
 const Content = lazy(() => import("../components/Content/Content"));
 const Promotion = lazy(() => import("../components/Promotion"));
 const Brand = lazy(() => import("../components/Brand"));
@@ -24,7 +23,6 @@ function Home() {
         <OurProducts />
         <Arrival />
         <Options />
-        <Toaster />
         <Footer />
       </Suspense>
     </>

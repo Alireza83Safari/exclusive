@@ -15,6 +15,7 @@ import {
   useEditCategoryMutation,
   useGetCategoryMutation,
 } from "../../../Redux/apis/admin/categoryAdminApi";
+import { categoryErrorType } from "../../../types/Error.type";
 
 const style = {
   position: "absolute" as "absolute",
@@ -55,7 +56,7 @@ export default function EditCategory() {
     editCategory({ id: editCategoryId, categoryInfo: editCategoryValue });
   };
 
-  const editCategoryError = error?.data;
+  const editCategoryError = error as categoryErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { name, code } = editCategoryValue;
@@ -108,7 +109,7 @@ export default function EditCategory() {
             Edit Category
           </Typography>
           <Typography variant="body1" className="text-red">
-            {editCategoryError?.message}
+            {editCategoryError?.data?.message}
           </Typography>
           <TextField
             label="Name"
@@ -119,7 +120,7 @@ export default function EditCategory() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editCategoryError?.errors?.name}
+            {editCategoryError?.data?.errors?.name}
           </Typography>
           <TextField
             label="Code"
@@ -130,7 +131,7 @@ export default function EditCategory() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editCategoryError?.errors?.code}
+            {editCategoryError?.data?.errors?.code}
           </Typography>
 
           <Button

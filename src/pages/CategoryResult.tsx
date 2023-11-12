@@ -6,7 +6,7 @@ import { userProductType } from "../types/Product.type";
 import { userAxios } from "../services/userInterceptor";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductTemplate from "../components/Product/ProductTemplate";
-const FilterProducts = lazy(() => import("../components/FilterProducts"));
+import FilterProducts from "../components/FilterProducts";
 const Pagination = lazy(() => import("../components/Pagination"));
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
@@ -30,9 +30,8 @@ function CategoryResult() {
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-5 relative px-2 min-h-[400px]">
-        <Suspense>
-          <FilterProducts />
-        </Suspense>
+        <FilterProducts />
+
         {loading ? (
           <Spinner />
         ) : getFilterData.length >= 1 ? (

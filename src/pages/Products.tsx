@@ -61,7 +61,7 @@ function Products() {
               <div className="text-5xl flex justify-center items-center mt-28">
                 No exact matches found
               </div>
-            ) : null}
+            ) : ""}
           </>
         )}
         {totalPages > 1 && (

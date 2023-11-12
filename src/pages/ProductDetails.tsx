@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import  { Suspense, lazy, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import "swiper/css";
@@ -9,8 +9,6 @@ import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner/Spinner";
 import { userProductType } from "../types/Product.type";
 import ContentLoaders from "../components/ContentLoaders";
-import { Toaster } from "react-hot-toast";
-
 import { useGetProductItemUserMutation } from "../Redux/apis/user/productItemUserApi";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductDetailsInfo from "../components/ProductDetails/ProductDetailsInfo";
@@ -74,7 +72,7 @@ function ProductDetails() {
                   <SwiperSlide>
                     <div className="w-full h-full flex justify-center">
                       <img
-                        src={`http://127.0.0.1:6060/${productFind?.fileUrl}`}
+                        src={productFind?.fileUrl}
                         className="object-contain"
                       />
                     </div>
@@ -97,7 +95,7 @@ function ProductDetails() {
                     ) : (
                       <SwiperSlide>
                         <img
-                          src={`http://127.0.0.1:6060/${file?.fileUrl}`}
+                          src={file?.fileUrl}
                           className="object-contain w-full"
                         />
                       </SwiperSlide>
@@ -111,8 +109,6 @@ function ProductDetails() {
             <RelatedProducts products={products} />
           </>
         )}
-
-        <Toaster />
       </section>
       <Suspense fallback={<Spinner />}>
         <Footer />

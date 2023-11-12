@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import Options from "../components/Options";
 import { Link } from "react-router-dom";
 import HeaderSkelton from "../skelton/HeaderSkelton";
@@ -105,7 +105,7 @@ function About() {
         </div>
 
         <div className="grid grid-cols-3 md:gap-x-6 gap-x-1 md:my-32 my-12">
-          {userInfo.map((info, index) => (
+          {userInfo?.map((info, index) => (
             <div key={index}>
               <div>
                 <img src={info.img} />

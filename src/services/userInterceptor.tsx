@@ -4,6 +4,9 @@ import toast from "react-hot-toast";
 const userAxios = axios.create({
   baseURL: "/api/v1/user",
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 userAxios.interceptors.request.use(
@@ -23,7 +26,7 @@ userAxios.interceptors.response.use(
     if (
       error.response.status === 401 &&
       error?.response?.request?.responseURL !==
-        "http://localhost:5173/api/v1/user/is_authenticated"
+        "https://exclusive.iran.liara.run/api/v1/user/is_authenticated"
     ) {
       toast.error("Unauthorized. Please log in.");
     }

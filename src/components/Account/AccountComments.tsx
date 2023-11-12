@@ -25,75 +25,81 @@ function AccountAddress() {
   return (
     <>
       <div className="container mx-auto border border-borderColor rounded-md">
-        {loading
-          ? totalSkeletonShow.map((index) => (
-              <React.Fragment key={index}>
-                <AccountSkelton />
-              </React.Fragment>
-            ))
-          : comments?.data.length
-          ? getFilterData?.map((comment, index) => (
-              <div
-                className={`py-8 px-6 ${
-                  index !== total - 1 ? "border-b border-borderColor" : ""
-                }`}
-                key={index}
-              >
-                <div className="grid grid-cols-3 gap-y-5">
-                  {loading ? (
-                    <ContentLoaders width={80} height={20} />
-                  ) : (
-                    <div className="flex items-center">
-                      <p className="mr-3 text-sm">Product Name:</p>
-                      <p className="font-semibold">{comment.productName}</p>
-                    </div>
-                  )}
-                  {loading ? (
-                    <ContentLoaders width={80} height={20} />
-                  ) : (
-                    <div className="flex items-center">
-                      <p className="mr-3 text-sm">Rate:</p>
-                      <p className="font-semibold">{comment.rate}</p>
-                    </div>
-                  )}
-                  {loading ? (
-                    <ContentLoaders width={120} height={24} />
-                  ) : (
-                    <div className="flex items-center">
-                      <p className="mr-3 text-sm">Status:</p>
-                      {comment.commentStatus === 1 ? (
-                        <p className="font-semibold bg-green text-sm text-lime-800 px-2 py-1 rounded-md">
-                          Accept
-                        </p>
-                      ) : (
-                        <p className="font-semibold bg-rose-400 rounded-md text-white text-sm px-2 py-1">
-                          Reject
-                        </p>
-                      )}
-                    </div>
-                  )}
-                  {loading ? (
-                    <ContentLoaders width={80} height={20} />
-                  ) : (
-                    <div className="flex items-center">
-                      <p className="mr-3 text-sm">Date:</p>
-                      <p className="font-semibold">
-                        {comment.createdAt.slice(0, 10)}
+        {loading ? (
+          totalSkeletonShow?.map((index) => (
+            <React.Fragment key={index}>
+              <AccountSkelton />
+            </React.Fragment>
+          ))
+        ) : comments?.data.length ? (
+          getFilterData?.map((comment, index) => (
+            <div
+              className={`py-8 px-6 ${
+                index !== total - 1 ? "border-b border-borderColor" : ""
+              }`}
+              key={index}
+            >
+              <div className="grid grid-cols-3 gap-y-5">
+                {loading ? (
+                  <ContentLoaders width={80} height={20} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="mr-3 text-sm">Product Name:</p>
+                    <p className="font-semibold">{comment.productName}</p>
+                  </div>
+                )}
+                {loading ? (
+                  <ContentLoaders width={80} height={20} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="mr-3 text-sm">Rate:</p>
+                    <p className="font-semibold">{comment.rate}</p>
+                  </div>
+                )}
+                {loading ? (
+                  <ContentLoaders width={120} height={24} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="mr-3 text-sm">Status:</p>
+                    {comment.commentStatus === 1 ? (
+                      <p className="font-semibold bg-green text-sm text-lime-800 px-2 py-1 rounded-md">
+                        Accept
                       </p>
-                    </div>
-                  )}
-                  {loading ? (
-                    <ContentLoaders width={80} height={20} />
-                  ) : (
-                    <div className="flex items-center col-span-2">
-                      <p className="mr-3 text-sm">Comment:</p>
-                      <p className="font-semibold">{comment.text}</p>
-                    </div>
-                  )}
-                </div>
+                    ) : (
+                      <p className="font-semibold bg-rose-400 rounded-md text-white text-sm px-2 py-1">
+                        Reject
+                      </p>
+                    )}
+                  </div>
+                )}
+                {loading ? (
+                  <ContentLoaders width={80} height={20} />
+                ) : (
+                  <div className="flex items-center">
+                    <p className="mr-3 text-sm">Date:</p>
+                    <p className="font-semibold">
+                      {comment.createdAt.slice(0, 10)}
+                    </p>
+                  </div>
+                )}
+                {loading ? (
+                  <ContentLoaders width={80} height={20} />
+                ) : (
+                  <div className="flex items-center col-span-2">
+                    <p className="mr-3 text-sm">Comment:</p>
+                    <p className="font-semibold">{comment.text}</p>
+                  </div>
+                )}
               </div>
-            ))
-          : null}
+            </div>
+          ))
+        ) : (
+          <div className=" flex justify-center items-center min-h-full w-full">
+            <h1 className="text-3xl font-bold py-40 flex justify-center items-center ">
+              You Havent Comment
+            </h1>
+          </div>
+        )}
       </div>
       {totalPages > 1 && (
         <Pagination

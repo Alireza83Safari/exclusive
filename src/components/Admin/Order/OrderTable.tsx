@@ -84,7 +84,7 @@ function OrderTable() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
+                {columns?.map((column) => (
                   <TableCell key={column.id} align="center">
                     {column.label}
                   </TableCell>
@@ -93,7 +93,11 @@ function OrderTable() {
             </TableHead>
             <TableBody>
               {orderLoading ? (
-                <Spinner />
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <Spinner />
+                  </TableCell>
+                </TableRow>
               ) : orders?.length ? (
                 orders?.map((row: any, index: any) => (
                   <TableRow key={index}>

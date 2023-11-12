@@ -7,6 +7,8 @@ import {
   categoryContextType,
 } from "./Context/CayegoryContext";
 import { useCreateCategoryMutation } from "../../../Redux/apis/admin/categoryAdminApi";
+import useHasAccess from "../../../hooks/useHasAccess";
+import { categoryErrorType } from "../../../types/Error.type";
 
 function AddCategory() {
   const inintialCategoryState = {
@@ -30,8 +32,16 @@ function AddCategory() {
   const [createCategory, { error: categoryError, isSuccess }] =
     useCreateCategoryMutation();
 
+  const { userHasAccess: accessCreate } = useHasAccess(
+    "action_category_admin_create"
+  );
+
   const createCategoryHandler = () => {
-    createCategory(createCategoryValue);
+    if (accessCreate) {
+      createCategory(createCategoryValue);
+    } else {
+      toast.error("You Havent Access Create Category");
+    }
   };
 
   useEffect(() => {
@@ -42,7 +52,7 @@ function AddCategory() {
     }
   }, [isSuccess]);
 
-  const createCategoryError = categoryError?.data;
+  const createCategoryError = categoryError as categoryErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { name, code } = createCategoryValue;
@@ -54,7 +64,7 @@ function AddCategory() {
   }, [createCategoryValue]);
 
   return (
-    <div className="col-span-4 px-4">
+    <div className="col-span-4 px-3">
       <Paper
         style={{
           margin: "0 auto",
@@ -73,7 +83,8 @@ function AddCategory() {
           Create Category
         </Typography>
         <Typography variant="body1" className="text-red">
-          {createCategoryError?.message}
+          {createCategoryError?.status === 500 &&
+            "get server error please try again later"}
         </Typography>
         <TextField
           label="Name"
@@ -84,7 +95,7 @@ function AddCategory() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createCategoryError?.errors?.name}
+          {createCategoryError?.data?.errors?.name}
         </Typography>
         <TextField
           label="Code"
@@ -95,7 +106,7 @@ function AddCategory() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createCategoryError?.errors?.code}
+          {createCategoryError?.data?.errors?.code}
         </Typography>
 
         <Button

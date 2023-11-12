@@ -7,13 +7,20 @@ import {
   ProductsContextType,
 } from "../Context/ProductsContext";
 import toast from "react-hot-toast";
-import { productError } from "../../../../types/Error.type";
+import { productErrorType } from "../../../../types/Error.type";
 import { categoryUserType } from "../../../../types/Category.type";
 import { brandSelectListType } from "../../../../types/Brand.type";
 import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
 import { useCreateProductMutation } from "../../../../Redux/apis/admin/productAdminApi";
 import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
+import Spinner from "../../../Spinner/Spinner";
 
+export type createProductType = {
+  data: {
+    data: string;
+    message: String;
+  };
+};
 function AddProductInfo() {
   const [addProductInfo, setAddProductInfo] = useState({
     brandId: "",
@@ -44,18 +51,17 @@ function AddProductInfo() {
   const { data: brands } = useGetBrandsSelectListQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
-  const [
-    createProduct,
-    { error: createProductError, isLoading: createProductLoading, isSuccess },
-  ] = useCreateProductMutation();
+  const [createProduct, { error: createProductError, isSuccess, isLoading }] =
+    useCreateProductMutation();
 
   const addNewProductHandler = async () => {
     try {
-      const response = await createProduct(addProductInfo);
+      const response = (await createProduct(
+        addProductInfo
+      )) as createProductType;
       setCreateProductId(response?.data?.data);
     } catch (error) {}
   };
-
   const getDisbledBtn = useMemo(() => {
     const { name, brandId, categoryId, code, shortDescription, description } =
       addProductInfo;
@@ -78,104 +84,113 @@ function AddProductInfo() {
       setShowAddInfoModal(false);
       setShowAddItem(true);
       setCreateProductId(createProductId as string);
+
       toast.success("Add product is successful");
       refetchProducts();
     }
   }, [isSuccess]);
 
-  const addProductError = createProductError?.data as productError;
+  const addProductError = createProductError as productErrorType;
 
   return (
-    <div className="rounded-xl">
+    <div className="rounded-xl min-w-[20rem]">
       <h1 className="text-center py-3 text-lg font-semibold">
         Add New Product
       </h1>
-      <p className="text-red text-center text-xs">{addProductError?.message}</p>
-      <form action="" onSubmit={(e) => e.preventDefault()}>
-        <div className="grid grid-cols-2 p-4 rounded-lg gap-x-4 gap-y-6">
-          <div>
-            <Input
-              labelText="name"
-              placeholder="name"
-              name="name"
-              className="border"
-              value={addProductInfo.name}
-              onChange={setInputValue}
-              Error={addProductError?.errors?.name}
-            />
+      <p className="text-red text-center text-xs">
+        {addProductError?.data?.message}
+      </p>
+      <form onSubmit={(e) => e.preventDefault()}>
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[24rem] min-w-[30rem]">
+            <Spinner />
           </div>
+        ) : (
+          <div className="grid grid-cols-2 p-4 rounded-lg gap-x-4 gap-y-6">
+            <div>
+              <Input
+                labelText="name"
+                placeholder="name"
+                name="name"
+                className="border"
+                value={addProductInfo.name}
+                onChange={setInputValue}
+                Error={addProductError?.data?.errors?.name}
+              />
+            </div>
 
-          <div>
-            <Input
-              labelText="code"
-              placeholder="code"
-              name="code"
-              className="border"
-              value={addProductInfo.code}
-              onChange={setInputValue}
-              Error={addProductError?.errors?.code}
-            />
-          </div>
+            <div>
+              <Input
+                labelText="code"
+                placeholder="code"
+                name="code"
+                className="border"
+                value={addProductInfo.code}
+                onChange={setInputValue}
+                Error={addProductError?.data?.errors?.code}
+              />
+            </div>
 
-          <div className="col-span-2">
-            <Input
-              labelText="description"
-              placeholder="description"
-              name="description"
-              className="border"
-              value={addProductInfo.description}
-              onChange={setInputValue}
-              Error={addProductError?.errors?.description}
-            />
-          </div>
+            <div className="col-span-2">
+              <Input
+                labelText="description"
+                placeholder="description"
+                name="description"
+                className="border"
+                value={addProductInfo.description}
+                onChange={setInputValue}
+                Error={addProductError?.data?.errors?.description}
+              />
+            </div>
 
-          <div className="col-span-2">
-            <Input
-              labelText="shortDescription"
-              placeholder="shortDescription"
-              name="shortDescription"
-              className="border"
-              value={addProductInfo.shortDescription}
-              onChange={setInputValue}
-              Error={addProductError?.errors?.shortDescription}
-            />
-          </div>
+            <div className="col-span-2">
+              <Input
+                labelText="shortDescription"
+                placeholder="shortDescription"
+                name="shortDescription"
+                className="border"
+                value={addProductInfo.shortDescription}
+                onChange={setInputValue}
+                Error={addProductError?.data?.errors?.shortDescription}
+              />
+            </div>
 
-          <div>
-            <label className="text-sm">Category</label>
-            <SelectList
-              onChange={(selected) =>
-                setAddProductInfo({
-                  ...addProductInfo,
-                  categoryId: selected.value,
-                  categoryName: selected.label,
-                })
-              }
-              name="categoryId"
-              options={category?.data.map((category: categoryUserType) => ({
-                label: category.value,
-                value: category.key,
-              }))}
-            />
+            <div>
+              <label className="text-sm">Category</label>
+              <SelectList
+                onChange={(selected) =>
+                  setAddProductInfo({
+                    ...addProductInfo,
+                    categoryId: selected.value,
+                    categoryName: selected.label,
+                  })
+                }
+                name="categoryId"
+                options={category?.data?.map((category: categoryUserType) => ({
+                  label: category.value,
+                  value: category.key,
+                }))}
+              />
+            </div>
+            <div>
+              <label className="text-sm">Brand</label>
+              <SelectList
+                onChange={(selected) =>
+                  setAddProductInfo({
+                    ...addProductInfo,
+                    brandId: selected.value,
+                    brandName: selected.label,
+                  })
+                }
+                name="brandId"
+                options={brands?.data?.map((brand: brandSelectListType) => ({
+                  label: brand.value,
+                  value: brand.key,
+                }))}
+              />
+            </div>
           </div>
-          <div>
-            <label className="text-sm">Brand</label>
-            <SelectList
-              onChange={(selected) =>
-                setAddProductInfo({
-                  ...addProductInfo,
-                  brandId: selected.value,
-                  brandName: selected.label,
-                })
-              }
-              name="brandId"
-              options={brands?.data.map((brand: brandSelectListType) => ({
-                label: brand.value,
-                value: brand.key,
-              }))}
-            />
-          </div>
-        </div>
+        )}
         <div className="grid grid-cols-2 mt-4">
           <button
             onClick={addNewProductHandler}

@@ -6,10 +6,10 @@ import Spinner from "../components/Spinner/Spinner";
 import { userAxios } from "../services/userInterceptor";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductSkelton from "../skelton/ProductSkelton";
+import FilterProducts from "../components/FilterProducts";
 const ProductTemplate = lazy(
   () => import("../components/Product/ProductTemplate")
 );
-const FilterProducts = lazy(() => import("../components/FilterProducts"));
 const Pagination = lazy(() => import("../components/Pagination"));
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
@@ -32,9 +32,7 @@ function SearchResult() {
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
-        <Suspense>
           <FilterProducts />
-        </Suspense>
         {loading || loading ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
             {totalSkeletonShow?.map((_, index) => (
@@ -53,11 +51,11 @@ function SearchResult() {
                   </React.Fragment>
                 ))}
               </div>
-            ) : getFilterData.length >= 1 ? (
+            ) : !getFilterData.length ? (
               <div className="text-5xl flex justify-center items-center mt-28">
                 No exact matches found
               </div>
-            ) : null}
+            ) : ""}
           </>
         )}
 

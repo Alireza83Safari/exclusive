@@ -1,7 +1,10 @@
-import React, { useContext, lazy, Suspense } from "react";
+import { useContext, lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
 import Spinner from "../../../Spinner/Spinner";
-import { ProductsContext, ProductsContextType} from "../Context/ProductsContext";
+import {
+  ProductsContext,
+  ProductsContextType,
+} from "../Context/ProductsContext";
 
 const AddProductInfo = lazy(() => import("./AddProductInfo"));
 const AddProductItem = lazy(() => import("./AddProductItem"));

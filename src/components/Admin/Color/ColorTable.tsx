@@ -18,6 +18,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "../../Pagination";
+import useHasAccess from "../../../hooks/useHasAccess";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions" | "colorHex";
@@ -45,14 +46,36 @@ function ColorTable() {
     total,
   } = useContext(ColorContext) as colorContextType;
 
+  const { userHasAccess: accessList } = useHasAccess("action_color_admin_list");
+  const { userHasAccess: accessEdit } = useHasAccess(
+    "action_color_admin_update"
+  );
+  const { userHasAccess: accessDelete } = useHasAccess(
+    "action_color_admin_delete"
+  );
+
   const [deleteColor] = useDeleteColorMutation();
 
   const deleteColorHandler = async (id: string) => {
-    await deleteColor(id).then(() => {
-      toast.success("Delete Color Is Success");
-      refetchColor();
+    if (accessDelete) {
+      await deleteColor(id).then(() => {
+        toast.success("Delete Color Is Success");
+        refetchColor();
+        setShowDeleteModal(false);
+      });
+    } else {
+      toast.error("You Havent Access Delete Color");
       setShowDeleteModal(false);
-    });
+    }
+  };
+
+  const editColorHandler = (id: string) => {
+    if (accessEdit) {
+      setEditColorId(id);
+      setOpenEditModal(true);
+    } else {
+      toast.error("You Havent Access Edit Color");
+    }
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,6 +83,7 @@ function ColorTable() {
   const pageSize = 9;
   const {} = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
+
   const changePageHandler = (id: number) => {
     setCurrentPage(id);
   };
@@ -88,31 +112,29 @@ function ColorTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ minHeight: colors?.length ? 600 : 650 }}>
-          <div className="h-8 md:mx-3 mb-4">
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <SearchIcon
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                onClick={submitSearch}
-              />
-              <TextField
-                id="input-with-sx"
-                label="search"
-                variant="standard"
-                onChange={setInputValue}
-                value={searchQuery}
-                onKeyPress={(e) => e.key === "Enter" && submitSearch()}
-              />
-            </Box>
-          </div>
-          <Table stickyHeader aria-label="sticky table">
-            {colorsLoading ? (
-              <Spinner />
-            ) : (
-              <>
+        <TableContainer sx={{ minHeight: colors?.length ? 650 : 650 }}>
+          {accessList ? (
+            <>
+              <div className="h-8 md:mx-3 mb-4">
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <SearchIcon
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                    onClick={submitSearch}
+                  />
+                  <TextField
+                    id="input-with-sx"
+                    label="search"
+                    variant="standard"
+                    onChange={setInputValue}
+                    value={searchQuery}
+                    onKeyPress={(e) => e.key === "Enter" && submitSearch()}
+                  />
+                </Box>
+              </div>
+              <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
-                    {columns.map((column) => (
+                    {columns?.map((column) => (
                       <TableCell key={column.id} align="center">
                         {column.label}
                       </TableCell>
@@ -120,7 +142,13 @@ function ColorTable() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colors?.length ? (
+                  {colorsLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={7}>
+                        <Spinner />
+                      </TableCell>
+                    </TableRow>
+                  ) : colors?.length ? (
                     colors?.map((row: any, index: any) => (
                       <TableRow key={row.id}>
                         <TableCell style={{ width: 10 }} align="center">
@@ -156,10 +184,7 @@ function ColorTable() {
                           />
                           <FaPen
                             className="text-orange-500 cursor-pointer"
-                            onClick={() => {
-                              setEditColorId(row.id);
-                              setOpenEditModal(true);
-                            }}
+                            onClick={() => editColorHandler(row.id)}
                           />
                         </TableCell>
                       </TableRow>
@@ -174,9 +199,16 @@ function ColorTable() {
                     </TableRow>
                   )}
                 </TableBody>
-              </>
-            )}
-          </Table>
+              </Table>
+              :
+            </>
+          ) : (
+            <Box sx={{ marginTop: "100px" }}>
+              <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                You Havent Access Color List
+              </h1>
+            </Box>
+          )}
         </TableContainer>
         {totalPages > 1 && (
           <Pagination

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,6 +13,7 @@ import DeleteModal from "../DeleteModal";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import EditAppPic from "./EditAppPic";
 import { useDeleteAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
+import useHasAccess from "../../../hooks/useHasAccess";
 
 interface Column {
   id: "index" | "fileName" | "createAt" | "actions" | "url" | "title";
@@ -39,14 +40,34 @@ function AppPicTable() {
     setOpenEditModal,
   } = useContext(AppPicContext) as appPicContextType;
 
+  const { userHasAccess } = useHasAccess("action_app_pic_admin_list");
+  const { userHasAccess: accessDelete } = useHasAccess(
+    "action_app_pic_admin_delete"
+  );
+  const { userHasAccess: accessEdit } = useHasAccess(
+    "action_app_pic_admin_update"
+  );
   const [deleteAppPic] = useDeleteAppPicMutation();
 
   const deleteAppPicHandler = async (id: string) => {
-    await deleteAppPic(id).then(() => {
-      toast.success("Delete AppPic Is Success");
-      refetchAppPic();
-      setShowDeleteModal(false);
-    });
+    if (accessDelete) {
+      await deleteAppPic(id).then(() => {
+        toast.success("Delete AppPic Is Success");
+        refetchAppPic();
+        setShowDeleteModal(false);
+      });
+    } else {
+      toast.error("You Havent Access Delete AppPic");
+    }
+  };
+
+  const editAppPicHandler = (id: string) => {
+    if (accessEdit) {
+      setEditAppPicId(id);
+      setOpenEditModal(true);
+    } else {
+      toast.error("You Havent Access Edit AppPic");
+    }
   };
 
   return (
@@ -60,67 +81,82 @@ function AppPicTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ maxHeight: 750, minHeight: 710 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id} align="center">
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {appPicLoading ? (
-                <Spinner />
-              ) : (
-                appPics?.map((row: any, index: any) => (
-                  <TableRow key={row.id}>
-                    <TableCell style={{ width: 10 }} align="center">
-                      {index + 1}
+        <TableContainer
+          sx={{
+            maxHeight: 750,
+            minHeight: 710,
+            display: !userHasAccess ? "flex" : "block",
+          }}
+        >
+          {userHasAccess ? (
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns?.map((column) => (
+                    <TableCell key={column.id} align="center">
+                      {column.label}
                     </TableCell>
-                    <TableCell align="center">{row.title}</TableCell>
-                    <TableCell align="center">
-                      {row.fileName.slice(0, 10)}
-                    </TableCell>
-                    <TableCell align="center">#{row.url}</TableCell>
-                    <TableCell
-                      align="center"
-                      style={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {row.createdAt.slice(0, 10)}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      className="sm:mt-2 mt-2"
-                    >
-                      <FaTrash
-                        className="text-red mr-3 cursor-pointer"
-                        onClick={() => {
-                          setDeleteAppPicID(row.id);
-                          setShowDeleteModal(true);
-                        }}
-                      />
-                      <FaPen
-                        className="text-orange-500 cursor-pointer"
-                        onClick={() => {
-                          setEditAppPicId(row.id);
-                          setOpenEditModal(true);
-                        }}
-                      />
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {appPicLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={7}>
+                      <Spinner />
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  appPics?.map((row: any, index: any) => (
+                    <TableRow key={row.id}>
+                      <TableCell style={{ width: 10 }} align="center">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell align="center">{row.title}</TableCell>
+                      <TableCell align="center">
+                        {row.fileName.slice(0, 10)}
+                      </TableCell>
+                      <TableCell align="center">#{row.url}</TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {row.createdAt.slice(0, 10)}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        className="sm:mt-2 mt-2"
+                      >
+                        <FaTrash
+                          className="text-red mr-3 cursor-pointer"
+                          onClick={() => {
+                            setDeleteAppPicID(row.id);
+                            setShowDeleteModal(true);
+                          }}
+                        />
+                        <FaPen
+                          className="text-orange-500 cursor-pointer"
+                          onClick={() => editAppPicHandler(row.id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className=" flex justify-center items-center min-h-full w-full">
+              <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                You Havent Access AppPic List
+              </h1>
+            </div>
+          )}
         </TableContainer>
       </Paper>
       <EditAppPic />

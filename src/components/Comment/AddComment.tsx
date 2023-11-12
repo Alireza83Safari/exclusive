@@ -3,6 +3,7 @@ import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCreateCommentMutation } from "../../Redux/apis/user/commentUserApi";
+import { commentType } from "../../types/Comment.type";
 
 type addCommentPropsType = {
   getCommentsProudct: (productId: string) => void;
@@ -57,7 +58,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
       strengthPoints: strengths,
       text: commentValue,
       weakPoints: weakPoints,
-    };
+    } as commentType;
     createComment(commentObj);
   };
 
@@ -85,8 +86,8 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
           name="comment"
           value={commentValue}
           id="comment"
-          cols="30"
-          rows="3"
+          cols={30}
+          rows={3}
           className="border border-borderColor rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-sm"
           placeholder="Write your comment..."
           onChange={(e) => setCommentValue(e.target.value)}
@@ -94,7 +95,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
         <fieldset className="mb-2">
           <legend className="text-sm text-gray-600">Choose Your Rate:</legend>
           <div className="flex items-center text-sm">
-            {commentRating.map((rating, index) => (
+            {commentRating?.map((rating, index) => (
               <label key={index} className="mr-2">
                 <input
                   type="radio"
@@ -129,7 +130,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
             </div>
 
             <ul className="p-1">
-              {strengths.map((strength, index) => (
+              {strengths?.map((strength, index) => (
                 <li className="flex justify-between px-2 text-sm" key={index}>
                   <div>
                     <FaPlus className="text-green mr-2" />
@@ -162,7 +163,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
             </div>
 
             <ul className="p-1">
-              {weakPoints.map((weakpoint, index) => (
+              {weakPoints?.map((weakpoint, index) => (
                 <li className="flex justify-between px-2 text-sm" key={index}>
                   <div>
                     <FaMinus className="text-red mr-2" />

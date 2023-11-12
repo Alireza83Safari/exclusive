@@ -1,11 +1,11 @@
-import React from "react";
 import Select from "react-select";
 
 export type selectListType = {
-  defaultValue?:any;
-  onChange: (selectedOption: any) => void;
-  options: any;
-  name: string;
+  defaultValue?: any;
+  onChange?: (selectedOption: any) => void;
+  options?: any;
+  name?: string;
+  value?: any;
 };
 
 export default function SelectList({
@@ -13,6 +13,7 @@ export default function SelectList({
   onChange,
   options,
   name,
+  value,
 }: selectListType) {
   type CustomStyles = {
     control: (provided: any) => any;
@@ -33,8 +34,8 @@ export default function SelectList({
   return (
     <Select
       name={name}
+      value={value}
       defaultValue={defaultValue}
-      value={defaultValue}
       onChange={onChange}
       options={options}
       styles={customStyles}

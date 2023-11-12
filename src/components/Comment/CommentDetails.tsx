@@ -1,4 +1,3 @@
-import React from "react";
 import { getCommentType } from "../../types/Comment.type";
 
 type commentDetailPropsType = {
@@ -16,7 +15,7 @@ function CommentDetails({ comments }: commentDetailPropsType) {
             <p>{comment.username}</p>
             <p>{comment.createdAt.slice(0, 10)}</p>
             <div className="flex">
-              <p>rate: </p>{" "}
+              <p>rate: </p>
               <p className={comment.rate > 3 ? `text-lime-500` : `text-red`}>
                 {comment.rate}
               </p>

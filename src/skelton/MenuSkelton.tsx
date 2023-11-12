@@ -1,4 +1,3 @@
-import React from "react";
 import ContentLoaders from "../components/ContentLoaders";
 
 function MenuSkelton() {

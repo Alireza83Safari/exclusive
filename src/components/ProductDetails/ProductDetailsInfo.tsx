@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { userProductType } from "../../types/Product.type";
 import { useParams } from "react-router-dom";
 import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";

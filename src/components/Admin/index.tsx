@@ -1,5 +1,4 @@
 // App.tsx
-import React, { useState } from "react";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";

@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { colorType } from "../../../types/Color.type";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
 import { useCreateColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
+import useHasAccess from "../../../hooks/useHasAccess";
+import { colorErrorType } from "../../../types/Error.type";
 
 function AddColor() {
   const inintialColorState = {
@@ -13,17 +15,27 @@ function AddColor() {
   };
   const { refetchColor } = useContext(ColorContext) as colorContextType;
 
-  const [createColorValue, setCreateColorValue] = useState<colorType>(inintialColorState);
+  const [createColorValue, setCreateColorValue] =
+    useState<colorType>(inintialColorState);
 
-  const setInputValue = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const setInputValue = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { value, name } = event.target;
     setCreateColorValue({ ...createColorValue, [name]: value });
   };
 
-  const [createColor, { error: colorError, isSuccess }] = useCreateColorMutation();
+  const [createColor, { error: colorError, isSuccess }] =
+    useCreateColorMutation();
+
+  const { userHasAccess } = useHasAccess("action_color_admin_create");
 
   const createColorHandler = () => {
-    createColor(createColorValue);
+    if (userHasAccess) {
+      createColor(createColorValue);
+    } else {
+      toast.error("You Havent Access Create Color");
+    }
   };
 
   useEffect(() => {
@@ -34,7 +46,7 @@ function AddColor() {
     }
   }, [isSuccess]);
 
-  const createColorError = colorError?.data;
+  const createColorError = colorError as colorErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { name, code, colorHex } = createColorValue;
@@ -46,7 +58,7 @@ function AddColor() {
   }, [createColorValue]);
 
   return (
-    <div className="col-span-4 px-4">
+    <div className="col-span-4 px-3">
       <Paper
         style={{
           margin: "0 auto",
@@ -65,7 +77,7 @@ function AddColor() {
           Create Color
         </Typography>
         <Typography variant="body1" className="text-red">
-          {createColorError?.message}
+          {createColorError?.data?.message}
         </Typography>
         <TextField
           label="Name"
@@ -76,7 +88,7 @@ function AddColor() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createColorError?.errors.name}
+          {createColorError?.data?.errors?.name}
         </Typography>
         <TextField
           label="Code"
@@ -87,7 +99,7 @@ function AddColor() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createColorError?.errors.code}
+          {createColorError?.data?.errors?.code}
         </Typography>
         <TextField
           type="color"
@@ -103,9 +115,9 @@ function AddColor() {
             boxShadow: "0 0 5px rgba(0,0,0,0.2)",
           }}
         />
-        
+
         <Typography variant="body1" className="text-red">
-          {createColorError?.errors.colorHex}
+          {createColorError?.data?.errors?.colorHex}
         </Typography>
         <Button
           variant="contained"

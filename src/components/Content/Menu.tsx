@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useGetCategorySelectListQuery } from "../../Redux/apis/user/categoryUserApi";
 import { categoryUserType } from "../../types/Category.type";
@@ -15,7 +14,7 @@ function Menu() {
         ) : (
           category?.data
             ?.slice(0, 9)
-            .map((item: categoryUserType, index: number) => (
+            ?.map((item: categoryUserType, index: number) => (
               <li
                 className="lg:my-3 my-2 hover:text-red duration-300"
                 key={index}

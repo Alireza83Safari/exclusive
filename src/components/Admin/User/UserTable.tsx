@@ -19,6 +19,7 @@ import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import Pagination from "../../Pagination";
 import SearchIcon from "@mui/icons-material/Search";
+import useHasAccess from "../../../hooks/useHasAccess";
 
 interface Column {
   id:
@@ -55,15 +56,6 @@ function UserTable() {
     setShowAddModal,
   } = useContext(UserContext) as UserContextType;
 
-  const [deleteUser] = useDeleteUserMutation();
-
-  const deleteColorHandler = async (id: string) => {
-    await deleteUser(id).then(() => {
-      toast.success("Delete User Is Success");
-      refetchUser();
-      setShowDeleteModal(false);
-    });
-  };
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -85,7 +77,48 @@ function UserTable() {
     searchHandler(searchQuery);
     setSearchQuery("");
   };
+  const { userHasAccess: accessList } = useHasAccess("action_user_admin_list");
+  const { userHasAccess: accessCreate } = useHasAccess(
+    "action_user_admin_create"
+  );
+  const { userHasAccess: accessEdit } = useHasAccess(
+    "action_user_admin_update"
+  );
+  const { userHasAccess: accessDelete } = useHasAccess(
+    "action_user_admin_delete"
+  );
 
+  const [deleteUser] = useDeleteUserMutation();
+
+  const deleteColorHandler = async (id: string) => {
+    if (accessDelete) {
+      await deleteUser(id).then(() => {
+        toast.success("Delete User Is Success");
+        refetchUser();
+        setShowDeleteModal(false);
+      });
+    } else {
+      toast.error("You Havent Access Delete User");
+      setShowDeleteModal(false);
+    }
+  };
+
+  const editUserHandler = (id: string) => {
+    if (accessEdit) {
+      setEditUserId(id);
+      setShowEditModal(true);
+    } else {
+      toast.error("You Havent Access Edit User");
+    }
+  };
+
+  const createUserHandler = () => {
+    if (accessCreate) {
+      setShowAddModal(true);
+    } else {
+      toast.error("You Havent Access Create User");
+    }
+  };
   return (
     <div className="col-span-12 m-3 bg-white p-2">
       <div className="h-8 md:mx-3 mb-4 flex justify-between">
@@ -104,7 +137,7 @@ function UserTable() {
           />
         </Box>
         <Button
-          onClick={() => setShowAddModal(true)}
+          onClick={() => createUserHandler()}
           sx={{ backgroundColor: "black", color: "white" }}
         >
           Add New User
@@ -121,73 +154,82 @@ function UserTable() {
         }}
       >
         <TableContainer sx={{ minHeight: 550 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id} align="center">
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {userLoading ? (
-                <Spinner />
-              ) : users?.length ? (
-                users?.map((row: any, index: any) => (
-                  <TableRow key={row.id}>
-                    <TableCell style={{ width: 10 }} align="center">
-                      {index + 1}
+          {accessList ? (
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align="center">
+                      {column.label}
                     </TableCell>
-                    <TableCell align="center">{row.username}</TableCell>
-                    <TableCell align="center">{row.roleName}</TableCell>
-                    <TableCell align="center">{row.email}</TableCell>
-                    <TableCell align="center">{row.mobile}</TableCell>
-                    <TableCell
-                      align="center"
-                      style={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {row.createdAt.slice(0, 10)}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      className="sm:mt-2 mt-2"
-                    >
-                      <FaTrash
-                        className="text-red mr-3 cursor-pointer"
-                        onClick={() => {
-                          setDeleteColorID(row.id);
-                          setShowDeleteModal(true);
-                        }}
-                      />
-                      <FaPen
-                        className="text-orange-500 cursor-pointer"
-                        onClick={() => {
-                          setEditUserId(row.id);
-                          setShowEditModal(true);
-                        }}
-                      />
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {userLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={7}>
+                      <Spinner />
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <p className="text-xl text-center font-semibold">
-                      We couldn't find a user with these specifications.
-                    </p>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                ) : users?.length ? (
+                  users?.map((row: any, index: number) => (
+                    <TableRow key={row.id}>
+                      <TableCell style={{ width: 10 }} align="center">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell align="center">{row.username}</TableCell>
+                      <TableCell align="center">{row.roleName}</TableCell>
+                      <TableCell align="center">{row.email}</TableCell>
+                      <TableCell align="center">{row.mobile}</TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {row.createdAt.slice(0, 10)}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        className="sm:mt-2 mt-2"
+                      >
+                        <FaTrash
+                          className="text-red mr-3 cursor-pointer"
+                          onClick={() => {
+                            setDeleteColorID(row.id);
+                            setShowDeleteModal(true);
+                          }}
+                        />
+                        <FaPen
+                          className="text-orange-500 cursor-pointer"
+                          onClick={() => editUserHandler(row.id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={7}>
+                      <p className="text-xl text-center font-semibold">
+                        We couldn't find a user with these specifications.
+                      </p>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          ) : (
+            <Box sx={{ marginTop: "100px" }}>
+              <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                You Havent Access User List
+              </h1>
+            </Box>
+          )}
         </TableContainer>
         {totalPages > 1 && (
           <Pagination

@@ -1,16 +1,17 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useContext, useEffect, useState } from "react";
 import Spinner from "../components/Spinner/Spinner";
-import { userLoginHandler } from "../Redux/slices/auth";
 import { userLoginType } from "../types/Auth.type";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import HeaderSkelton from "../skelton/HeaderSkelton";
+import { useUserLoginMutation } from "../Redux/apis/user/authUserApi";
+import { authContext, authContextType } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
+import { loginErrorType } from "../types/Error.type";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Login() {
-  const dispatch = useAppDispatch();
-  const { loading, loginError } = useAppSelector((state) => state.auth);
-
+  const navigate = useNavigate();
+  const { setUserIsLogin } = useContext(authContext) as authContextType;
   const [loginInfos, setLoginInfos] = useState<userLoginType>({
     username: "",
     password: "",
@@ -26,24 +27,33 @@ function Login() {
   const isSubmitDisabled =
     loginInfos.username.length < 7 || loginInfos.password.length < 7;
 
+  const [userLogin, { isLoading, isSuccess, error }] = useUserLoginMutation();
   const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(userLoginHandler(loginInfos));
+    userLogin(loginInfos);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      setUserIsLogin(true);
+      navigate("/");
+    }
+  }, [isSuccess]);
+
+  const loginError = error as loginErrorType;
   return (
     <>
-     <Suspense fallback={<HeaderSkelton />}>
+      <Suspense fallback={<HeaderSkelton />}>
         <Header />
       </Suspense>
 
       <section className="max-w-[1170px] mx-auto relative lg:mt-10">
-        {loading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <div className="grid md:grid-cols-2 grid-cols-1">
             <div className="">
-              <img src="/images/register.png" alt="" />
+              <img src="/images/register.png" />
             </div>
             <div className="lg:px-16 md:px-8 px-3 lg:mt-8 mt-10">
               <form action="" onSubmit={loginUser}>
@@ -60,7 +70,7 @@ function Login() {
                   />
                 </div>
                 <p className="text-red text-xs">
-                  {loginError?.errors?.username}
+                  {loginError?.data?.errors?.username}
                 </p>
                 <div className="border-b border-borderColor py-5">
                   <input
@@ -73,7 +83,7 @@ function Login() {
                   />
                 </div>
                 <p className="text-red text-xs">
-                  {loginError?.errors?.password}
+                  {loginError?.data?.errors?.password}
                 </p>
                 <div className="flex justify-between items-center mt-8">
                   <button
@@ -92,7 +102,6 @@ function Login() {
           </div>
         )}
       </section>
-
       <Suspense fallback={<Spinner />}>
         <Footer />
       </Suspense>

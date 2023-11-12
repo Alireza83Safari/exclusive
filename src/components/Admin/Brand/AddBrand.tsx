@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
 import { brandType } from "../../../types/Brand.type";
 import { useCreateBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
+import useHasAccess from "../../../hooks/useHasAccess";
+import { brandErrorType } from "../../../types/Error.type";
 
 function AddBrand() {
   const inintialBrandState = {
@@ -31,10 +33,14 @@ function AddBrand() {
   const [createBrand, { error: brandError, isSuccess, data }] =
     useCreateBrandMutation();
 
-  const createBrandHandler = () => {
-    console.log(createBrandValue);
+  const { userHasAccess } = useHasAccess("action_brand_admin_create");
 
-    createBrand(createBrandValue);
+  const createBrandHandler = () => {
+    if (userHasAccess) {
+      createBrand(createBrandValue);
+    } else {
+      toast.error("You Havent Access Create Brand");
+    }
   };
 
   useEffect(() => {
@@ -48,11 +54,11 @@ function AddBrand() {
     }
   }, [isSuccess]);
 
-  const createbrandError = brandError?.data;
+  const createbrandError = brandError as brandErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { name, code } = createBrandValue;
-    if (name.length < 1 || code.length < 1) {
+    if (name?.length < 1 || code?.length < 1) {
       return true;
     } else {
       return false;
@@ -62,7 +68,7 @@ function AddBrand() {
   return (
     <>
       {showAddBrand ? (
-        <div className="col-span-4 px-4">
+        <div className="col-span-4 px-3 mt-3">
           <Paper
             style={{
               margin: "0 auto",
@@ -81,29 +87,29 @@ function AddBrand() {
               Create Brand
             </Typography>
             <Typography variant="body1" className="text-red">
-              {createbrandError?.message}
+              {createbrandError?.data?.message}
             </Typography>
             <TextField
               label="Name"
               name="name"
               fullWidth
               value={createBrandValue.name}
-              sx={{ marginY: "24px" }}
+              sx={{ marginY: "28px" }}
               onChange={setInputValue}
             />
             <Typography variant="body1" className="text-red">
-              {createbrandError?.errors?.name}
+              {createbrandError?.data?.errors?.name}
             </Typography>
             <TextField
               label="Code"
               name="code"
               fullWidth
               value={createBrandValue.code}
-              sx={{ marginY: "24px" }}
+              sx={{ marginY: "28px" }}
               onChange={setInputValue}
             />
             <Typography variant="body1" className="text-red">
-              {createbrandError?.errors?.code}
+              {createbrandError?.data?.errors?.code}
             </Typography>
 
             <Button

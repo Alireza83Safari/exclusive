@@ -10,7 +10,7 @@ function Promotion() {
 
   const productsHaveDiscount = useMemo(() => {
     return products?.data.filter(
-      (product: any) => product.discountValue !== null
+      (product: any) => product.discountValue !== ""
     );
   }, [products?.data]);
 
@@ -18,7 +18,7 @@ function Promotion() {
 
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-28 relative px-3">
-      {productsHaveDiscount?.length && (
+      {productsHaveDiscount?.length ? (
         <>
           <div>
             <p className="text-red font-semibold">Today’s</p>
@@ -38,7 +38,7 @@ function Promotion() {
           </div>
           {isLoading ? (
             <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-              {totalSkeletonShow.map((index) => (
+              {totalSkeletonShow?.map((index) => (
                 <React.Fragment key={index}>
                   <ProductSkelton />
                 </React.Fragment>
@@ -46,7 +46,7 @@ function Promotion() {
             </div>
           ) : (
             <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-              {productsHaveDiscount?.slice(0, 4).map((product: any) => (
+              {productsHaveDiscount?.slice(0, 4)?.map((product: any) => (
                 <React.Fragment key={product.id}>
                   <ProductTemplate {...product} />
                 </React.Fragment>
@@ -61,6 +61,8 @@ function Promotion() {
             </Link>
           </div>
         </>
+      ) : (
+        ""
       )}
     </section>
   );

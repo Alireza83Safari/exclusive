@@ -1,25 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
 import toast from "react-hot-toast";
-import { userAxios } from "../../../../services/userInterceptor";
 import { FaTrashAlt } from "react-icons/fa";
 import Spinner from "../../../Spinner/Spinner";
+import { useUploadImageMutation } from "../../../../Redux/apis/user/fileUserApi";
 
 export default function AddProductFile() {
   const [serverError, setServerError] = useState("");
-  const [loading, setLoading] = useState(false);
   const {
     setShowAddProductModal,
     createProductId,
     setShowAddFile,
     setShowAddInfoModal,
-    refetchProducts
+    refetchProducts,
   } = useContext(ProductsContext) as ProductsContextType;
-  const [imageURLs, setImageURLs] = useState([]);
-  const [showUrl, setShowUrl] = useState([]);
+
+  const [imageURLs, setImageURLs] = useState<any>([]);
+  const [showUrl, setShowUrl] = useState<any>([]);
+
+  const [uploadImage, { isSuccess, status, isLoading }] =
+    useUploadImageMutation();
 
   const addFile = async () => {
     if (imageURLs.length === 0) {
@@ -28,45 +31,34 @@ export default function AddProductFile() {
     }
 
     const formData = new FormData();
-    imageURLs.forEach((img) => formData.append(`fileUrl`, img));
-    setLoading(true);
-    try {
-      const response = await userAxios.post(
-        `/file/uploadImage/${createProductId}/1`,
-        formData
-      );
-
-      if (response.status === 200) {
-        setShowAddFile(false);
-        setShowAddInfoModal(true);
-        setShowAddProductModal(false);
-        toast.success("create product is successfully");
-        setLoading(false);
-        refetchProducts()
-      }
-    } catch (error) {
-      setLoading(false);
-      if (error?.response.status === 403) {
-        setServerError("You haven't access to add an image");
-      } else if (error?.response.data.message) {
-        setServerError(error.response.data.message);
-      } else {
-        setServerError("An error occurred while uploading the file.");
-      }
-    }
+    imageURLs.forEach((img: any) => formData.append(`fileUrl`, img));
+    uploadImage({ itemId: createProductId, fileType: 1, images: formData });
   };
 
-  const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (isSuccess) {
+      setShowAddFile(false);
+      setShowAddInfoModal(true);
+      setShowAddProductModal(false);
+      toast.success("create product is successfully");
+      refetchProducts();
+    }
+  }, [status]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const formData = new FormData();
       const newImageURLs = Array.from(files).map((file, index) => {
-        formData.append(`file-${index}`, file as string);
+        formData.append(`file-${index}`, file);
         const imageUrl = URL.createObjectURL(file);
         return imageUrl;
       });
-      setImageURLs((prevImageURLs) => [...prevImageURLs, ...Array.from(files)]);
-      setShowUrl((prev) => [...prev, ...newImageURLs]);
+      setImageURLs((prevImageURLs: any) => [
+        ...prevImageURLs,
+        ...Array.from(files),
+      ]);
+      setShowUrl((prev: any) => [...prev, ...newImageURLs]);
     }
   };
 
@@ -87,17 +79,19 @@ export default function AddProductFile() {
         onSubmit={(e) => e.preventDefault()}
         className="relative w-[28rem] h-[30rem]"
       >
-        {loading ? (
-          <Spinner />
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[24rem] min-w-[30rem]">
+            <Spinner />
+          </div>
         ) : (
           <div>
             <h2 className="text-center mb-4 text-xl font-semibold">
               Upload images
             </h2>
-            <span className="text-center text-red-700">{serverError}</span>
+            <span className="text-center text-red">{serverError}</span>
             {showUrl?.length ? (
               <div className="relative grid grid-cols-4">
-                {showUrl?.map((imageUrl, index) => (
+                {showUrl?.map((imageUrl: any, index: number) => (
                   <div key={imageUrl} className="w-ful p-2 relative">
                     <img
                       src={imageUrl}
@@ -117,7 +111,7 @@ export default function AddProductFile() {
             )}
             <form
               method="post"
-              className="flex justify-center container absolute bottom-20 dark:text-white-100"
+              className="flex justify-center container absolute bottom-20"
             >
               <input type="file" onChange={handleImageChange} multiple />
             </form>

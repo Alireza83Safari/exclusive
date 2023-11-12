@@ -17,14 +17,14 @@ export default function ProductImage() {
   const { editProductId, showEditFile, refetchProducts } = useContext(
     ProductsContext
   ) as ProductsContextType;
-  const [productFile, setProductFile] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [productFile, setProductFile] = useState<any>([]);
   const [serverError, setServerError] = useState<string | null>(null);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState<string[]>([]);
   const [showUrl, setShowUrl] = useState<string[]>([]);
   const [getFileItemId, { data: images }] = useGetFileItemIdMutation();
   const [changeImagePriority] = useChangeImagePriorityMutation();
+
   useEffect(() => {
     if (editProductId) {
       getFileItemId({ itemId: editProductId, fileType: 1 });
@@ -72,7 +72,7 @@ export default function ProductImage() {
     const [draggedImage] = newImageURLs.splice(draggedImageIndex, 1);
     if (draggedImageUrl) {
       const fileId = productFile?.find(
-        (product) => product?.fileUrl === draggedImageUrl
+        (product: any) => product?.fileUrl === draggedImageUrl
       );
 
       if (fileId) {
@@ -91,16 +91,16 @@ export default function ProductImage() {
   };
 
   useEffect(() => {
-    const endIndices = productFile?.map((img) => img?.fileUrl) || [];
+    const endIndices = productFile?.map((img: any) => img?.fileUrl) || [];
     setShowUrl(endIndices);
   }, [productFile]);
 
   useEffect(() => {
-    const endIndices = productFile?.map((img) => img?.fileUrl) || [];
+    const endIndices = productFile?.map((img: any) => img?.fileUrl) || [];
     setImageURLs(endIndices);
   }, []);
   //------- finish drag drop -------////
-  const [uploadImage, { isSuccess: successAddImage }] =
+  const [uploadImage, { isSuccess: successAddImage, isLoading }] =
     useUploadImageMutation();
 
   const addFile = async () => {
@@ -117,7 +117,6 @@ export default function ProductImage() {
   useEffect(() => {
     if (successAddImage) {
       getFileItemId({ itemId: editProductId, fileType: 1 });
-      setIsLoading(false);
       refetchProducts();
       toast.success("create product is successfully");
       changeImagePriority({
@@ -132,7 +131,7 @@ export default function ProductImage() {
     const files = e.target.files;
     if (files) {
       const formData = new FormData();
-      const newImageURLs = Array.from(files).map((file, index) => {
+      const newImageURLs = Array.from(files)?.map((file, index) => {
         formData.append(`file-${index}`, file);
         const imageUrl = URL.createObjectURL(file);
         return imageUrl;
@@ -141,10 +140,7 @@ export default function ProductImage() {
         ...prevImageURLs,
         ...Array.from(files),
       ]);
-      setNewUrl((prevImageURLs: any) => [
-        ...prevImageURLs,
-        ...Array.from(files),
-      ]);
+      setNewUrl((prevImageURLs:any) => [...prevImageURLs, ...Array.from(files)]);
       setShowUrl((prev) => [...prev, ...newImageURLs]);
     }
   };
@@ -158,12 +154,14 @@ export default function ProductImage() {
 
     setImageURLs(newImageURLs);
     setShowUrl(newShowUrl);
-    let findDelete = productFile?.find((product) => product?.fileUrl == ID);
+    let findDelete = productFile?.find(
+      (product: any) => product?.fileUrl == ID
+    );
     try {
       const response = await userAxios.post(`/file/delete/${findDelete?.id}`);
       if (response.status === 200) {
         refetchProducts();
-        toast.success("delete is success");
+        toast.success("delete image is success");
       }
     } catch (error) {}
   };
@@ -175,58 +173,60 @@ export default function ProductImage() {
           showEditFile ? `visible` : `hidden`
         }`}
       >
-        <div className="grid grid-cols-1 overflow-auto">
-          <h2 className="text-center mb-4">Upload images</h2>
-          <span className="text-center text-red-700">{serverError}</span>
-          {showUrl?.length ? (
-            <div className="relative grid md:grid-cols-4 grid-cols-2">
-              {showUrl?.map((imageUrl, index) => (
-                <div key={imageUrl} className="w-full p-2 relative">
-                  <img
-                    src={
-                      imageUrl?.includes("uploads")
-                        ? `http://127.0.0.1:6060/${imageUrl}`
-                        : imageUrl
-                    }
-                    className="mb-4 border w-96 h-44 object-contain"
-                    draggable={true}
-                    id={`image-${index}`}
-                    onDragStart={(e) => handleDragStart(e, index)}
-                    onDragOver={(e) => handleDragOver(e, index)}
-                    onDrop={(e) => handleDrop(e, index)}
-                  />
+        {isLoading ? (
+          <div className="w-full h-full min-h-[30rem] flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 overflow-auto">
+            <h2 className="text-center mb-4">Upload images</h2>
+            <span className="text-center text-red-700">{serverError}</span>
+            {showUrl?.length ? (
+              <div className="relative grid md:grid-cols-4 grid-cols-2">
+                {showUrl?.map((imageUrl, index) => (
+                  <div key={imageUrl} className="w-full p-2 relative">
+                    <img
+                      src={imageUrl?.includes("uploads") ? imageUrl : imageUrl}
+                      className="mb-4 border w-96 h-44 object-contain"
+                      draggable={true}
+                      id={`image-${index}`}
+                      onDragStart={(e) => handleDragStart(e, index)}
+                      onDragOver={(e) => handleDragOver(e, index)}
+                      onDrop={(e) => handleDrop(e, index)}
+                    />
 
-                  <button
-                    className="absolute top-2 right-2 text-red-700 p-1 rounded-full cursor-pointer"
-                    onClick={() => deleteImage(imageUrl, index)}
-                  >
-                    <FaTrash className="text-red" />
-                  </button>
-                </div>
-              ))}
+                    <button
+                      className="absolute top-2 right-2 text-red-700 p-1 rounded-full cursor-pointer"
+                      onClick={() => deleteImage(imageUrl, index)}
+                    >
+                      <FaTrash className="text-red" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center">
+                <img
+                  src="/images/empty.jpg"
+                  className="object-contain h-72 rounded-xl"
+                />
+              </div>
+            )}
+            <div className="flex justify-center w-full mt-16">
+              <input type="file" onChange={handleImageChange} multiple />
             </div>
-          ) : (
-            <div className="flex justify-center items-center">
-              <img
-                src="/images/empty.jpg"
-                className="object-contain h-72 rounded-xl"
-              />
+            <div className="flex justify-center w-full mt-16">
+              <button
+                type="submit"
+                className="bg-black text-white w-full py-2 mx- rounded-lg outline-none disabled:bg-gray"
+                onClick={addFile}
+                disabled={newUrl?.length < 1}
+              >
+                Add Product Files
+              </button>
             </div>
-          )}
-          <div className="flex justify-center w-full mt-16">
-            <input type="file" onChange={handleImageChange} multiple />
           </div>
-          <div className="flex justify-center w-full mt-16">
-            <button
-              type="submit"
-              className="bg-black text-white w-full py-2 mx- rounded-lg outline-none disabled:bg-gray"
-              onClick={addFile}
-              disabled={newUrl?.length < 1}
-            >
-              {isLoading ? <Spinner /> : "Add Product Files"}
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </form>
   );

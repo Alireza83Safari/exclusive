@@ -12,6 +12,7 @@ import {
   useGetUserMutation,
 } from "../../../Redux/apis/admin/userAdminApi";
 import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
+import { userErrorType } from "../../../types/Error.type";
 
 export default function EditUser() {
   const { showEditModal, setShowEditModal, editUserId, refetchUser } =
@@ -50,7 +51,7 @@ export default function EditUser() {
     editUser({ id: editUserId, userInfo: editUserValue });
   };
 
-  const editUserError = error?.data;
+  const editUserError = error as userErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { username, roleId } = editUserValue;
@@ -103,7 +104,7 @@ export default function EditUser() {
       <div className="bg-white p-2">
         <div>
           <p className="text-center text-xl">Edit User</p>
-          <p className="text-red">{editUserError?.message}</p>
+          <p className="text-red">{editUserError?.data?.message}</p>
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           {getUserLoading || isLoading ? (
@@ -118,7 +119,7 @@ export default function EditUser() {
                   className="border"
                   value={editUserValue.email}
                   onChange={setInputValue}
-                  Error={editUserError?.errors?.email}
+                  Error={editUserError?.data?.errors?.email}
                 />
               </div>
 
@@ -130,7 +131,7 @@ export default function EditUser() {
                   className="border"
                   value={editUserValue.username}
                   onChange={setInputValue}
-                  Error={editUserError?.errors?.username}
+                  Error={editUserError?.data?.errors?.username}
                 />
               </div>
 
@@ -142,7 +143,7 @@ export default function EditUser() {
                   className="border"
                   value={editUserValue.firstName}
                   onChange={setInputValue}
-                  Error={editUserError?.errors?.firstName}
+                  Error={editUserError?.data?.errors?.firstName}
                 />
               </div>
 
@@ -154,7 +155,7 @@ export default function EditUser() {
                   className="border"
                   value={editUserValue.lastName}
                   onChange={setInputValue}
-                  Error={editUserError?.errors?.lastName}
+                  Error={editUserError?.data?.errors?.lastName}
                 />
               </div>
 
@@ -169,7 +170,7 @@ export default function EditUser() {
                   className="border"
                   value={editUserValue.mobile}
                   onChange={setInputValue}
-                  Error={editUserError?.errors?.mobile}
+                  Error={editUserError?.data?.errors?.mobile}
                 />
               </div>
 
@@ -181,7 +182,7 @@ export default function EditUser() {
                   className="border"
                   value={editUserValue.lastName}
                   onChange={setInputValue}
-                  Error={editUserError?.errors?.lastName}
+                  Error={editUserError?.data?.errors?.lastName}
                 />
               </div>
 
@@ -196,7 +197,7 @@ export default function EditUser() {
                     })
                   }
                   name="roleId"
-                  options={roles?.data.map((role: roleType) => ({
+                  options={roles?.data?.map((role: roleType) => ({
                     label: role.name,
                     value: role.id,
                   }))}

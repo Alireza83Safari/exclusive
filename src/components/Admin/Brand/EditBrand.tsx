@@ -7,7 +7,11 @@ import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
 import { brandType } from "../../../types/Brand.type";
-import { useEditBrandMutation, useGetBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
+import {
+  useEditBrandMutation,
+  useGetBrandMutation,
+} from "../../../Redux/apis/admin/brandAdminApi";
+import { brandErrorType } from "../../../types/Error.type";
 
 const style = {
   position: "absolute" as "absolute",
@@ -47,7 +51,7 @@ export default function EditBrand() {
     editBrand({ id: editBrandId, brandInfo: editBrandValue });
   };
 
-  const editBrandError = error?.data;
+  const editBrandError = error as brandErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { name, code } = editBrandValue;
@@ -100,7 +104,7 @@ export default function EditBrand() {
             Edit Brand
           </Typography>
           <Typography variant="body1" className="text-red">
-            {editBrandError?.message}
+            {editBrandError?.data?.message}
           </Typography>
           <TextField
             label="Name"
@@ -111,7 +115,7 @@ export default function EditBrand() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editBrandError?.errors?.name}
+            {editBrandError?.data?.errors?.name}
           </Typography>
           <TextField
             label="Code"
@@ -122,7 +126,7 @@ export default function EditBrand() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editBrandError?.errors?.code}
+            {editBrandError?.data?.errors?.code}
           </Typography>
 
           <Button

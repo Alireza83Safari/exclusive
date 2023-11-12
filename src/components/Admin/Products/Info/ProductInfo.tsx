@@ -23,13 +23,16 @@ function ProductInfo() {
 
   const [getProductAdmin, { data: product, isLoading: productLoading }] =
     useGetProductAdminMutation();
+
   const [editProduct, { isSuccess: editProductResponse, isError }] =
     useEditProductMutation();
+
   useEffect(() => {
     if (editProductId) {
       getProductAdmin(editProductId);
     }
   }, [editProductId]);
+
   const { data: brands } = useGetBrandsSelectListQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
@@ -65,7 +68,7 @@ function ProductInfo() {
         brandName: product.brandName,
       });
     }
-  }, [product, editProductId, category]);
+  }, [product, editProductId, category, productLoading, brands]);
 
   const editProductInfoHandler = () => {
     editProduct({ id: product?.id, productInfo: editProductInfo });
@@ -80,6 +83,7 @@ function ProductInfo() {
       toast.success("Edit Product Is Success");
     }
   }, [editProductResponse]);
+
   return (
     <div
       className={`relative min-w-[34rem] ${showInfo ? `visible` : `hidden`}`}
@@ -99,7 +103,7 @@ function ProductInfo() {
                   Brand Name:
                 </div>
                 <div className="py-4 border-b border-gray w-full">
-                  Ctegory Name:
+                  Category Name:
                 </div>
                 <div className="py-4 border-b border-gray w-full">
                   description :
@@ -123,8 +127,9 @@ function ProductInfo() {
                 </div>
                 <div className="py-2 border-b border-gray w-full">
                   <SelectList
-                    defaultValue={{
-                      label: String(editProductInfo.brandName),
+                    name="brandId"
+                    value={{
+                      label: editProductInfo.brandName,
                       value: editProductInfo.brandId,
                     }}
                     onChange={(select) => {
@@ -134,7 +139,6 @@ function ProductInfo() {
                         brandName: select.label,
                       });
                     }}
-                    name="brandId"
                     options={brands?.data.map((brand: brandSelectListType) => ({
                       label: brand.value,
                       value: brand.key,
@@ -143,7 +147,7 @@ function ProductInfo() {
                 </div>
                 <div className="py-2 border-b border-gray w-full">
                   <SelectList
-                    defaultValue={{
+                    value={{
                       label: String(editProductInfo.categoryName),
                       value: editProductInfo.categoryId,
                     }}

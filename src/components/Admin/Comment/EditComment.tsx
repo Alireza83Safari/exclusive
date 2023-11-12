@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+/* import React, { useState, useEffect, useMemo, useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -7,7 +7,13 @@ import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
 import { commentType } from "../../../types/Comment.type";
-import { useEditColorMutation, useGetColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
+import {
+  useEditColorMutation,
+  useGetColorMutation,
+} from "../../../Redux/apis/admin/colorAdminApi";
+import { useEditCommentMutation } from "../../../Redux/apis/user/commentUserApi";
+import { commentErrorType } from "../../../types/Error.type";
+import { useGetCommentsAdminQuery } from "../../../Redux/apis/admin/commentAdminApi";
 
 const style = {
   position: "absolute" as "absolute",
@@ -41,20 +47,20 @@ export default function EditComment() {
     setEditCommentValue({ ...editCommentValue, [name]: value });
   };
 
-  const [editColor, { error, isSuccess }] = useEditColorMutation();
+  const [editComment, { error, isSuccess }] = useEditCommentMutation();
 
   const [getColor, { data: color, isSuccess: isSuccessGetColor }] =
-    useGetColorMutation();
+    useGetComment();
 
   const editColorHandler = () => {
-    editColor({ id: editCommentId, colorInfo: editCommentValue });
+    editComment({ id: editCommentId, commentInfo: editCommentValue });
   };
 
-  const editCommentError = error?.data;
+  const editCommentError = error as commentErrorType;
 
   const getDisbledBtn = useMemo(() => {
-    const { name, code } = editCommentValue;
-    if (name.length < 1 || code.length < 1) {
+    const { rate, text } = editCommentValue;
+    if (rate || text.length < 10) {
       return true;
     } else {
       return false;
@@ -79,6 +85,11 @@ export default function EditComment() {
     if (isSuccessGetColor && color) {
       setEditCommentValue({
         ...editCommentValue,
+        productId: "",
+        rate: 0,
+        strengthPoints: [""],
+        text: "",
+        weakPonits: [""],
         name: color.name,
         code: color.code,
         colorHex: color.colorHex,
@@ -158,3 +169,4 @@ export default function EditComment() {
     </div>
   );
 }
+ */

@@ -1,4 +1,3 @@
-import React from "react";
 import Spinner from "../../Spinner/Spinner";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { useGetBrandsAdminQuery } from "../../../Redux/apis/admin/brandAdminApi";
@@ -34,7 +33,7 @@ export default function Topbar() {
           </div>
         ) : (
           <h1 className="font-black 2xl:text-5xl xl:text-4xl text-2xl 2xl:my-6 my-3 text-blue-600 text-center">
-            {brands?.total}
+            {brands?.total ? brands?.total : 0}
           </h1>
         )}
         <p className="text-sm text-gray-500 2xl:text-lg">{showDate}</p>
@@ -56,7 +55,7 @@ export default function Topbar() {
           </div>
         ) : (
           <h1 className="font-bold 2xl:text-5xl xl:text-4xl text-2xl 2xl:my-6 my-3 text-blue-600 text-center">
-            {orders?.data?.length}
+            {orders?.data?.length ? orders?.data?.length : 0}
           </h1>
         )}
 

@@ -73,7 +73,9 @@ export default function ProductsTable() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: "white", paddingBottom: "1rem" }}>
+      <Box
+        sx={{ backgroundColor: "white", paddingBottom: "1rem", minHeight: 650 }}
+      >
         <div className="flex justify-between h-10 mt-5 md:mx-8 mb-3">
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <SearchIcon
@@ -169,7 +171,7 @@ export default function ProductsTable() {
                         <TableCell style={{ width: 160 }} align="center">
                           <div className=" flex justify-center">
                             <img
-                              src={`http://127.0.0.1:6060/${row.brandFileUrl}`}
+                              src={row?.brandFileUrl}
                               className="w-8 h-8 object-contain"
                             />
                           </div>

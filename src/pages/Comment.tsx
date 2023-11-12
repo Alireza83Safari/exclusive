@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import CommentDetails from "../components/Comment/CommentDetails";
 import AddComment from "../components/Comment/AddComment";
 import { useGetCommentsProudctMutation } from "../Redux/apis/user/commentUserApi";

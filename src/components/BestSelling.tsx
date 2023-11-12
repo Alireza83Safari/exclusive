@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import { userProductType } from "../types/Product.type";
-import Spinner from "./Spinner/Spinner";
 import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
 import ProductSkelton from "../skelton/ProductSkelton";
 const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
@@ -27,7 +26,7 @@ function BestSelling() {
 
       {isLoading ? (
         <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-          {totalSkeletonShow.map((index) => (
+          {totalSkeletonShow?.map((index) => (
             <React.Fragment key={index}>
               <ProductSkelton />
             </React.Fragment>
@@ -37,7 +36,7 @@ function BestSelling() {
         <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
           {topSellProducts?.data
             ?.slice(0, 4)
-            .map((product: userProductType) => (
+            ?.map((product: userProductType) => (
               <React.Fragment key={product.id}>
                 <Suspense fallback={<ProductSkelton />}>
                   <ProductTemplate {...product} />

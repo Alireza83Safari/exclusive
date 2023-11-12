@@ -14,9 +14,9 @@ export type changeCommentStatusType = {
 export interface commentType {
   productId: string;
   rate: number;
-  strengthPoints: string[];
+  strengthPoints?: string[];
   text: string;
-  weakPonits: string[];
+  weakPonits?: string[];
 }
 
 export interface getCommentType extends commentType {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 function AccountMenu() {
@@ -13,7 +12,7 @@ function AccountMenu() {
 
   return (
     <div className="pl-4">
-      {menuItem.map((menu, index) => (
+      {menuItem?.map((menu, index) => (
         <Link
           className={`block my-7 text-lg ${
             location.pathname.includes(menu.to) &&

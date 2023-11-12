@@ -24,7 +24,7 @@ function TotalBrand() {
         </Typography>
         <Typography
           variant="h2"
-          style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
+          style={{ fontWeight: "bold", color: "blue", margin: "28px" }}
           gutterBottom
         >
           {total}

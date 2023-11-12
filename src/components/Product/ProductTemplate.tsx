@@ -1,4 +1,3 @@
-import Reac from "react";
 import { Link } from "react-router-dom";
 import { userProductTypeWithLoading } from "../../types/Product.type";
 import { addOrderItemType } from "../../types/Order.type";
@@ -25,78 +24,76 @@ function ProductTemplate({
     } as addOrderItemType;
     createOrderItem(orderItemInfo)
       .unwrap()
-      .then(() => toast.success("add to "));
+      .then(() => toast.success("Add To Cart"));
   };
 
   return (
     <div className="relative group my-4 px-2" key={id}>
-      <Link to={`/product/${id}`}>
-        <div className="flex justify-center items-center sm:h-[250px] h-[220px] bg-gray relative">
-          {discountValue && (
-            <p className="sm:px-3 px-1 py-1 rounded-md bg-red absolute top-3 left-3 sm:text-xs text-[10px] text-white">
-              {discountValue}%
-            </p>
-          )}
+      <div className="flex justify-center items-center sm:h-[250px] h-[220px] bg-gray relative">
+        {discountValue && (
+          <p className="sm:px-3 px-1 py-1 rounded-md bg-red absolute top-3 left-3 sm:text-xs text-[10px] text-white">
+            {discountValue}%
+          </p>
+        )}
 
-          <div className="absolute top-3 right-3">
-            <div className="sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-green duration-300 rounded-full flex justify-center items-center">
-              <img src="/images/eye.png" className="sm:w-5 sm:h-5 h-4 w-4" />
-            </div>
-          </div>
-          <button
-            className="bg-black w-full absolute bottom-0 text-white py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-            onClick={() => addProductToBasket()}
-          >
-            Add To Cart
-          </button>
-          <div className="w-9/12 h-3/4 ">
-            <img
-              src={`http://127.0.0.1:6060/${fileUrl}`}
-              className="object-contain w-full h-full"
-              loading="lazy"
-            />
+        <div className="absolute top-3 right-3">
+          <div className="sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-green duration-300 rounded-full flex justify-center items-center">
+            <img src="/images/eye.png" className="sm:w-5 sm:h-5 h-4 w-4" />
           </div>
         </div>
-        <div className="mt-2">
-          {productsLoading ? (
+        <button
+          className="bg-black w-full absolute bottom-0 text-white py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+          onClick={() => addProductToBasket()}
+        >
+          Add To Cart
+        </button>
+        <Link to={`/product/${id}`} className="w-9/12 h-3/4 ">
+          <img
+            src={fileUrl}
+            className="object-contain w-full h-full"
+            loading="lazy"
+          />
+        </Link>
+      </div>
+      <Link to={`/product/${id}`} className="mt-2">
+        {productsLoading ? (
+          <ContentLoaders width={100} height={20} />
+        ) : (
+          <h3 className="text-lg font-semibold">{name}</h3>
+        )}
+        <div className="flex justify-between mt-2">
+          <p className="text-emerald-600 font-semibold">{categoryName}</p>
+          <p>quantity:{quantity}</p>
+        </div>
+
+        {productsLoading ? (
+          <div className="my-1">
             <ContentLoaders width={100} height={20} />
-          ) : (
-            <h3 className="text-lg font-semibold">{name}</h3>
-          )}
-          <div className="flex justify-between mt-2">
-            <p className="text-emerald-600 font-semibold">{categoryName}</p>
-            <p>quantity:{quantity}</p>
           </div>
+        ) : (
+          <div className="flex mt-2">
+            <p className="text-red mr-4 md:text-base text-sm">
+              ${discountValue ? price - (discountValue / 100) * price : price}
+            </p>
+            <p className="line-through md:text-base text-sm">
+              {discountValue ? `$ ${price}` : ""}
+            </p>
+          </div>
+        )}
 
-          {productsLoading ? (
-            <div className="my-1">
-              <ContentLoaders width={100} height={20} />
-            </div>
-          ) : (
-            <div className="flex mt-2">
-              <p className="text-red mr-4 md:text-base text-sm">
-                ${discountValue ? price - (discountValue / 100) * price : price}
-              </p>
-              <p className="line-through md:text-base text-sm">
-                {discountValue ? `$ ${price}` : null}
-              </p>
-            </div>
-          )}
-
-          {productsLoading ? (
-            <div className="my-1">
-              <ContentLoaders width={200} height={40} />
-            </div>
-          ) : (
-            <div className="flex items-center mt-2">
-              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-              <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            </div>
-          )}
-        </div>
+        {productsLoading ? (
+          <div className="my-1">
+            <ContentLoaders width={200} height={40} />
+          </div>
+        ) : (
+          <div className="flex items-center mt-2">
+            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+          </div>
+        )}
       </Link>
     </div>
   );

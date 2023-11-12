@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useContext } from "react";
+import { authContext, authContextType } from "../../context/authContext";
 
-function PrivateRoute({ children }) {
-  const { userIsLogin } = useAppSelector((state) => state.auth);
+function PrivateRoute(children: React.ReactNode) {
+  const { userIsLogin } = useContext(authContext) as authContextType;
 
   return userIsLogin ? children : <div>You Havent access here</div>;
 }

@@ -4,6 +4,7 @@ import Input from "../../Input";
 import toast from "react-hot-toast";
 import reactDOM from "react-dom";
 import { useCreateRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
+import { roleErrorType } from "../../../types/Error.type";
 
 function AddRole() {
   const { showAddModal, setShowAddModal, refetchRoles, permissions } =
@@ -57,11 +58,9 @@ function AddRole() {
       [event.target.name]: event.target.value,
     });
   };
-  const [addRoleError, setAddRoleError] = useState<any>(null);
-  useEffect(() => {
-    setAddRoleError(error?.data);
-  }, [error]);
+  //const [addRoleError, setAddRoleError] = useState<any>(null);
 
+  const addRoleError = error as roleErrorType;
   return reactDOM.createPortal(
     <section
       className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 bg-[#dddd] -translate-y-1/2 z-10 w-full h-screen flex items-center justify-center transition overflow-auto duration-400 ${
@@ -72,7 +71,7 @@ function AddRole() {
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="flex justify-between">
             <h1 className="text-xl mb-2 font-black">Add New Role</h1>
-            <p className="text-red text-xs">{addRoleError?.message}</p>
+            <p className="text-red text-xs">{addRoleError?.data?.message}</p>
             <div className="mr-5">
               <button
                 type="button"
@@ -98,8 +97,7 @@ function AddRole() {
                 value={roleInfos?.name}
                 onChange={setRoleValue}
                 className="border"
-                Error={addRoleError?.errors.name}
-                callback={() => setAddRoleError(null)}
+                Error={addRoleError?.data?.errors?.name}
               />
             </div>
             <div className="py-1 m-1">
@@ -110,8 +108,7 @@ function AddRole() {
                 className="border"
                 value={roleInfos?.code}
                 onChange={setRoleValue}
-                Error={addRoleError?.errors.code}
-                callback={() => setAddRoleError(null)}
+                Error={addRoleError?.data?.errors?.code}
               />
             </div>
           </div>

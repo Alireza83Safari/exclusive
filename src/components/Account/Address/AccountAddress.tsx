@@ -1,24 +1,32 @@
-import React from "react";
-import { useGetAddressesQuery } from "../../Redux/apis/user/addressUserApi";
-import AccountSkelton from "../../skelton/AccountSkelton";
+import React, { useState } from "react";
+import { useGetAddressesQuery } from "../../../Redux/apis/user/addressUserApi";
+import AccountSkelton from "../../../skelton/AccountSkelton";
+import AddAddress from "./AddAddress";
 
 function AccountAddress() {
   const { data: addresses, isLoading } = useGetAddressesQuery("");
   const totalSkeletonShow = Array.from(Array(5).keys());
-
+  const [showCreateAddress, setShowCreateAddress] = useState(false);
   return (
-    <div className="container mx-auto border border-borderColor rounded-md">
-      {isLoading
-        ? totalSkeletonShow.map((index) => (
+    <div className="container mx-auto rounded-md">
+      <button
+        className="bg-black text-white py-2 px-3 rounded-lg mb-3"
+        onClick={() => setShowCreateAddress(true)}
+      >
+        Create new address
+      </button>
+      <div className="border border-borderColor">
+        {isLoading ? (
+          totalSkeletonShow?.map((index) => (
             <React.Fragment key={index}>
               <AccountSkelton />
             </React.Fragment>
           ))
-        : addresses?.length
-        ? addresses?.map((address: any, index: number) => (
+        ) : addresses?.length ? (
+          addresses?.map((address: any, index: number) => (
             <div
               className={`py-8 px-6 ${
-                index !== addresses.length - 1
+                index !== addresses?.length - 1
                   ? "border-b border-borderColor"
                   : ""
               }`}
@@ -52,7 +60,19 @@ function AccountAddress() {
               </div>
             </div>
           ))
-        : null}
+        ) : (
+          <div className=" flex justify-center items-center min-h-full w-full">
+            <h1 className="text-2xl font-bold py-40 flex justify-center items-center ">
+              You Havent Address
+            </h1>
+          </div>
+        )}
+
+        <AddAddress
+          showCreateAddress={showCreateAddress}
+          setShowCreateAddress={setShowCreateAddress}
+        />
+      </div>
     </div>
   );
 }

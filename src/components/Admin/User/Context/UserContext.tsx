@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import { useGetUserListQuery } from "../../../../Redux/apis/admin/userAdminApi";
 import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
 import { adminAxios } from "../../../../services/adminInterceptor";
 

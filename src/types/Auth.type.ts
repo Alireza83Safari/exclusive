@@ -15,3 +15,12 @@ export interface userLoginType {
 export interface userRegisterType extends userLoginType {
   passwordConfirmation: string;
 }
+
+export type recoveryPasswordType = {
+  phoneNumberOrEmailAddress: string | number;
+};
+
+export type setNewPasswordType = {
+  password: string;
+  passwordConfirmation: string;
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function NotFound() {
   return (
@@ -7,9 +7,9 @@ function NotFound() {
       <p className="mb-10">
         Your visited page not found. You may go home page.
       </p>
-      <button className="bg-red text-white py-3 px-8 mt-10">
-        View All Products
-      </button>
+      <Link to='/' className="bg-red text-white py-3 px-8 mt-10">
+       Navigate To Home
+      </Link>
     </section>
   );
 }

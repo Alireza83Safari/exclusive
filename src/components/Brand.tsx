@@ -1,4 +1,3 @@
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -21,6 +20,8 @@ function Brand() {
       </div>
       <div>
         <Swiper
+          loop={true}
+          rewind={true}
           breakpoints={{
             1: { slidesPerView: 2 },
             650: { slidesPerView: 4 },
@@ -39,21 +40,20 @@ function Brand() {
           className="mySwiper"
         >
           {isLoading
-            ? totalSkeletonShow.map((_, index) => (
+            ? totalSkeletonShow?.map((_, index) => (
                 <SwiperSlide key={index}>
                   <BrandSkeleton />
                 </SwiperSlide>
               ))
-            : brands?.data.map((data: any) => (
+            : brands?.data?.map((data: any) => (
                 <SwiperSlide key={data.id}>
                   <Link to={`/brand/product?brandId=${data.id}`}>
                     <div className="border border-borderColor rounded-md h-44 mx-2 text-center flex justify-center items-center my-10 hover:bg-red duration-200 hover:text-white">
                       <div>
                         <img
-                          src={`http://127.0.0.1:6060/${data.fileUrl}`}
+                          src={data.fileUrl}
                           className="w-20 h-20 object-contain m-auto"
                         />
-                        <p>{data.name}</p>
                       </div>
                     </div>
                   </Link>

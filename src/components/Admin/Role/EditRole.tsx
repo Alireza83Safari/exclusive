@@ -3,7 +3,12 @@ import ReactDOM from "react-dom";
 import { RoleContext, roleContextType } from "./Context/RoleContext";
 import toast from "react-hot-toast";
 import Input from "../../Input";
-import { useEditRoleMutation, useGetRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
+import {
+  useEditRoleMutation,
+  useGetRoleMutation,
+} from "../../../Redux/apis/admin/roleAdminApi";
+import { roleErrorType } from "../../../types/Error.type";
+import { roleType } from "../../../types/Role.type";
 
 export default function EditRole() {
   const { setShowEditModal, editRoleId, permissions, showEditModal } =
@@ -48,10 +53,11 @@ export default function EditRole() {
   const handleSubmitNewRole = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const data = {};
+    const formData = new FormData(event.currentTarget); // Use currentTarget instead of target
+    const data: Record<string, string> = {};
+
     formData.forEach((value, key) => {
-      data[key] = value;
+      data[key] = value as string;
     });
 
     const newRole = {
@@ -59,19 +65,18 @@ export default function EditRole() {
       isSystem: true,
       name: data.name,
       permissions: selectedPermissions,
-    };
+    } as roleType;
     editRole({ id: editRoleId, roleInfo: newRole });
   };
+
   useEffect(() => {
     if (isSuccess) {
       setShowEditModal(false);
       toast.success("edit role is successfully");
     }
   }, [isSuccess]);
-  const [editRoleError, setEditRoleError] = useState<any>(null);
-  useEffect(() => {
-    setEditRoleError(error?.data);
-  }, [error]);
+
+  const editRoleError = error as roleErrorType;
   return ReactDOM.createPortal(
     <section
       className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 bg-[#dddd] -translate-y-1/2 z-10 w-full h-screen flex items-center justify-center transition overflow-auto duration-400 ${
@@ -102,8 +107,7 @@ export default function EditRole() {
                 name="name"
                 value={editRoleData?.name}
                 className="border"
-                Error={editRoleError?.errors.name}
-                callback={() => setEditRoleError(null)}
+                Error={editRoleError?.data?.errors?.name}
               />
             </div>
 
@@ -114,8 +118,7 @@ export default function EditRole() {
                 placeholder="Role Code"
                 value={editRoleData?.code}
                 className="border"
-                Error={editRoleError?.errors.code}
-                callback={() => setEditRoleError(null)}
+                Error={editRoleError?.data?.errors?.code}
               />
             </div>
           </div>

@@ -1,16 +1,14 @@
 import React, { Suspense, lazy, useState } from "react";
 import { Link } from "react-router-dom";
 import { userRegisterType } from "../types/Auth.type";
-import { userRegisterHandler } from "../Redux/slices/auth";
 import Spinner from "../components/Spinner/Spinner";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import HeaderSkelton from "../skelton/HeaderSkelton";
+import { useUserRegisterMutation } from "../Redux/apis/user/authUserApi";
+import { registerErrorType } from "../types/Error.type";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Register() {
-  const dispatch = useAppDispatch();
-  const { registerError, loading } = useAppSelector((state) => state.auth);
   const [registerInfos, setRegisterInfos] = useState<userRegisterType>({
     password: "",
     passwordConfirmation: "",
@@ -26,10 +24,15 @@ function Register() {
     registerInfos.password.length < 7 ||
     registerInfos.passwordConfirmation.length < 7;
 
+  const [userRegister, { error, isLoading }] = useUserRegisterMutation();
+
   const getRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(userRegisterHandler(registerInfos));
+    userRegister(registerInfos);
   };
+
+  const registerError = error as registerErrorType;
+
   return (
     <>
       <Suspense fallback={<HeaderSkelton />}>
@@ -37,7 +40,7 @@ function Register() {
       </Suspense>
 
       <section className="max-w-[1170px] mx-auto relative lg:mt-10">
-        {loading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <div className="grid md:grid-cols-2 grid-cols-1">
@@ -59,7 +62,7 @@ function Register() {
                   />
                 </div>
                 <p className="text-red text-xs">
-                  {registerError?.errors?.username}
+                  {registerError?.data?.errors?.username}
                 </p>
                 <div className="border-b border-borderColor py-5 mb-4">
                   <input
@@ -83,7 +86,7 @@ function Register() {
                   />
                 </div>
                 <p className="text-red text-xs">
-                  {registerError?.errors?.password}
+                  {registerError?.data?.errors?.password}
                 </p>
                 <button
                   className="bg-red w-full py-4 mt-8 text-white disabled:bg-gray disabled:text-black"

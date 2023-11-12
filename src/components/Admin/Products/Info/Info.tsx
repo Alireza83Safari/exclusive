@@ -1,4 +1,4 @@
-import React, { useContext, lazy, Suspense } from "react";
+import { useContext, lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
 import Spinner from "../../../Spinner/Spinner";
 import {

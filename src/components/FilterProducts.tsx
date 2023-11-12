@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsFilterLeft } from "react-icons/bs";
 import { useGetBrandsSelectListQuery } from "../Redux/apis/user/brandUserApi";
@@ -6,33 +6,47 @@ import { useGetCategorySelectListQuery } from "../Redux/apis/user/categoryUserAp
 import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
 import { categoryUserType } from "../types/Category.type";
 import SelectList from "./SelectList";
+import { brandSelectListType } from "../types/Brand.type";
 
 type filterType = {
   brandId: string;
   categoryId: string;
+  brandName: any;
+  categoryName: any;
   order: string;
   onlyDiscount: boolean;
   minPrice: number;
   maxPrice: number;
+  orderName: string;
 };
 
 const FilterProducts = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const orderKeys = [
+    "newest",
+    "topSell",
+    "cheap",
+    "expensive",
+    "discount",
+  ] as const;
   const [priceFilter, setFilterPrice] = useState({ minPrice: 0, maxPrice: 0 });
   const [filterValue, setFilterValue] = useState({
     brandId: "",
     categoryId: "",
+    brandName: "",
+    categoryName: "",
     order: "",
+    orderName: "",
     onlyDiscount: false,
     minPrice: 0,
     maxPrice: 0,
   } as filterType);
 
-  const navigate = useNavigate();
-
   const { data: brands } = useGetBrandsSelectListQuery("");
   const { data: products } = useGetProductsUserQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
+
   const rangeInputMinValue = products?.data?.reduce(
     (minPrice: any, nextPrice: any) => {
       if (minPrice?.price > nextPrice?.price) {
@@ -55,11 +69,23 @@ const FilterProducts = () => {
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();
+    if (filterValue?.brandName || filterValue?.categoryName) {
+      delete filterValue?.brandName;
+      delete filterValue?.categoryName;
+    }
 
     for (const key in filterValue) {
       switch (key) {
         case "brandId":
+          if (filterValue[key]) {
+            filteredParams.set(key, filterValue[key].toString());
+          }
+          break;
         case "categoryId":
+          if (filterValue[key]) {
+            filteredParams.set(key, filterValue[key].toString());
+          }
+          break;
         case "order":
           if (filterValue[key]) {
             filteredParams.set(key, filterValue[key]);
@@ -73,6 +99,11 @@ const FilterProducts = () => {
           break;
 
         case "minPrice":
+          if (filterValue[key]) {
+            filteredParams.set(key, filterValue[key].toString());
+          }
+          break;
+
         case "maxPrice":
           if (filterValue[key]) {
             filteredParams.set(key, filterValue[key].toString());
@@ -112,9 +143,13 @@ const FilterProducts = () => {
               name="categoryId"
               defaultValue={filterValue.categoryId}
               onChange={(selected) =>
-                setFilterValue({ ...filterValue, categoryId: selected.value })
+                setFilterValue({
+                  ...filterValue,
+                  categoryId: selected.value,
+                  categoryName: selected.label,
+                })
               }
-              options={category?.data.map((data: categoryUserType) => ({
+              options={category?.data?.map((data: categoryUserType) => ({
                 value: data.key,
                 label: data.value,
               }))}
@@ -126,18 +161,17 @@ const FilterProducts = () => {
             <SelectList
               name="order"
               defaultValue={filterValue.order}
-              onChange={(selected) =>
-                setFilterValue({ ...filterValue, order: selected.value })
-              }
-              options={[
-                "newest",
-                "topSell",
-                "cheap",
-                "expensive",
-                "disount",
-              ].map((data) => ({
-                value: data,
-                label: data.toString(),
+              onChange={(selected) => {
+                console.log(selected);
+                setFilterValue({
+                  ...filterValue,
+                  order: selected.value,
+                  orderName: selected.label,
+                });
+              }}
+              options={orderKeys?.map((order) => ({
+                value: order,
+                label: order,
               }))}
             />
           </div>
@@ -148,9 +182,13 @@ const FilterProducts = () => {
               name="brandId"
               defaultValue={filterValue.brandId}
               onChange={(selected) =>
-                setFilterValue({ ...filterValue, brandId: selected.value })
+                setFilterValue({
+                  ...filterValue,
+                  brandId: selected.value,
+                  brandName: selected.label,
+                })
               }
-              options={brands?.data?.map((data: any) => ({
+              options={brands?.data?.map((data: brandSelectListType) => ({
                 value: data.key,
                 label: data.value,
               }))}

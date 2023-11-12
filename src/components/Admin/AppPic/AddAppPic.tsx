@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { appPicType } from "../../../types/AppPic.type";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import { useCreateAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
+import useHasAccess from "../../../hooks/useHasAccess";
+import { appPicErrorType } from "../../../types/Error.type";
 
 function AddAppPic() {
   const inintialAppPicState = {
@@ -28,11 +30,17 @@ function AddAppPic() {
     });
   };
 
+  const { userHasAccess } = useHasAccess("action_app_pic_admin_create");
+
   const [createAppPic, { error: appPicError, isSuccess }] =
     useCreateAppPicMutation();
 
   const createAppPicHandler = () => {
-    createAppPic(createAppPicValue);
+    if (userHasAccess) {
+      createAppPic(createAppPicValue);
+    } else {
+      toast.error("You Havent Access Create AppPic");
+    }
   };
 
   useEffect(() => {
@@ -43,7 +51,7 @@ function AddAppPic() {
     }
   }, [isSuccess]);
 
-  const createAppPicError = appPicError?.data;
+  const createAppPicError = appPicError as appPicErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { description, title, url } = createAppPicValue;
@@ -55,7 +63,7 @@ function AddAppPic() {
   }, [createAppPicValue]);
 
   return (
-    <div className="col-span-4 px-4">
+    <div className="col-span-4 px-3">
       <Paper
         style={{
           margin: "0 auto",
@@ -74,7 +82,7 @@ function AddAppPic() {
           Create AppPic
         </Typography>
         <Typography variant="body1" className="text-red">
-          {createAppPicError?.message}
+          {createAppPicError?.data?.message}
         </Typography>
         <TextField
           label="title"
@@ -85,7 +93,7 @@ function AddAppPic() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createAppPicError?.errors?.title}
+          {createAppPicError?.data?.errors?.title}
         </Typography>
         <TextField
           label="url"
@@ -96,7 +104,7 @@ function AddAppPic() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createAppPicError?.errors?.url}
+          {createAppPicError?.data?.errors?.url}
         </Typography>
         <TextField
           label="description"
@@ -107,7 +115,7 @@ function AddAppPic() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createAppPicError?.errors?.description}
+          {createAppPicError?.data?.errors?.description}
         </Typography>
         <TextField
           label="priority"
@@ -119,7 +127,7 @@ function AddAppPic() {
           onChange={setInputValue}
         />
         <Typography variant="body1" className="text-red">
-          {createAppPicError?.errors?.priority}
+          {createAppPicError?.data?.errors?.priority}
         </Typography>
         <Button
           variant="contained"

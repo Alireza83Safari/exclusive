@@ -8,7 +8,6 @@ import {
 } from "../Context/ProductsContext";
 import { FaTrash } from "react-icons/fa";
 import { productItemType } from "../../../../types/ProductItem.type";
-import { productItemError } from "../../../../types/Error.type";
 import toast from "react-hot-toast";
 import {
   useCreateProductItemMutation,
@@ -17,6 +16,7 @@ import {
   useGetProductItemAdminMutation,
 } from "../../../../Redux/apis/admin/productItemAdminApi";
 import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
+import { productItemErrorType } from "../../../../types/Error.type";
 
 function ProductItemInfo() {
   const { editProductId, showEditItem } = useContext(
@@ -115,8 +115,8 @@ function ProductItemInfo() {
     }
   };
 
-  const addItemError = createItemError?.data as productItemError;
-  const editItemError = errorEditItem?.data as productItemError;
+  const addItemError = createItemError as productItemErrorType;
+  const editItemError = errorEditItem as productItemErrorType;
 
   return (
     <>
@@ -133,7 +133,7 @@ function ProductItemInfo() {
         >
           <div className="md:col-span-2 col-span-4 order-2">
             <p className="text-red text-center text-xs">
-              {addItemError?.message || editItemError?.message}
+              {addItemError?.data?.message || editItemError?.data?.message}
             </p>
             <div className="grid grid-cols-2 gap-y-6">
               <div className="col-span-2">
@@ -145,7 +145,7 @@ function ProductItemInfo() {
                 </label>
 
                 <SelectList
-                  options={colors?.data.map((color: any) => ({
+                  options={colors?.data?.map((color: any) => ({
                     value: color.key,
                     label: color.value,
                   }))}
@@ -156,15 +156,15 @@ function ProductItemInfo() {
                       colorName: selectedOptions?.label,
                     });
                   }}
-                  defaultValue={{
+                  value={{
                     value: EditItemValue?.colorId,
                     label: EditItemValue?.colorName,
                   }}
                 />
 
                 <p className="text-xs text-red">
-                  {addItemError?.errors?.colorId ||
-                    editItemError?.errors?.colorId}
+                  {addItemError?.data?.errors?.colorId ||
+                    editItemError?.data?.errors?.colorId}
                 </p>
               </div>
 
@@ -178,8 +178,8 @@ function ProductItemInfo() {
                   value={EditItemValue?.quantity}
                   onChange={setInputValues}
                   Error={
-                    addItemError?.errors?.quantity ||
-                    editItemError?.errors?.quantity
+                    addItemError?.data?.errors?.quantity ||
+                    editItemError?.data?.errors?.quantity
                   }
                   //callback={() => setAddProductItemError("")}
                 />
@@ -193,7 +193,7 @@ function ProductItemInfo() {
                   status
                 </label>
                 <SelectList
-                  options={["Publish", "in Active"].map((item) => ({
+                  options={["Publish", "in Active"]?.map((item) => ({
                     value: item,
                     label: item,
                   }))}
@@ -202,7 +202,6 @@ function ProductItemInfo() {
                       ...EditItemValue,
                       status: selectedOptions?.value === "Publish" ? 0 : 1,
                     });
-                    // setAddProductItemError("");
                   }}
                   defaultValue={{
                     value: EditItemValue?.status,
@@ -210,8 +209,8 @@ function ProductItemInfo() {
                   }}
                 />
                 <p className="text-sm text-red-700">
-                  {addItemError?.errors?.status ||
-                    editItemError?.errors?.status}
+                  {addItemError?.data?.errors?.status ||
+                    editItemError?.data?.errors?.status}
                 </p>
               </div>
 
@@ -225,7 +224,8 @@ function ProductItemInfo() {
                   value={EditItemValue?.price}
                   onChange={setInputValues}
                   Error={
-                    addItemError?.errors?.price || editItemError?.errors?.price
+                    addItemError?.data?.errors?.price ||
+                    editItemError?.data?.errors?.price
                   }
                   // callback={() => setAddProductItemError("")}
                 />

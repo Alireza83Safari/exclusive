@@ -26,6 +26,8 @@ import { appPicUserApi } from "./apis/user/appPicUserApi";
 import { fileUserApi } from "./apis/user/fileUserApi";
 import { discountAdminApi } from "./apis/admin/discountAdminApi";
 import { discountUserApi } from "./apis/user/discountUserApi";
+import { authUserApi } from "./apis/user/authUserApi";
+import { authAdminApi } from "./apis/admin/authAdminApi";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -57,6 +59,8 @@ const store = configureStore({
       fileUserApi.middleware,
       discountAdminApi.middleware,
       discountUserApi.middleware,
+      authUserApi.middleware,
+      authAdminApi.middleware,
     ]),
 });
 

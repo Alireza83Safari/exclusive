@@ -25,6 +25,7 @@ export const brandUserApi = createApi({
         url: `/file/uploadImage/${itemId}/2`,
         method: "POST",
         data: image,
+        "Content-Type": "multipart/form-data",
       }),
     }),
   }),

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
 import { colorType } from "../../../types/Color.type";
 import { useEditColorMutation, useGetColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
+import { colorErrorType } from "../../../types/Error.type";
 
 const style = {
   position: "absolute" as "absolute",
@@ -48,7 +49,7 @@ export default function EditColor() {
     editColor({ id: editColorId, colorInfo: editColorValue });
   };
 
-  const editColorError = error?.data;
+  const editColorError = error as colorErrorType
 
   const getDisbledBtn = useMemo(() => {
     const { name, code } = editColorValue;
@@ -102,7 +103,7 @@ export default function EditColor() {
             Edit Color
           </Typography>
           <Typography variant="body1" className="text-red">
-            {editColorError?.message}
+            {editColorError?.data?.message}
           </Typography>
           <TextField
             label="Name"
@@ -113,7 +114,7 @@ export default function EditColor() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editColorError?.errors?.name}
+            {editColorError?.data?.errors?.name}
           </Typography>
           <TextField
             label="Code"
@@ -124,7 +125,7 @@ export default function EditColor() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editColorError?.errors?.code}
+            {editColorError?.data?.errors?.code}
           </Typography>
           <TextField
             label="Color Hex"
@@ -135,7 +136,7 @@ export default function EditColor() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editColorError?.errors?.colorHex}
+            {editColorError?.data?.errors?.colorHex}
           </Typography>
 
           <Button

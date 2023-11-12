@@ -1,4 +1,3 @@
-import Reac from "react";
 import ContentLoaders from "../components/ContentLoaders";
 
 function ProductSkelton() {

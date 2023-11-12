@@ -1,4 +1,3 @@
-import React from "react";
 import Spinner from "../../Spinner/Spinner";
 import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
 
@@ -6,6 +5,7 @@ function BestSale() {
   const { data: product, isLoading: productLoading } =
     useGetProductsUserQuery("?order=topSell");
   const topSell = product?.data && product?.data[0];
+
   return (
     <div className="md:mr-7 mr-3 md:mt-4 mt-2">
       <div className="bg-white-100 py-7 px-5 ml-3 rounded-xl bg-white">
@@ -17,7 +17,7 @@ function BestSale() {
             <Spinner />
           ) : (
             <img
-              src={`http://127.0.0.1:6060/${topSell?.fileUrl}`}
+              src={topSell?.fileUrl}
               className="w-full h-full object-contain"
               alt="Most Sale Product"
             />

@@ -12,7 +12,7 @@ export interface addressType {
   lastName: string;
   nationalCode: string;
   phoneNumber: string;
-  plaque: number | null;
+  plaque: any;
   postalCode: string;
 }
 

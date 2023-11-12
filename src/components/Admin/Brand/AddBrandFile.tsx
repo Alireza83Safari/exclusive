@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Typography, Paper, Input } from "@mui/material";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
 import { useAddBrandImageMutation } from "../../../Redux/apis/user/brandUserApi";
+import { adminAxios } from "../../../services/adminInterceptor";
 
 function AddBrandFile() {
   const [image, setImage] = useState([]);
@@ -15,10 +16,13 @@ function AddBrandFile() {
   } = useContext(BrandContext) as brandContextType;
   const [addBrandImage, { isSuccess }] = useAddBrandImageMutation();
 
+
+
   const createBrandHandler = () => {
     const imageFormData = new FormData();
     imageFormData.append("fileUrl", image[0]);
     addBrandImage({ itemId: createBrandId, image: imageFormData });
+    adminAxios.post(`/file/uploadImage/${createBrandId}/2` , imageFormData)
   };
 
   useEffect(() => {
@@ -78,7 +82,9 @@ function AddBrandFile() {
             </form>
           </Paper>
         </div>
-      ) : null}
+      ) : (
+        ""
+      )}
     </>
   );
 }

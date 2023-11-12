@@ -1,8 +1,4 @@
-import React from "react";
-import { useGetProfileQuery } from "../../Redux/apis/user/prodileUserApi";
-
 function AccountUserInfo() {
-  const { data: userInfo } = useGetProfileQuery("");
   return (
     <div className="md:col-span-5 col-span-7">
       <form className="grid grid-cols-2 shadow-xl md:px-10 px-4 py-8 relative">

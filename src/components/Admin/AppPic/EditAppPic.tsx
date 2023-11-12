@@ -7,7 +7,11 @@ import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import { appPicType } from "../../../types/AppPic.type";
-import { useEditAppPicMutation, useGetAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
+import {
+  useEditAppPicMutation,
+  useGetAppPicMutation,
+} from "../../../Redux/apis/admin/appPicAdminApi";
+import { appPicErrorType } from "../../../types/Error.type";
 
 const style = {
   position: "absolute" as "absolute",
@@ -50,7 +54,7 @@ export default function EditAppPic() {
     editAppPic({ id: editAppPicId, appPicInfo: editAppPicValue });
   };
 
-  const editAppPicError = error?.data;
+  const editAppPicError = error as appPicErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { description, title, url } = editAppPicValue;
@@ -106,7 +110,7 @@ export default function EditAppPic() {
             Edit AppPic
           </Typography>
           <Typography variant="body1" className="text-red">
-            {editAppPicError?.message}
+            {editAppPicError?.data?.message}
           </Typography>
           <TextField
             label="title"
@@ -117,7 +121,7 @@ export default function EditAppPic() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editAppPicError?.errors?.title}
+            {editAppPicError?.data?.errors?.title}
           </Typography>
           <TextField
             label="url"
@@ -128,7 +132,7 @@ export default function EditAppPic() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editAppPicError?.errors?.url}
+            {editAppPicError?.data?.errors?.url}
           </Typography>
           <TextField
             label="description"
@@ -139,7 +143,7 @@ export default function EditAppPic() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editAppPicError?.errors?.description}
+            {editAppPicError?.data?.errors?.description}
           </Typography>
           <TextField
             label="priority"
@@ -150,7 +154,7 @@ export default function EditAppPic() {
             onChange={setInputValue}
           />
           <Typography variant="body1" className="text-red">
-            {editAppPicError?.errors?.priority}
+            {editAppPicError?.data?.errors?.priority}
           </Typography>
           <Button
             variant="contained"

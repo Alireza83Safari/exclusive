@@ -20,6 +20,8 @@ import { usePagination } from "../../../hooks/usePagination";
 import Pagination from "../../Pagination";
 import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import useHasAccess from "../../../hooks/useHasAccess";
+import DeleteModal from "../DeleteModal";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions";
@@ -43,12 +45,40 @@ function CategoryTable() {
     categoryLoading,
     refetchCategory,
   } = useContext(CategoryContext) as categoryContextType;
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteCategoryId, setDeleteCategoryId] = useState("");
+
+  const { userHasAccess: accessList } = useHasAccess(
+    "action_category_admin_list"
+  );
+
+  const { userHasAccess: accessEdit } = useHasAccess(
+    "action_category_admin_update"
+  );
+  const { userHasAccess: accessDelete } = useHasAccess(
+    "action_category_admin_delete"
+  );
 
   const [deleteCategory, { error: deleteCategoryError, isSuccess }] =
     useDeleteCategoryMutation();
 
   const deleteCategoryHandler = (id: string) => {
-    deleteCategory(id);
+    if (accessDelete) {
+      deleteCategory(id);
+      setShowDeleteModal(false);
+    } else {
+      toast.error("You Havent Access Delete Category");
+      setShowDeleteModal(false);
+    }
+  };
+
+  const editCategoryHandler = (id: string) => {
+    if (accessEdit) {
+      setOpenEditModal(true);
+      setEditCategoryId(id);
+    } else {
+      toast.error("You Havent Access Edit Category");
+    }
   };
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -75,13 +105,14 @@ function CategoryTable() {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("delete category is success");
+      toast.success("Delete Category Is Success");
       refetchCategory();
     }
     if (deleteCategoryError) {
-      toast.error(deleteCategoryError?.data.message);
+      toast.error("delete category get error!!");
     }
   }, [isSuccess, deleteCategoryError]);
+
   return (
     <div className="lg:col-span-8 col-span-12 m-3 lg:order-1 order-2">
       <Paper
@@ -109,68 +140,77 @@ function CategoryTable() {
             />
           </Box>
         </div>
-        <TableContainer sx={{ minHeight: 490 }}>
-          <Table stickyHeader aria-label="sticky table">
-            {categoryLoading ? (
-              <Spinner />
-            ) : (
-              <>
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align="center">
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {category?.length ? (
-                    category?.map((row: any, index: any) => (
-                      <TableRow key={row.id}>
-                        <TableCell align="center">{index + 1}</TableCell>
-                        <TableCell align="center">{row.name}</TableCell>
-                        <TableCell align="center">{row.code}</TableCell>
-                        <TableCell
-                          style={{ whiteSpace: "nowrap" }}
-                          align="center"
-                        >
-                          {row.createdAt.slice(0, 10)}
+        <TableContainer sx={{ minHeight: 530 }}>
+          {accessList ? (
+            <Table stickyHeader aria-label="sticky table">
+              {categoryLoading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <TableHead>
+                    <TableRow>
+                      {columns?.map((column) => (
+                        <TableCell key={column.id} align="center">
+                          {column.label}
                         </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {category?.length ? (
+                      category?.map((row: any, index: any) => (
+                        <TableRow key={row.id}>
+                          <TableCell align="center">{index + 1}</TableCell>
+                          <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center">{row.code}</TableCell>
+                          <TableCell
+                            style={{ whiteSpace: "nowrap" }}
+                            align="center"
+                          >
+                            {row.createdAt.slice(0, 10)}
+                          </TableCell>
 
-                        <TableCell
-                          align="center"
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mt: "6px",
-                          }}
-                        >
-                          <FaTrash
-                            className="text-red mr-3"
-                            onClick={() => deleteCategoryHandler(row.id)}
-                          />
-                          <FaPen
-                            className="text-orange-500"
-                            onClick={() => {
-                              setOpenEditModal(true);
-                              setEditCategoryId(row.id);
+                          <TableCell
+                            align="center"
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              mt: "6px",
                             }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableCell colSpan={7}>
-                      <p className="text-xl text-center font-semibold">
-                        We couldn't find a category with these specifications.
-                      </p>
-                    </TableCell>
-                  )}
-                </TableBody>
-              </>
-            )}
-          </Table>
+                          >
+                            <FaTrash
+                              className="text-red mr-3"
+                              onClick={() => {
+                                setEditCategoryId(row.id);
+                                setShowDeleteModal(true);
+                                setDeleteCategoryId(row.id);
+                              }}
+                            />
+                            <FaPen
+                              className="text-orange-500"
+                              onClick={() => editCategoryHandler(row.id)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableCell colSpan={7}>
+                        <p className="text-xl text-center font-semibold">
+                          We couldn't find a category with these specifications.
+                        </p>
+                      </TableCell>
+                    )}
+                  </TableBody>
+                </>
+              )}
+            </Table>
+          ) : (
+            <Box sx={{ marginTop: "100px" }}>
+              <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                You Havent Access Category List
+              </h1>
+            </Box>
+          )}
         </TableContainer>
         {totalPages > 1 && (
           <Pagination
@@ -180,6 +220,13 @@ function CategoryTable() {
           />
         )}
       </Paper>
+      {showDeleteModal && (
+        <DeleteModal
+          setShowDeleteModal={setShowDeleteModal}
+          id={deleteCategoryId}
+          deleteUrl={deleteCategoryHandler}
+        />
+      )}
       <EditCategory />
     </div>
   );

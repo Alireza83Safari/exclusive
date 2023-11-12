@@ -10,7 +10,7 @@ const AddBrandFile = React.lazy(() => import("../../components/Admin/Brand/AddBr
 function Brand() {
   return (
     <BrandContextProvider>
-      <div className="grid grid-cols-12 mt-4 ">
+      <div className="grid grid-cols-12 mt-4">
         <Suspense fallback={<Spinner />}>
           <BrandTable />
         </Suspense>

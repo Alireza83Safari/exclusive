@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { BiLogIn } from "react-icons/bi";
 import Profile from "../Profile";
-import { useAppSelector } from "../../hooks/reduxHooks";
 import HeaderSkelton from "../../skelton/HeaderSkelton";
+import { authContext, authContextType } from "../../context/authContext";
 
 function MainHeader() {
-  const { userIsLogin, loading } = useAppSelector((state) => state?.auth);
+  const { userIsLogin, isLoading, userInfos } = useContext(
+    authContext
+  ) as authContextType;
   const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([
+    { label: "Admin Panel", link: "/admin" },
     { label: "Home", link: "/" },
     { label: "Contact", link: "/contact" },
     { label: "About", link: "/about" },
@@ -21,14 +24,24 @@ function MainHeader() {
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    if (userIsLogin === true) {
-      setMenuItems(menuItems.filter((menu) => menu.label !== "Sign Up"));
+    if (userIsLogin) {
+      setMenuItems((prevItems) =>
+        prevItems.filter((menu) => menu.label !== "Sign Up")
+      );
+
+      if (
+        !(userInfos?.role?.name === "admin" || userInfos?.role?.name === "root")
+      ) {
+        setMenuItems((prevItems) =>
+          prevItems.filter((menu) => menu.label !== "Admin Panel")
+        );
+      }
     }
-  }, [userIsLogin]);
+  }, [userIsLogin, userInfos]);
 
   const searchProducts = () => {
-    setSearchQuery("");
     navigate(`/search/product?searchTerm=${searchQuery.replace(/ /g, "_")}`);
+    setSearchQuery("");
   };
   const handleEnterPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
@@ -39,7 +52,7 @@ function MainHeader() {
   return (
     <div className="border-b border-borderColor relative px-2">
       <div className="xl:max-w-[1280px] md:max-w-[98%] w-full h-[48px] flex justify-between items-center m-auto text-sm py-10 md:pt-14 lg:px-0 sm:px-4 px-1">
-        {loading ? (
+        {isLoading ? (
           <HeaderSkelton />
         ) : (
           <>
@@ -57,10 +70,12 @@ function MainHeader() {
 
             {isMenuVisible && (
               <ul className="items-center fixed left-4 top-32 bg-gray rounded-md z-10">
-                {menuItems.map((item, index) => (
+                {menuItems?.map((item, index) => (
                   <Link
                     key={index}
-                    className="mx-5 hover:text-red lg:flex block lg:my-0 my-6"
+                    className={`mx-5 hover:text-red lg:flex block lg:my-0 my-6 ${
+                      item.label === `Admin Panel` ? `font-bold text-base` : ``
+                    } `}
                     to={item.link}
                   >
                     {item.label}
@@ -70,10 +85,12 @@ function MainHeader() {
             )}
 
             <ul className="items-center lg:flex hidden z-10">
-              {menuItems.map((item, index) => (
+              {menuItems?.map((item, index) => (
                 <Link
                   key={index}
-                  className="mx-5 hover:text-red lg:flex block lg:my-0 my-6 duration-200"
+                  className={`mx-5 hover:text-red lg:flex block lg:my-0 my-6 duration-200 ${
+                    item.label === `Admin Panel` ? `font-bold text-base` : ``
+                  } `}
                   to={item.link}
                 >
                   {item.label}

@@ -4,6 +4,9 @@ import toast from "react-hot-toast";
 const adminAxios = axios.create({
   baseURL: "/api/v1/admin",
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 adminAxios.interceptors.request.use(
@@ -17,13 +20,14 @@ adminAxios.interceptors.request.use(
 
 adminAxios.interceptors.response.use(
   function (response) {
+    // You can modify the response config here if needed
     return response;
   },
   function (error) {
     if (
       error.response.status === 401 &&
       error?.response?.request?.responseURL !==
-        "http://localhost:5173/api/v1/admin/is_authenticated"
+        "https://exclusive.iran.liara.run/api/v1/admin/is_authenticated"
     ) {
       toast.error("Unauthorized. Please log in.");
     }
@@ -31,4 +35,5 @@ adminAxios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 export { adminAxios };

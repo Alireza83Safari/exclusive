@@ -25,12 +25,12 @@ function AccountOrders() {
   return (
     <div>
       {isLoading
-        ? totalSkeletonShow.map((index) => (
+        ? totalSkeletonShow?.map((index) => (
             <React.Fragment key={index}>
               <AccountSkelton />
             </React.Fragment>
           ))
-        : orders?.slice(pageMinusOne, limitMinusOne).map((order: any) => (
+        : orders?.slice(pageMinusOne, limitMinusOne)?.map((order: any) => (
             <div key={order.id} className="bg-gray p-6 my-5 rounded-md">
               <div className="border-b border-borderColor pb-5 flex justify-between">
                 <p>#{order.code}</p>
@@ -47,7 +47,7 @@ function AccountOrders() {
                 </p>
               </div>
               <div className="flex pt-5">
-                {order.fileUrls.map((url: any) => (
+                {order.fileUrls?.map((url: any) => (
                   <div key={url}>
                     <img
                       src={`http://127.0.0.1:6060/${url}`}

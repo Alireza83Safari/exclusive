@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 const Topbar = lazy(() => import("../../components/Admin/Dashboard/Topbar"));
 const DashboardChart = lazy(
   () => import("../../components/Admin/Dashboard/DashboardChart")

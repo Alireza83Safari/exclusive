@@ -19,6 +19,7 @@ import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, TextField } from "@mui/material";
+import useHasAccess from "../../../hooks/useHasAccess";
 
 interface Column {
   id:
@@ -58,12 +59,24 @@ function CommentTable() {
     status: null,
   } as changeCommentStatusType);
 
+  const { userHasAccess: accessList } = useHasAccess(
+    "action_comment_admin_list"
+  );
+  const { userHasAccess: accessDelete } = useHasAccess(
+    "action_comment_change_status"
+  );
   const [deleteComment, { isSuccess: deleteCommentStatus }] =
     useDeleteCommentMutation();
 
-  const deleteCommentHandler = (id: string) => {
-    deleteComment(id);
+  const deleteCommentHandler = async (id: string) => {
+    if (accessDelete) {
+      deleteComment(id);
+    } else {
+      toast.error("You Havent Access Delete Comment");
+      setShowDeleteModal(false);
+    }
   };
+
   useEffect(() => {
     if (deleteCommentStatus) {
       toast.success("Delete Comment Is Success");
@@ -134,113 +147,129 @@ function CommentTable() {
           </Box>
         </div>
         <TableContainer sx={{ minHeight: 500 }}>
-          <Table stickyHeader aria-label="sticky table">
-            {commentsLoading ? (
-              <Spinner />
-            ) : comments?.length ? (
-              <>
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align="center">
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {commentsLoading ? (
-                    <Spinner />
-                  ) : (
-                    comments.map((row: any, index: any) => (
-                      <TableRow key={row.id}>
-                        <TableCell style={{ width: 10 }} align="center">
-                          {index + 1}
+          {accessList ? (
+            <Table stickyHeader aria-label="sticky table">
+              {commentsLoading ? (
+                <Spinner />
+              ) : comments?.length ? (
+                <>
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="center">
+                          {column.label}
                         </TableCell>
-                        <TableCell align="center">{row.productName}</TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{
-                            color: `${
-                              row.commentStatus === 1
-                                ? `green`
-                                : row.commentStatus === 2
-                                ? `red`
-                                : ``
-                            }`,
-                          }}
-                        >
-                          {row.commentStatus === 1
-                            ? "success"
-                            : row.commentStatus === 2
-                            ? "reject"
-                            : ""}
-                          {row.commentStatus === 0 && (
-                            <div className="rounded-xl">
-                              <button
-                                className="bg-green p-1 text-xs rounded-l-md"
-                                onClick={() => {
-                                  setChangeStatus({
-                                    ...changeStatus,
-                                    status: 1,
-                                  });
-                                  setChangeStausId(row.id);
-                                }}
-                              >
-                                accept
-                              </button>
-                              <button
-                                className="bg-red p-1 text-xs rounded-r-md"
-                                onClick={() => {
-                                  setChangeStatus({
-                                    ...changeStatus,
-                                    status: 2,
-                                  });
-                                  setChangeStausId(row.id);
-                                }}
-                              >
-                                reject
-                              </button>
-                            </div>
-                          )}
-                        </TableCell>
-                        <TableCell align="center">{row.username}</TableCell>
-                        <TableCell align="center">{row.rate}/5</TableCell>
-                        <TableCell align="center">
-                          {row.createdAt.slice(0, 10)}
-                        </TableCell>
-                        <TableCell align="center">{row.text}</TableCell>
-                        <TableCell
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                          className="sm:mt-2 mt-2"
-                        >
-                          <FaTrash
-                            className="text-red mr-3 cursor-pointer"
-                            onClick={() => {
-                              setDeleteCommentID(row.id);
-                              setShowDeleteModal(true);
-                            }}
-                          />
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {commentsLoading ? (
+                      <TableRow>
+                        <TableCell colSpan={7}>
+                          <Spinner />
                         </TableCell>
                       </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </>
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7}>
-                  <p className="text-xl text-center font-semibold">
-                    We couldn't find a comment with these specifications.
-                  </p>
-                </TableCell>
-              </TableRow>
-            )}
-          </Table>
+                    ) : (
+                      comments?.map((row: any, index: any) => (
+                        <TableRow key={row.id}>
+                          <TableCell style={{ width: 10 }} align="center">
+                            {index + 1}
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.productName}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: `${
+                                row.commentStatus === 1
+                                  ? `green`
+                                  : row.commentStatus === 2
+                                  ? `red`
+                                  : ``
+                              }`,
+                            }}
+                          >
+                            {row.commentStatus === 1
+                              ? "success"
+                              : row.commentStatus === 2
+                              ? "reject"
+                              : ""}
+                            {row.commentStatus === 0 && (
+                              <div className="rounded-xl">
+                                <button
+                                  className="bg-green p-1 text-xs rounded-l-md"
+                                  onClick={() => {
+                                    setChangeStatus({
+                                      ...changeStatus,
+                                      status: 1,
+                                    });
+                                    setChangeStausId(row.id);
+                                  }}
+                                >
+                                  accept
+                                </button>
+                                <button
+                                  className="bg-red p-1 text-xs rounded-r-md"
+                                  onClick={() => {
+                                    setChangeStatus({
+                                      ...changeStatus,
+                                      status: 2,
+                                    });
+                                    setChangeStausId(row.id);
+                                  }}
+                                >
+                                  reject
+                                </button>
+                              </div>
+                            )}
+                          </TableCell>
+                          <TableCell align="center">{row.username}</TableCell>
+                          <TableCell align="center">{row.rate}/5</TableCell>
+                          <TableCell align="center">
+                            {row.createdAt.slice(0, 10)}
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.text.slice(0, 20)}
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                            className="sm:mt-2 mt-2"
+                          >
+                            <FaTrash
+                              className="text-red mr-3 cursor-pointer"
+                              onClick={() => {
+                                setDeleteCommentID(row.id);
+                                setShowDeleteModal(true);
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </>
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <p className="text-xl text-center font-semibold">
+                      We couldn't find a comment with these specifications.
+                    </p>
+                  </TableCell>
+                </TableRow>
+              )}
+            </Table>
+          ) : (
+            <Box sx={{ marginTop: "100px" }}>
+              <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                You Havent Access Comments List
+              </h1>
+            </Box>
+          )}
         </TableContainer>
         {totalPages > 1 && (
           <Pagination

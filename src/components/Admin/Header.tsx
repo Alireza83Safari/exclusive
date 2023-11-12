@@ -11,8 +11,14 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Sidebar from "./Sidebar";
+import { Link } from "react-router-dom";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const menuItem = [
+  { name: "dashboard", value: "dashboard" },
+  { name: "shop", value: "/products" },
+  { name: "roles", value: "role" },
+  { name: "orders", value: "order" },
+];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -50,27 +56,29 @@ function Header() {
             <IconButton
               size="large"
               aria-label="open sidebar"
-              onClick={toggleSidebar} // Open the sidebar
+              onClick={toggleSidebar}
               color="inherit"
               sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                color: "inherit",
-              }}
-            >
-              Exclusive
-            </Typography>
+            <Link to="/admin">
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="#app-bar-with-responsive-menu"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  color: "inherit",
+                }}
+              >
+                Exclusive
+              </Typography>
+            </Link>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -129,9 +137,11 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                {menuItem?.map((menu) => (
+                  <MenuItem key={menu.value} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">
+                      <Link to={menu.value}>{menu.name}</Link>
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>

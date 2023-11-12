@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BarChart,
   Bar,
@@ -8,13 +7,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export type barChartPropsType = {
-  key: string;
-  value: number;
-};
-
-const BarChartComponent = ({ datas }: barChartPropsType[]) => {
-
+const BarChartComponent = ({ datas }: any) => {
   return (
     <ResponsiveContainer width="100%" height={310}>
       <BarChart data={datas}>

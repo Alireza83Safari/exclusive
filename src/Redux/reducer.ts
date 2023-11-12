@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 
-import authReducer from "./slices/auth";
 import featureReducer from "./slices/feature";
 import { userAdminApi } from "./apis/admin/userAdminApi";
 import { brandAdminApi } from "./apis/admin/brandAdminApi";
@@ -28,9 +27,10 @@ import { profileUserApi } from "./apis/user/prodileUserApi";
 import { fileUserApi } from "./apis/user/fileUserApi";
 import { discountAdminApi } from "./apis/admin/discountAdminApi";
 import { discountUserApi } from "./apis/user/discountUserApi";
+import { authAdminApi } from "./apis/admin/authAdminApi";
+import { authUserApi } from "./apis/user/authUserApi";
 
 export const rootReducer = combineReducers({
-  auth: authReducer,
   feature: featureReducer,
   [brandAdminApi.reducerPath]: brandAdminApi.reducer,
   [brandUserApi.reducerPath]: brandUserApi.reducer,
@@ -58,4 +58,6 @@ export const rootReducer = combineReducers({
   [fileUserApi.reducerPath]: fileUserApi.reducer,
   [discountAdminApi.reducerPath]: discountAdminApi.reducer,
   [discountUserApi.reducerPath]: discountUserApi.reducer,
+  [authAdminApi.reducerPath]: authAdminApi.reducer,
+  [authUserApi.reducerPath]: authUserApi.reducer,
 });

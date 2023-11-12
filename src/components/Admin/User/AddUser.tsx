@@ -9,6 +9,7 @@ import { roleType } from "../../../types/Role.type";
 import Spinner from "../../Spinner/Spinner";
 import { useCreateUserMutation } from "../../../Redux/apis/admin/userAdminApi";
 import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
+import { userErrorType } from "../../../types/Error.type";
 
 function AddUser() {
   const { showAddModal, refetchUser, setShowAddModal } = useContext(
@@ -42,7 +43,7 @@ function AddUser() {
     createUser(addUserValue);
   };
 
-  const addUserError = error?.data;
+  const addUserError = error as userErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { username, roleId } = addUserValue;
@@ -72,7 +73,7 @@ function AddUser() {
       <div className="bg-white p-2">
         <div>
           <p className="text-center text-xl">Add New User</p>
-          <p className="text-red">{addUserError?.message}</p>
+          <p className="text-red">{addUserError?.data?.message}</p>
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           {isLoading ? (
@@ -84,14 +85,15 @@ function AddUser() {
                   labelText="email"
                   placeholder="email"
                   name="email"
+                  required
                   className="border"
                   value={addUserValue.email}
                   onChange={setInputValue}
-                  Error={addUserError?.errors?.email}
+                  Error={addUserError?.data?.errors?.email}
                 />
               </div>
 
-              <div>
+              <div className="col-span-2">
                 <Input
                   labelText="username"
                   placeholder="username"
@@ -99,7 +101,7 @@ function AddUser() {
                   className="border"
                   value={addUserValue.username}
                   onChange={setInputValue}
-                  Error={addUserError?.errors?.username}
+                  Error={addUserError?.data?.errors?.username}
                 />
               </div>
 
@@ -111,7 +113,7 @@ function AddUser() {
                   className="border"
                   value={addUserValue.firstName}
                   onChange={setInputValue}
-                  Error={addUserError?.errors?.firstName}
+                  Error={addUserError?.data?.errors?.firstName}
                 />
               </div>
 
@@ -123,7 +125,7 @@ function AddUser() {
                   className="border"
                   value={addUserValue.lastName}
                   onChange={setInputValue}
-                  Error={addUserError?.errors?.lastName}
+                  Error={addUserError?.data?.errors?.lastName}
                 />
               </div>
 
@@ -138,19 +140,7 @@ function AddUser() {
                   className="border"
                   value={addUserValue.mobile}
                   onChange={setInputValue}
-                  Error={addUserError?.errors?.mobile}
-                />
-              </div>
-
-              <div>
-                <Input
-                  labelText="lastName"
-                  placeholder="lastName"
-                  name="lastName"
-                  className="border"
-                  value={addUserValue.lastName}
-                  onChange={setInputValue}
-                  Error={addUserError?.errors?.lastName}
+                  Error={addUserError?.data?.errors?.mobile}
                 />
               </div>
 

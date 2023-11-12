@@ -32,7 +32,7 @@ function OurProducts() {
 
       {isLoading ? (
         <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-          {totalSkeletonShow.map((index) => (
+          {totalSkeletonShow?.map((index) => (
             <React.Fragment key={index}>
               <ProductSkelton />
             </React.Fragment>
