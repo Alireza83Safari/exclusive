@@ -2,12 +2,14 @@
   "name": "exclusive",
   "private": true,
   "version": "0.0.0",
+  "proxy": "https://eshop-bak.iran.liara.run",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite preview"
   },
   "dependencies": {
     "@emotion/styled": "^11.11.0",
