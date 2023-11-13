@@ -7,7 +7,7 @@ import {
   ProductsContextType,
 } from "../Context/ProductsContext";
 import { FaTrash } from "react-icons/fa";
-import { productItemType } from "../../../../types/ProductItem.type";
+import { productItemType } from "../../../../types/productItem.type";
 import toast from "react-hot-toast";
 import {
   useCreateProductItemMutation,

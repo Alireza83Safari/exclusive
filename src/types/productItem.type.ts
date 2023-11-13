@@ -1,14 +1,3 @@
-export type productItemStateType = {
-  productItem: productItemItemIdType;
-  productItemProduct: productItemProductType[] | null;
-  productItemSelectList: productItemSelectList[];
-  adminProductItem: productItemProductType[];
-  addProductItem: productItemType;
-  productItemLoading: boolean;
-  addProductItemError: addProductItemErrorType;
-  addProductItemResponse: number;
-};
-
 export interface productItemType {
   colorId: string;
   isMainItem: boolean;
@@ -20,6 +9,16 @@ export interface productItemType {
   colorName: string;
 }
 
+export type productItemStateType = {
+  productItem: productItemItemIdType;
+  productItemProduct: productItemProductType[] | null;
+  productItemSelectList: productItemSelectList[];
+  adminProductItem: productItemProductType[];
+  addProductItem: productItemType;
+  productItemLoading: boolean;
+  addProductItemError: addProductItemErrorType;
+  addProductItemResponse: number;
+};
 export interface productItemProductType extends productItemType {
   color: string;
   id: string;

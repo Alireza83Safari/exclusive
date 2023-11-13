@@ -5,12 +5,12 @@ import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
-import { productItemType } from "../../../../types/ProductItem.type";
 import { productItemErrorType } from "../../../../types/Error.type";
 import toast from "react-hot-toast";
 import { useCreateProductItemMutation } from "../../../../Redux/apis/admin/productItemAdminApi";
 import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
 import Spinner from "../../../Spinner/Spinner";
+import { productItemType } from "../../../../types/productItem.type";
 
 function AddProductItem() {
   const {
