@@ -7,10 +7,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://eshop-bak.iran.liara.run/",
-        changeOrigin: true,
-        headers: {
-          "liara-Proxy-Target": "liara",
-        },
+       
       },
     },
   },
