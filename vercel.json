@@ -1,8 +1,1 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://eshop-bak.iran.liara.run/:path*"
-    }
-  ]
-}
+{ "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }] }
