@@ -1,46 +1,41 @@
-import { useEffect, useState } from "react";
-import { userProductType } from "../../types/Product.type";
-import { useParams } from "react-router-dom";
-import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   useCreateFavoriteMutation,
   useGetFavoriteProductItemMutation,
 } from "../../Redux/apis/user/favoriteUserApi";
-import { useGetProductItemUserMutation } from "../../Redux/apis/user/productItemUserApi";
 import ContentLoaders from "../ContentLoaders";
 import { colorType } from "../../types/Color.type";
 import { addOrderItemType } from "../../types/Order.type";
 import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
 import toast from "react-hot-toast";
+import { DetailContext, DetailContextType } from "./Context/DetailsContext";
 
 function ProductDetailsInfo() {
-  const { productId } = useParams();
-  const [productFind, setProductFind] = useState<userProductType>();
+  const { productItemLoading, productLoading, productItem, productFind } =
+    useContext(DetailContext) as DetailContextType;
+
   const [count, setCount] = useState<number>(1);
 
-  const { data: products, isLoading: productLoading } =
-    useGetProductsUserQuery("");
-
-  const [getFavoriteProductItem, { data: isFavorite }] =
+  const [getFavoriteProductItem, { data: isFavorite, isSuccess }] =
     useGetFavoriteProductItemMutation();
 
   useEffect(() => {
     if (productFind?.itemId) {
       getFavoriteProductItem(`${productFind?.itemId}`);
     }
-  }, [productFind]);
+  }, [productFind?.itemId]);
+
+  const [
+    createFavorite,
+    { isLoading: favoriteLoading, isSuccess: createFavoriteSuccess },
+  ] = useCreateFavoriteMutation();
 
   useEffect(() => {
-    let findProduct = products?.data.find(
-      (product: userProductType) => product.id == productId
-    );
-    setProductFind(findProduct);
-  }, [products?.data, productId]);
+    if (createFavoriteSuccess) {
+      toast.success("added to favorite is successfully");
+    }
+  }, [createFavoriteSuccess]);
 
-  const [createFavorite, { isLoading: favoriteLoading }] =
-    useCreateFavoriteMutation();
-
-  useEffect(() => {}, []);
   const addProductToFavorite = () => {
     const productItemId = {
       productItemId: productFind?.itemId,
@@ -48,19 +43,9 @@ function ProductDetailsInfo() {
 
     if (!isFavorite?.data) {
       createFavorite(productItemId);
+      getFavoriteProductItem(`${productFind?.itemId}`);
     }
   };
-
-  const [
-    getProductItemUser,
-    { data: productItem, isLoading: productItemLoading },
-  ] = useGetProductItemUserMutation();
-
-  useEffect(() => {
-    if (productFind) {
-      getProductItemUser(productFind?.itemId);
-    }
-  }, [productFind]);
 
   const [createOrderItem, { isSuccess: isSuccessOrder }] =
     useCreateOrderItemMutation();
@@ -72,12 +57,6 @@ function ProductDetailsInfo() {
     }
   }, [isSuccessOrder]);
 
-  useEffect(() => {
-    if (productFind) {
-      getProductItemUser(productFind?.itemId);
-    }
-  }, [productFind]);
-
   const addProductToBasket = (id: string) => {
     let orderItemInfo = {
       productItemId: id,
@@ -86,13 +65,27 @@ function ProductDetailsInfo() {
     createOrderItem(orderItemInfo);
   };
 
+  const isFavoriteImg = useMemo(() => {
+    return (
+      <>
+        {isFavorite?.data || createFavoriteSuccess ? (
+          <img src="/images/red-heart.svg" className="w-5 h-5" />
+        ) : (
+          <img src="/images/favorite.png" className="w-5 h-5" />
+        )}
+      </>
+    );
+  }, [isFavorite, , isSuccess, createFavoriteSuccess]);
+
   return (
-    <div className="lg:col-span-5 col-span-10 lg:px-16 sm:px-8 px-3 lg:py-0 py-7">
+    <>
       <div className="border-b border-borderColor lg:pb-10 pb-5 relative">
         {productItemLoading || productLoading ? (
           <ContentLoaders width={80} height={20} />
         ) : (
-          <h1 className="text-xl font-semibold">{productItem?.productTitle}</h1>
+          <h1 className="md:text-xl text-lg font-semibold">
+            {productItem?.productTitle}
+          </h1>
         )}
 
         <button
@@ -103,13 +96,7 @@ function ProductDetailsInfo() {
           {favoriteLoading ? (
             <ContentLoaders width={30} height={25} />
           ) : (
-            <>
-              {isFavorite?.data ? (
-                <img src="/images/red-heart.svg" className="w-5 h-5" />
-              ) : (
-                <img src="/images/favorite.png" className="w-5 h-5" />
-              )}
-            </>
+            isFavoriteImg
           )}
         </button>
         <div className="flex items-center justify-between my-5">
@@ -154,7 +141,7 @@ function ProductDetailsInfo() {
             <ContentLoaders width={100} height={30} />
           ) : (
             <div className="flex items-center">
-              <p className="mr-2">Colors:</p>
+              <p className="mr-2 md:text-base text-sm">Colors:</p>
               <div
                 className="w-6 h-6 rounded-full mx-1 border border-borderColor"
                 style={{
@@ -169,7 +156,7 @@ function ProductDetailsInfo() {
           {productItemLoading || productLoading ? (
             <ContentLoaders width={100} height={30} />
           ) : (
-            <div className="flex items-center">
+            <div className="flex items-center md:text-base text-sm">
               <p className="text-sm mr-2">Brand:</p>
               <p className="font-semibold">{productFind?.brandName}</p>
             </div>
@@ -178,7 +165,7 @@ function ProductDetailsInfo() {
           {productItemLoading || productLoading ? (
             <ContentLoaders width={100} height={30} />
           ) : (
-            <div className="flex items-center">
+            <div className="flex items-center md:text-base text-sm">
               <p className="text-sm mr-2">Code:</p>
               <p className="font-semibold">#{productItem?.productCode}</p>
             </div>
@@ -191,14 +178,14 @@ function ProductDetailsInfo() {
           ) : (
             <div className="border border-borderColor grid grid-cols-4 w-full sm:my-4 my-0">
               <button
-                className="text-xl hover:bg-red duration-300 py-1 hover:text-white"
+                className="text-xl hover:bg-red duration-300 py-1 hover:text-white bg-borderColor"
                 onClick={() => setCount(count === 1 ? count : count - 1)}
               >
                 -
               </button>
               <button className="col-span-2 py-1">{count}</button>
               <button
-                className="text-xl hover:bg-red duration-300 py-1 hover:text-white"
+                className="text-xl hover:bg-red duration-300 py-1 hover:text-white bg-borderColor"
                 onClick={() =>
                   setCount(count >= productItem?.quantity ? count : count + 1)
                 }
@@ -265,7 +252,7 @@ function ProductDetailsInfo() {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
