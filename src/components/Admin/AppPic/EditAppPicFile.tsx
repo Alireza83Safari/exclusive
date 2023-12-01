@@ -1,17 +1,43 @@
-import { useContext, useEffect, useState } from "react";
-import { Typography, Paper, Input, IconButton, Button } from "@mui/material";
+import React, { useState, useEffect,  useContext } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
+import { IconButton, Modal, Paper } from "@mui/material";
+import Spinner from "../../Spinner/Spinner";
+import Input from "../../Input";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useUploadImageMutation } from "../../../Redux/apis/user/fileUserApi";
-import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import toast from "react-hot-toast";
-import Spinner from "../../Spinner/Spinner";
 
-function AddAppPicFile() {
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  height: 400,
+  bgcolor: "background.paper",
+  p: 3,
+};
+
+export const appPicTypeOptions = [
+  { value: 0, label: "slider" },
+  { value: 1, label: "section" },
+  { value: 2, label: "bilbord" },
+];
+
+export default function EditAppPicFile() {
+  const {
+    openEditFileModal,
+    setOpenEditFileModal,
+    editAppPicId,
+    refetchAppPic,
+  } = useContext(AppPicContext) as appPicContextType;
+
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null);
   const [formData, setFormData] = useState<FormData>(new FormData());
-  const { showAppPicFile, createAppPicId, setShowAppPicFile } = useContext(
-    AppPicContext
-  ) as appPicContextType;
+  const { setShowAppPicFile } = useContext(AppPicContext) as appPicContextType;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -27,31 +53,33 @@ function AddAppPicFile() {
     }
   };
 
-  const [uploadImage, { isSuccess, isLoading }] =
+  const [uploadImage, { isSuccess, isLoading,  error }] =
     useUploadImageMutation();
-
-
 
   const uploadAppPicImage = () => {
     if (selectedFile) {
-      uploadImage({ itemId: createAppPicId, fileType: 3, images: formData });
+      uploadImage({ itemId: editAppPicId, fileType: 3, images: formData });
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("add image successfully");
       setShowAppPicFile(false);
-    } 
-  }, [isSuccess]);
+      refetchAppPic();
+      toast.success("add image successfully");
+    }
+    if (error) {
+      toast.error("please choose jpg , png ,jpeg file");
+    }
+  }, [isSuccess, error]);
 
   return (
-    <>
-      <div
-        className={`col-span-4 px-4 lg:min-h-full bg-white lg:h-[30rem] h-[16rem] rounded-lg mx-3 relative ${
-          showAppPicFile ? `block` : `hidden`
-        }`}
-      >
+    <Modal
+      open={openEditFileModal}
+      onClose={() => setOpenEditFileModal(false)}
+      aria-labelledby="modal-modal-title"
+    >
+      <Box sx={style}>
         {isLoading ? (
           <div className="h-full">
             <Spinner />
@@ -80,7 +108,7 @@ function AddAppPicFile() {
               id="file-input"
               type="file"
               onChange={handleFileChange}
-              inputProps={{ accept: ".jpg, .jpeg, .png" }} // Specify accepted file types
+              inputProps={{ accept: ".jpg, .jpeg, .png" }}
               style={{ display: "none" }}
             />
             <label htmlFor="file-input">
@@ -95,6 +123,7 @@ function AddAppPicFile() {
             </label>
           </Paper>
         )}
+
         <Button
           sx={{
             backgroundColor: "black",
@@ -107,9 +136,7 @@ function AddAppPicFile() {
         >
           Add File
         </Button>
-      </div>
-    </>
+      </Box>
+    </Modal>
   );
 }
-
-export default AddAppPicFile;

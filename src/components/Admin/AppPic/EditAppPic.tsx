@@ -12,13 +12,15 @@ import {
   useGetAppPicMutation,
 } from "../../../Redux/apis/admin/appPicAdminApi";
 import { appPicErrorType } from "../../../types/Error.type";
+import Spinner from "../../Spinner/Spinner";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
+  minHeight: 400,
   bgcolor: "background.paper",
   p: 3,
 };
@@ -30,8 +32,13 @@ export const appPicTypeOptions = [
 ];
 
 export default function EditAppPic() {
-  const { openEditModal, setOpenEditModal, editAppPicId, refetchAppPic } =
-    useContext(AppPicContext) as appPicContextType;
+  const {
+    openEditModal,
+    setOpenEditModal,
+    editAppPicId,
+    refetchAppPic,
+    setOpenEditFileModal,
+  } = useContext(AppPicContext) as appPicContextType;
 
   const inintialAppPicState = {
     appPicType: 2,
@@ -52,10 +59,12 @@ export default function EditAppPic() {
     });
   };
 
-  const [editAppPic, { error, isSuccess }] = useEditAppPicMutation();
+  const [editAppPic, { error, isSuccess,isLoading:editLoading }] = useEditAppPicMutation();
 
-  const [getAppPic, { data: appPic, isSuccess: isSuccessGetAppPic }] =
-    useGetAppPicMutation();
+  const [
+    getAppPic,
+    { data: appPic, isSuccess: isSuccessGetAppPic, isLoading },
+  ] = useGetAppPicMutation();
 
   const editAppPicHandler = () => {
     editAppPic({ id: editAppPicId, appPicInfo: editAppPicValue });
@@ -74,8 +83,9 @@ export default function EditAppPic() {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Edit AppPic Is Success");
+      setOpenEditFileModal(true);
       setOpenEditModal(false);
+      toast.success("Edit AppPic Is Success");
       refetchAppPic();
     }
   }, [isSuccess]);
@@ -109,110 +119,118 @@ export default function EditAppPic() {
         aria-labelledby="modal-modal-title"
       >
         <Box sx={style}>
-          <Box>
-            <Typography
-              variant="h6"
-              sx={{
-                marginBottom: "10px",
-                fontWeight: "bold",
-              }}
-              className="text-center"
-            >
-              Edit AppPic
-            </Typography>
-            <Typography variant="body1" className="text-red">
-              {editAppPicError?.data?.message}
-            </Typography>
-          </Box>
+          {isLoading ||editLoading? (
+            <div className="h-full">
+              <Spinner />
+            </div>
+          ) : (
+            <>
+              <Box>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    marginBottom: "10px",
+                    fontWeight: "bold",
+                  }}
+                  className="text-center"
+                >
+                  Edit AppPic
+                </Typography>
+                <Typography variant="body1" className="text-red">
+                  {editAppPicError?.data?.message}
+                </Typography>
+              </Box>
 
-          <Box>
-            <TextField
-              label="title"
-              name="title"
-              fullWidth
-              value={editAppPicValue.title}
-              sx={{ marginY: "20px" }}
-              onChange={setInputValue}
-            />
-            <Typography variant="body1" className="text-red">
-              {editAppPicError?.data?.errors?.title}
-            </Typography>
-          </Box>
+              <Box>
+                <TextField
+                  label="title"
+                  name="title"
+                  fullWidth
+                  value={editAppPicValue.title}
+                  sx={{ marginY: "10px" }}
+                  onChange={setInputValue}
+                />
+                <Typography variant="body1" className="text-red">
+                  {editAppPicError?.data?.errors?.title}
+                </Typography>
+              </Box>
 
-          <Box>
-            <TextField
-              label="url"
-              name="url"
-              fullWidth
-              value={editAppPicValue.url}
-              sx={{ marginY: "20px" }}
-              onChange={setInputValue}
-            />
-            <Typography variant="body1" className="text-red">
-              {editAppPicError?.data?.errors?.url}
-            </Typography>
-          </Box>
+              <Box>
+                <TextField
+                  label="url"
+                  name="url"
+                  fullWidth
+                  value={editAppPicValue.url}
+                  sx={{ marginY: "10px" }}
+                  onChange={setInputValue}
+                />
+                <Typography variant="body1" className="text-red">
+                  {editAppPicError?.data?.errors?.url}
+                </Typography>
+              </Box>
 
-          <Box>
-            <TextField
-              label="description"
-              name="description"
-              fullWidth
-              value={editAppPicValue.description}
-              sx={{ marginY: "20px" }}
-              onChange={setInputValue}
-            />
-            <Typography variant="body1" className="text-red">
-              {editAppPicError?.data?.errors?.description}
-            </Typography>
-          </Box>
+              <Box>
+                <TextField
+                  label="description"
+                  name="description"
+                  fullWidth
+                  value={editAppPicValue.description}
+                  sx={{ marginY: "10px" }}
+                  onChange={setInputValue}
+                />
+                <Typography variant="body1" className="text-red">
+                  {editAppPicError?.data?.errors?.description}
+                </Typography>
+              </Box>
 
-          <Box>
-            <TextField
-              label="priority"
-              name="priority"
-              fullWidth
-              value={editAppPicValue.priority}
-              sx={{ marginY: "20px" }}
-              onChange={setInputValue}
-            />
-            <Typography variant="body1" className="text-red">
-              {editAppPicError?.data?.errors?.priority}
-            </Typography>
-          </Box>
+              <Box>
+                <TextField
+                  label="priority"
+                  name="priority"
+                  fullWidth
+                  value={editAppPicValue.priority}
+                  sx={{ marginY: "10px" }}
+                  onChange={setInputValue}
+                />
+                <Typography variant="body1" className="text-red">
+                  {editAppPicError?.data?.errors?.priority}
+                </Typography>
+              </Box>
 
-          <Box>
-            <Select
-              label="appPicType"
-              name="appPicType"
-              fullWidth
-              value={editAppPicValue.appPicType}
-              sx={{ marginY: "20px" }}
-              onChange={setInputValue}
-            >
-              {appPicTypeOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography variant="body1" className="text-red">
-              {editAppPicError?.data?.errors?.appPicType}
-            </Typography>
-          </Box>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "black",
-              width: "100%",
-              paddingY: "12px",
-              marginY: "18px",
-            }}
-            onClick={editAppPicHandler}
-            disabled={getDisbledBtn}
-          >
-            Edit AppPic
-          </Button>
+              <Box>
+                <Select
+                  label="appPicType"
+                  name="appPicType"
+                  fullWidth
+                  value={editAppPicValue.appPicType}
+                  sx={{ marginY: "10px" }}
+                  onChange={setInputValue}
+                >
+                  {appPicTypeOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Typography variant="body1" className="text-red">
+                  {editAppPicError?.data?.errors?.appPicType}
+                </Typography>
+              </Box>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "black",
+                  width: "100%",
+                  paddingY: "12px",
+                  marginY: "18px",
+                }}
+                onClick={editAppPicHandler}
+                disabled={getDisbledBtn}
+              >
+                Edit AppPic
+              </Button>
+            </>
+          )}
         </Box>
       </Modal>
     </div>

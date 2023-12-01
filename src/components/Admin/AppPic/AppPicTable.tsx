@@ -14,6 +14,7 @@ import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import EditAppPic from "./EditAppPic";
 import { useDeleteAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
+import EditAppPicFile from "./EditAppPicFile";
 
 interface Column {
   id: "index" | "createAt" | "actions" | "url" | "title" | "type";
@@ -81,93 +82,102 @@ function AppPicTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer
-          sx={{
-            maxHeight: 750,
-            minHeight: 710,
-            display: !userHasAccess ? "flex" : "block",
-          }}
-        >
-          {userHasAccess ? (
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns?.map((column) => (
-                    <TableCell key={column.id} align="center">
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {appPicLoading ? (
+        {appPicLoading ? (
+          <div className="flex justify-center items-center min-h-[44rem]">
+            <Spinner />
+          </div>
+        ) : (
+          <TableContainer
+            sx={{
+              maxHeight: 750,
+              minHeight: 710,
+              display: !userHasAccess ? "flex" : "block",
+            }}
+          >
+            {userHasAccess ? (
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
                   <TableRow>
-                    <TableCell colSpan={7}>
-                      <Spinner />
-                    </TableCell>
+                    {columns?.map((column) => (
+                      <TableCell key={column.id} align="center">
+                        {column.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ) : (
-                  appPics?.map((row: any, index: any) => (
-                    <TableRow key={row.id}>
-                      <TableCell style={{ width: 10 }} align="center">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell align="center">{row.title}</TableCell>
-
-                      <TableCell align="center">
-                        {row.appPicType === 0
-                          ? "slider"
-                          : 1
-                          ? "section"
-                          : "bilbord"}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.url?.slice(0, 20)}
-                        {row.url?.length > 20 && "..."}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {row.createdAt.slice(0, 10)}
-                      </TableCell>
-                      <TableCell
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        className="sm:mt-2 mt-2"
-                      >
-                        <FaTrash
-                          className="text-red mr-3 cursor-pointer"
-                          onClick={() => {
-                            setDeleteAppPicID(row.id);
-                            setShowDeleteModal(true);
-                          }}
-                        />
-                        <FaPen
-                          className="text-orange-500 cursor-pointer"
-                          onClick={() => editAppPicHandler(row.id)}
-                        />
+                </TableHead>
+                <TableBody>
+                  {appPicLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={7}>
+                        <Spinner />
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          ) : (
-            <div className=" flex justify-center items-center min-h-full w-full">
-              <h1 className="text-3xl font-bold  flex justify-center items-center ">
-                You Havent Access AppPic List
-              </h1>
-            </div>
-          )}
-        </TableContainer>
+                  ) : (
+                    appPics?.map((row: any, index: any) => (
+                      <TableRow key={row.id}>
+                        <TableCell style={{ width: 10 }} align="center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell align="center">{row.title}</TableCell>
+
+                        <TableCell align="center">
+                          {row.appPicType === 0
+                            ? "slider"
+                            : 1
+                            ? "section"
+                            : "bilbord"}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.url?.slice(0, 20)}
+                          {row.url?.length > 20 && "..."}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {row.createdAt.slice(0, 10)}
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          className="sm:mt-2 mt-2"
+                        >
+                          <FaTrash
+                            className="text-red mr-3 cursor-pointer"
+                            onClick={() => {
+                              setDeleteAppPicID(row.id);
+                              setShowDeleteModal(true);
+                            }}
+                          />
+                          <FaPen
+                            className="text-orange-500 cursor-pointer"
+                            onClick={() => editAppPicHandler(row.id)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            ) : (
+              <div className=" flex justify-center items-center min-h-full w-full">
+                <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                  You Havent Access AppPic List
+                </h1>
+              </div>
+            )}
+          </TableContainer>
+        )}
       </Paper>
+
       <EditAppPic />
+      <EditAppPicFile />
+
       {showDeleteModal && (
         <DeleteModal
           setShowDeleteModal={setShowDeleteModal}

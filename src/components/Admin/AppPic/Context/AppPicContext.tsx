@@ -9,6 +9,8 @@ export type appPicContextType = {
   appPicLoading: boolean;
   openEditModal: boolean;
   setOpenEditModal: (value: boolean) => void;
+  openEditFileModal: boolean;
+  setOpenEditFileModal: (value: boolean) => void;
   editAppPicId: string;
   setEditAppPicId: (value: string) => void;
   setCreateAppPicId: (value: string) => void;
@@ -28,6 +30,7 @@ export const AppPicContextProvider = ({
     refetch: refetchAppPic,
   } = useGetAppPicsUserQuery("");
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditFileModal, setOpenEditFileModal] = useState(false);
   const [editAppPicId, setEditAppPicId] = useState("");
   const [createAppPicId, setCreateAppPicId] = useState("");
   const [showAppPicFile, setShowAppPicFile] = useState(false);
@@ -46,6 +49,8 @@ export const AppPicContextProvider = ({
         setCreateAppPicId,
         showAppPicFile,
         setShowAppPicFile,
+        openEditFileModal,
+        setOpenEditFileModal,
       }}
     >
       {children}
