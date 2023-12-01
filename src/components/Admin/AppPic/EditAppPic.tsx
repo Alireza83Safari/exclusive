@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { TextField } from "@mui/material";
+import { MenuItem, Select, TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
-import { appPicType } from "../../../types/AppPic.type";
+import { appPicType as appPicTypes } from "../../../types/AppPic.type";
 import {
   useEditAppPicMutation,
   useGetAppPicMutation,
@@ -23,6 +23,12 @@ const style = {
   p: 3,
 };
 
+export const appPicTypeOptions = [
+  { value: 0, label: "slider" },
+  { value: 1, label: "section" },
+  { value: 2, label: "bilbord" },
+];
+
 export default function EditAppPic() {
   const { openEditModal, setOpenEditModal, editAppPicId, refetchAppPic } =
     useContext(AppPicContext) as appPicContextType;
@@ -33,16 +39,17 @@ export default function EditAppPic() {
     priority: null,
     title: "",
     url: "",
-  } as appPicType;
+  } as appPicTypes;
 
   const [editAppPicValue, setEditAppPicValue] =
-    useState<appPicType>(inintialAppPicState);
+    useState<appPicTypes>(inintialAppPicState);
 
-  const setInputValue = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const setInputValue = (event: any) => {
     const { value, name } = event.target;
-    setEditAppPicValue({ ...editAppPicValue, [name]: value });
+    setEditAppPicValue({
+      ...editAppPicValue,
+      [name]: name === "appPicType" ? +value : value,
+    });
   };
 
   const [editAppPic, { error, isSuccess }] = useEditAppPicMutation();
@@ -81,16 +88,19 @@ export default function EditAppPic() {
 
   useEffect(() => {
     if (isSuccessGetAppPic && appPic) {
+      const { appPicType, description, priority, title, url } = appPic;
+
       setEditAppPicValue({
         ...editAppPicValue,
-        appPicType: appPic.appPicType,
-        description: appPic.description,
-        priority: appPic.priority,
-        title: appPic.title,
-        url: appPic.url,
+        appPicType,
+        description,
+        priority,
+        title,
+        url,
       });
     }
   }, [isSuccessGetAppPic]);
+
   return (
     <div>
       <Modal
@@ -99,63 +109,97 @@ export default function EditAppPic() {
         aria-labelledby="modal-modal-title"
       >
         <Box sx={style}>
-          <Typography
-            variant="h6"
-            sx={{
-              marginBottom: "10px",
-              fontWeight: "bold",
-            }}
-            className="text-center"
-          >
-            Edit AppPic
-          </Typography>
-          <Typography variant="body1" className="text-red">
-            {editAppPicError?.data?.message}
-          </Typography>
-          <TextField
-            label="title"
-            name="title"
-            fullWidth
-            value={editAppPicValue.title}
-            sx={{ marginY: "20px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {editAppPicError?.data?.errors?.title}
-          </Typography>
-          <TextField
-            label="url"
-            name="url"
-            fullWidth
-            value={editAppPicValue.url}
-            sx={{ marginY: "20px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {editAppPicError?.data?.errors?.url}
-          </Typography>
-          <TextField
-            label="description"
-            name="description"
-            fullWidth
-            value={editAppPicValue.description}
-            sx={{ marginY: "20px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {editAppPicError?.data?.errors?.description}
-          </Typography>
-          <TextField
-            label="priority"
-            name="priority"
-            fullWidth
-            value={editAppPicValue.priority}
-            sx={{ marginY: "20px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {editAppPicError?.data?.errors?.priority}
-          </Typography>
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                marginBottom: "10px",
+                fontWeight: "bold",
+              }}
+              className="text-center"
+            >
+              Edit AppPic
+            </Typography>
+            <Typography variant="body1" className="text-red">
+              {editAppPicError?.data?.message}
+            </Typography>
+          </Box>
+
+          <Box>
+            <TextField
+              label="title"
+              name="title"
+              fullWidth
+              value={editAppPicValue.title}
+              sx={{ marginY: "20px" }}
+              onChange={setInputValue}
+            />
+            <Typography variant="body1" className="text-red">
+              {editAppPicError?.data?.errors?.title}
+            </Typography>
+          </Box>
+
+          <Box>
+            <TextField
+              label="url"
+              name="url"
+              fullWidth
+              value={editAppPicValue.url}
+              sx={{ marginY: "20px" }}
+              onChange={setInputValue}
+            />
+            <Typography variant="body1" className="text-red">
+              {editAppPicError?.data?.errors?.url}
+            </Typography>
+          </Box>
+
+          <Box>
+            <TextField
+              label="description"
+              name="description"
+              fullWidth
+              value={editAppPicValue.description}
+              sx={{ marginY: "20px" }}
+              onChange={setInputValue}
+            />
+            <Typography variant="body1" className="text-red">
+              {editAppPicError?.data?.errors?.description}
+            </Typography>
+          </Box>
+
+          <Box>
+            <TextField
+              label="priority"
+              name="priority"
+              fullWidth
+              value={editAppPicValue.priority}
+              sx={{ marginY: "20px" }}
+              onChange={setInputValue}
+            />
+            <Typography variant="body1" className="text-red">
+              {editAppPicError?.data?.errors?.priority}
+            </Typography>
+          </Box>
+
+          <Box>
+            <Select
+              label="appPicType"
+              name="appPicType"
+              fullWidth
+              value={editAppPicValue.appPicType}
+              sx={{ marginY: "20px" }}
+              onChange={setInputValue}
+            >
+              {appPicTypeOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography variant="body1" className="text-red">
+              {editAppPicError?.data?.errors?.appPicType}
+            </Typography>
+          </Box>
           <Button
             variant="contained"
             sx={{

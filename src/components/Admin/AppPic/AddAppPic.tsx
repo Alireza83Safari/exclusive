@@ -1,38 +1,50 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Button, TextField, Typography, Paper } from "@mui/material";
+import { useContext, useEffect, useMemo, useState } from "react";
+import {
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Box,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import toast from "react-hot-toast";
 import { appPicType } from "../../../types/AppPic.type";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import { useCreateAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { appPicErrorType } from "../../../types/Error.type";
+import { appPicTypeOptions } from "./EditAppPic";
 
 function AddAppPic() {
   const inintialAppPicState = {
-    appPicType: 2,
+    appPicType: null,
     description: "",
     priority: null,
     title: "",
     url: "",
   } as appPicType;
-  const { refetchAppPic } = useContext(AppPicContext) as appPicContextType;
+  const {
+    refetchAppPic,
+    setCreateAppPicId,
+    showAppPicFile,
+    setShowAppPicFile,
+  } = useContext(AppPicContext) as appPicContextType;
 
   const [createAppPicValue, setCreateAppPicValue] =
     useState<appPicType>(inintialAppPicState);
 
-  const setInputValue = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const setInputValue = (event: any) => {
     const { value, name, type } = event.target;
     setCreateAppPicValue({
       ...createAppPicValue,
-      [name]: type === "number" ? +value : value,
+      [name]: type === "number" || name === "appPicType" ? +value : value,
     });
   };
 
   const { userHasAccess } = useHasAccess("action_app_pic_admin_create");
 
-  const [createAppPic, { error: appPicError, isSuccess }] =
+  const [createAppPic, { error: appPicError, isSuccess, data }] =
     useCreateAppPicMutation();
 
   const createAppPicHandler = () => {
@@ -45,6 +57,8 @@ function AddAppPic() {
 
   useEffect(() => {
     if (isSuccess) {
+      setShowAppPicFile(true);
+      setCreateAppPicId(data?.data);
       toast.success("Create AppPic Is Success");
       setCreateAppPicValue(inintialAppPicState);
       refetchAppPic();
@@ -63,7 +77,7 @@ function AddAppPic() {
   }, [createAppPicValue]);
 
   return (
-    <div className="col-span-4 px-3">
+    <div className={`col-span-4 px-3 ${showAppPicFile ? `hidden` : `block`}`}>
       <Paper
         style={{
           margin: "0 auto",
@@ -84,51 +98,83 @@ function AddAppPic() {
         <Typography variant="body1" className="text-red">
           {createAppPicError?.data?.message}
         </Typography>
-        <TextField
-          label="title"
-          name="title"
-          fullWidth
-          value={createAppPicValue.title}
-          sx={{ marginY: "12px" }}
-          onChange={setInputValue}
-        />
-        <Typography variant="body1" className="text-red">
-          {createAppPicError?.data?.errors?.title}
-        </Typography>
-        <TextField
-          label="url"
-          name="url"
-          fullWidth
-          value={createAppPicValue.url}
-          sx={{ marginY: "12px" }}
-          onChange={setInputValue}
-        />
-        <Typography variant="body1" className="text-red">
-          {createAppPicError?.data?.errors?.url}
-        </Typography>
-        <TextField
-          label="description"
-          name="description"
-          fullWidth
-          value={createAppPicValue.description}
-          sx={{ marginY: "12px" }}
-          onChange={setInputValue}
-        />
-        <Typography variant="body1" className="text-red">
-          {createAppPicError?.data?.errors?.description}
-        </Typography>
-        <TextField
-          label="priority"
-          name="priority"
-          type="number"
-          fullWidth
-          value={createAppPicValue.priority}
-          sx={{ marginY: "12px" }}
-          onChange={setInputValue}
-        />
-        <Typography variant="body1" className="text-red">
-          {createAppPicError?.data?.errors?.priority}
-        </Typography>
+        <Box>
+          <TextField
+            label="title"
+            name="title"
+            fullWidth
+            value={createAppPicValue.title}
+            sx={{ marginY: "7px" }}
+            onChange={setInputValue}
+          />
+          <Typography variant="body1" className="text-red">
+            {createAppPicError?.data?.errors?.title}
+          </Typography>
+        </Box>
+
+        <Box>
+          <TextField
+            label="url"
+            name="url"
+            fullWidth
+            value={createAppPicValue.url}
+            sx={{ marginY: "7px" }}
+            onChange={setInputValue}
+          />
+          <Typography variant="body1" className="text-red">
+            {createAppPicError?.data?.errors?.url}
+          </Typography>
+        </Box>
+
+        <Box>
+          <TextField
+            label="description"
+            name="description"
+            fullWidth
+            value={createAppPicValue.description}
+            sx={{ marginY: "7px" }}
+            onChange={setInputValue}
+          />
+          <Typography variant="body1" className="text-red">
+            {createAppPicError?.data?.errors?.description}
+          </Typography>
+        </Box>
+
+        <Box>
+          <TextField
+            label="priority"
+            name="priority"
+            type="number"
+            fullWidth
+            value={createAppPicValue.priority}
+            sx={{ marginY: "7px" }}
+            onChange={setInputValue}
+          />
+          <Typography variant="body1" className="text-red">
+            {createAppPicError?.data?.errors?.priority}
+          </Typography>
+        </Box>
+
+        <Box>
+          <Select
+            label="appPicType"
+            name="appPicType"
+            fullWidth
+            value={createAppPicValue.appPicType}
+            sx={{ marginY: "7px" }}
+            onChange={setInputValue}
+          >
+            {appPicTypeOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography variant="body1" className="text-red">
+            {createAppPicError?.data?.errors?.appPicType}
+          </Typography>
+        </Box>
+
         <Button
           variant="contained"
           sx={{

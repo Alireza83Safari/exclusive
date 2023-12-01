@@ -16,14 +16,14 @@ import { useDeleteAppPicMutation } from "../../../Redux/apis/admin/appPicAdminAp
 import useHasAccess from "../../../hooks/useHasAccess";
 
 interface Column {
-  id: "index" | "fileName" | "createAt" | "actions" | "url" | "title";
+  id: "index" | "createAt" | "actions" | "url" | "title" | "type";
   label: string;
 }
 
 const columns: readonly Column[] = [
   { id: "index", label: "index" },
   { id: "title", label: "Title" },
-  { id: "fileName", label: "fileName" },
+  { id: "type", label: "type" },
   { id: "url", label: "Url" },
   { id: "createAt", label: "createAt" },
   { id: "actions", label: "actions" },
@@ -113,10 +113,18 @@ function AppPicTable() {
                         {index + 1}
                       </TableCell>
                       <TableCell align="center">{row.title}</TableCell>
+
                       <TableCell align="center">
-                        {row.fileName.slice(0, 10)}
+                        {row.appPicType === 0
+                          ? "slider"
+                          : 1
+                          ? "section"
+                          : "bilbord"}
                       </TableCell>
-                      <TableCell align="center">#{row.url}</TableCell>
+                      <TableCell align="center">
+                        {row.url?.slice(0, 20)}
+                        {row.url?.length > 20 && "..."}
+                      </TableCell>
                       <TableCell
                         align="center"
                         style={{

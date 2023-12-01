@@ -11,6 +11,10 @@ export type appPicContextType = {
   setOpenEditModal: (value: boolean) => void;
   editAppPicId: string;
   setEditAppPicId: (value: string) => void;
+  setCreateAppPicId: (value: string) => void;
+  createAppPicId: string;
+  showAppPicFile: boolean;
+  setShowAppPicFile: (value: boolean) => void;
 };
 
 export const AppPicContext = createContext<appPicContextType | null>(null);
@@ -25,6 +29,8 @@ export const AppPicContextProvider = ({
   } = useGetAppPicsUserQuery("");
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editAppPicId, setEditAppPicId] = useState("");
+  const [createAppPicId, setCreateAppPicId] = useState("");
+  const [showAppPicFile, setShowAppPicFile] = useState(false);
 
   return (
     <AppPicContext.Provider
@@ -36,6 +42,10 @@ export const AppPicContextProvider = ({
         setOpenEditModal,
         editAppPicId,
         setEditAppPicId,
+        createAppPicId,
+        setCreateAppPicId,
+        showAppPicFile,
+        setShowAppPicFile,
       }}
     >
       {children}

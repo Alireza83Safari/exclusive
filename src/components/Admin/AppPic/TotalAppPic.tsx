@@ -24,7 +24,7 @@ function TotalAppPic() {
         </Typography>
         <Typography
           variant="h2"
-          style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
+          style={{ fontWeight: "bold", color: "blue", margin: "15px" }}
           gutterBottom
         >
           {appPics?.length}
