@@ -9,12 +9,12 @@ function CommentDetails({ comments }: commentDetailPropsType) {
       {comments?.map((comment: getCommentType) => (
         <div
           key={comment.id}
-          className="my-8 mx-24 border-b border-borderColor pb-8"
+          className="my-8 md:mx-24 sm:mx-10 mx-4 border-b border-borderColor pb-8"
         >
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-3 md:text-base text-sm">
             <p>{comment.username}</p>
-            <p>{comment.createdAt.slice(0, 10)}</p>
-            <div className="flex">
+            <p className="flex md:justify-start justify-end">{comment.createdAt.slice(0, 10)}</p>
+            <div className="flex md:justify-start justify-end">
               <p>rate: </p>
               <p className={comment.rate > 3 ? `text-lime-500` : `text-red`}>
                 {comment.rate}

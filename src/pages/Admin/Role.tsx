@@ -1,12 +1,22 @@
+import { Suspense, lazy } from "react";
 import { RoleContextProvider } from "../../components/Admin/Role/Context/RoleContext";
-import RoleTable from "../../components/Admin/Role/RoleTable";
+import Spinner from "../../components/Spinner/Spinner";
+const RoleTable = lazy(() => import("../../components/Admin/Role/RoleTable"));
 
 function Role() {
   return (
     <RoleContextProvider>
-      <div className="grid grid-cols-12 mt-4">
-        <RoleTable />
-      </div>
+      <Suspense
+        fallback={
+          <div className="min-h-screen flex items-center">
+            <Spinner />
+          </div>
+        }
+      >
+        <div className="grid grid-cols-12 mt-4">
+          <RoleTable />
+        </div>
+      </Suspense>
     </RoleContextProvider>
   );
 }

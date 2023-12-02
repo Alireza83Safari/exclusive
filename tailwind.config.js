@@ -8,6 +8,7 @@ export default {
         white: "#FFFFFF",
         gray: "#F5F5F5",
         red: "#DB4444",
+        lightRed: "#FFCCCB",
         green: "#00FF66",
         yellow: "#EEFF61",
         borderColor: "#B3B3B3",

@@ -39,57 +39,48 @@ function AccountAddress() {
               }`}
               key={index}
             >
-              <div className="grid grid-cols-3 gap-y-5">
-                {loading ? (
-                  <ContentLoaders width={80} height={20} />
-                ) : (
-                  <div className="flex items-center">
-                    <p className="mr-3 text-sm">Product Name:</p>
-                    <p className="font-semibold">{comment.productName}</p>
-                  </div>
-                )}
-                {loading ? (
-                  <ContentLoaders width={80} height={20} />
-                ) : (
-                  <div className="flex items-center">
-                    <p className="mr-3 text-sm">Rate:</p>
-                    <p className="font-semibold">{comment.rate}</p>
-                  </div>
-                )}
+              <div className="grid grid-cols-12 gap-y-5">
+                <CommentDetails
+                  loading={loading}
+                  label="Product"
+                  value={comment.productName}
+                  justify="start"
+                />
+
+                <CommentDetails
+                  loading={loading}
+                  label="Rate"
+                  value={comment.rate}
+                  justify="center"
+                />
                 {loading ? (
                   <ContentLoaders width={120} height={24} />
                 ) : (
-                  <div className="flex items-center">
+                  <div className="flex items-center md:col-span-4 col-span-6">
                     <p className="mr-3 text-sm">Status:</p>
                     {comment.commentStatus === 1 ? (
-                      <p className="font-semibold bg-green text-sm text-lime-800 px-2 py-1 rounded-md">
+                      <p className="font-semibold bg-green md:text-sm text-xs text-lime-800 px-2 py-1 rounded-md">
                         Accept
                       </p>
                     ) : (
-                      <p className="font-semibold bg-rose-400 rounded-md text-white text-sm px-2 py-1">
+                      <p className="font-semibold bg-rose-400 rounded-md text-white md:text-sm text-xs px-2 py-1">
                         Reject
                       </p>
                     )}
                   </div>
                 )}
-                {loading ? (
-                  <ContentLoaders width={80} height={20} />
-                ) : (
-                  <div className="flex items-center">
-                    <p className="mr-3 text-sm">Date:</p>
-                    <p className="font-semibold">
-                      {comment.createdAt.slice(0, 10)}
-                    </p>
-                  </div>
-                )}
-                {loading ? (
-                  <ContentLoaders width={80} height={20} />
-                ) : (
-                  <div className="flex items-center col-span-2">
-                    <p className="mr-3 text-sm">Comment:</p>
-                    <p className="font-semibold">{comment.text}</p>
-                  </div>
-                )}
+
+                <CommentDetails
+                  loading={loading}
+                  label="Date"
+                  value={comment.createdAt.slice(0, 10)}
+                  justify="center"
+                />
+
+                <div className="flex items-center md:text-sm text-xs col-span-12">
+                  <p className="mr-3">Comment:</p>
+                  <p className="font-semibold">{comment.text}</p>
+                </div>
               </div>
             </div>
           ))
@@ -113,3 +104,28 @@ function AccountAddress() {
 }
 
 export default AccountAddress;
+
+const CommentDetails = ({
+  label,
+  value,
+  loading,
+  justify,
+}: {
+  label: string;
+  value: string | number;
+  loading: boolean;
+  justify: string;
+}) => (
+  <>
+    {loading ? (
+      <ContentLoaders width={80} height={20} />
+    ) : (
+      <div
+        className={`flex items-center md:text-sm text-xs md:col-span-4 col-span-6 justify-${justify}`}
+      >
+        <p className="mr-3">{label}</p>
+        <p className="font-semibold">{value}</p>
+      </div>
+    )}
+  </>
+);

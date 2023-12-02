@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { productType } from "../../../../types/Product.type";
 import Input from "../../../Input";
 import SelectList from "../../../SelectList";
@@ -14,6 +14,7 @@ import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categ
 import { useCreateProductMutation } from "../../../../Redux/apis/admin/productAdminApi";
 import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
 import Spinner from "../../../Spinner/Spinner";
+import { productSchema } from "../../../../validations/Product";
 
 export type createProductType = {
   data: {
@@ -21,6 +22,7 @@ export type createProductType = {
     message: String;
   };
 };
+
 function AddProductInfo() {
   const [addProductInfo, setAddProductInfo] = useState({
     brandId: "",
@@ -54,6 +56,27 @@ function AddProductInfo() {
   const [createProduct, { error: createProductError, isSuccess, isLoading }] =
     useCreateProductMutation();
 
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [errors, setErrors] = useState<any>([]);
+
+  const getFormIsValid = () => {
+    try {
+      const isValid = productSchema.validate(addProductInfo, {
+        abortEarly: false,
+      });
+      setFormIsValid(Boolean(isValid));
+    } catch (error: any) {
+      let errors = error.inner.reduce(
+        (acc: any, error: any) => ({
+          ...acc,
+          [error.path]: error.message,
+        }),
+        {}
+      );
+      setErrors(errors);
+    }
+  };
+
   const addNewProductHandler = async () => {
     try {
       const response = (await createProduct(
@@ -62,22 +85,12 @@ function AddProductInfo() {
       setCreateProductId(response?.data?.data);
     } catch (error) {}
   };
-  const getDisbledBtn = useMemo(() => {
-    const { name, brandId, categoryId, code, shortDescription, description } =
-      addProductInfo;
-    if (
-      name.length < 2 ||
-      brandId.length < 2 ||
-      categoryId.length < 2 ||
-      code.length < 2 ||
-      shortDescription.length < 2 ||
-      description.length < 2
-    ) {
-      return true;
-    } else {
-      return false;
+
+  useEffect(() => {
+    if (formIsValid) {
+      addNewProductHandler();
     }
-  }, [addProductInfo]);
+  }, [formIsValid]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -127,7 +140,7 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.code}
                 onChange={setInputValue}
-                Error={addProductError?.data?.errors?.code}
+                Error={errors?.code || addProductError?.data?.errors?.code}
               />
             </div>
 
@@ -139,7 +152,10 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.description}
                 onChange={setInputValue}
-                Error={addProductError?.data?.errors?.description}
+                Error={
+                  errors?.description ||
+                  addProductError?.data?.errors?.description
+                }
               />
             </div>
 
@@ -151,7 +167,10 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.shortDescription}
                 onChange={setInputValue}
-                Error={addProductError?.data?.errors?.shortDescription}
+                Error={
+                  errors?.shortDescription ||
+                  addProductError?.data?.errors?.shortDescription
+                }
               />
             </div>
 
@@ -171,6 +190,10 @@ function AddProductInfo() {
                   value: category.key,
                 }))}
               />
+              <p className="text-xs text-red">
+                {errors?.categoryId ||
+                  addProductError?.data?.errors?.categoryId}
+              </p>
             </div>
             <div>
               <label className="text-sm">Brand</label>
@@ -188,13 +211,16 @@ function AddProductInfo() {
                   value: brand.key,
                 }))}
               />
+              <p className="text-xs text-red">
+                {errors?.brandId || addProductError?.data?.errors?.brandId}
+              </p>
             </div>
           </div>
         )}
         <div className="grid grid-cols-2 mt-4">
           <button
-            onClick={addNewProductHandler}
-            disabled={getDisbledBtn}
+            onClick={getFormIsValid}
+            disabled={formIsValid}
             className="bg-black text-white py-2 disabled:bg-gray disabled:text-black"
           >
             Add Product

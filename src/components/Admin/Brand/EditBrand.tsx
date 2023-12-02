@@ -12,6 +12,7 @@ import {
   useGetBrandMutation,
 } from "../../../Redux/apis/admin/brandAdminApi";
 import { brandErrorType } from "../../../types/Error.type";
+import Spinner from "../../Spinner/Spinner";
 
 const style = {
   position: "absolute" as "absolute",
@@ -44,7 +45,7 @@ export default function EditBrand() {
 
   const [editBrand, { error, isSuccess }] = useEditBrandMutation();
 
-  const [getBrand, { data: brand, isSuccess: isSuccessGetBrand }] =
+  const [getBrand, { data: brand, isSuccess: isSuccessGetBrand, isLoading }] =
     useGetBrandMutation();
 
   const editBrandHandler = () => {
@@ -93,55 +94,63 @@ export default function EditBrand() {
         aria-labelledby="modal-modal-title"
       >
         <Box sx={style}>
-          <Typography
-            variant="h6"
-            sx={{
-              marginBottom: "10px",
-              fontWeight: "bold",
-            }}
-            className="text-center"
-          >
-            Edit Brand
-          </Typography>
-          <Typography variant="body1" className="text-red">
-            {editBrandError?.data?.message}
-          </Typography>
-          <TextField
-            label="Name"
-            name="name"
-            fullWidth
-            value={editBrandValue.name}
-            sx={{ marginY: "20px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {editBrandError?.data?.errors?.name}
-          </Typography>
-          <TextField
-            label="Code"
-            name="code"
-            fullWidth
-            value={editBrandValue.code}
-            sx={{ marginY: "20px" }}
-            onChange={setInputValue}
-          />
-          <Typography variant="body1" className="text-red">
-            {editBrandError?.data?.errors?.code}
-          </Typography>
+          {isLoading ? (
+            <div className="min-h-[16rem] flex items-center">
+              <Spinner />
+            </div>
+          ) : (
+            <>
+              <Typography
+                variant="h6"
+                sx={{
+                  marginBottom: "10px",
+                  fontWeight: "bold",
+                }}
+                className="text-center"
+              >
+                Edit Brand
+              </Typography>
+              <Typography variant="body1" className="text-red">
+                {editBrandError?.data?.message}
+              </Typography>
+              <TextField
+                label="Name"
+                name="name"
+                fullWidth
+                value={editBrandValue.name}
+                sx={{ marginY: "20px" }}
+                onChange={setInputValue}
+              />
+              <Typography variant="body1" className="text-red">
+                {editBrandError?.data?.errors?.name}
+              </Typography>
+              <TextField
+                label="Code"
+                name="code"
+                fullWidth
+                value={editBrandValue.code}
+                sx={{ marginY: "20px" }}
+                onChange={setInputValue}
+              />
+              <Typography variant="body1" className="text-red">
+                {editBrandError?.data?.errors?.code}
+              </Typography>
 
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "black",
-              width: "100%",
-              paddingY: "12px",
-              marginY: "18px",
-            }}
-            onClick={editBrandHandler}
-            disabled={getDisbledBtn}
-          >
-            Edit Brand
-          </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "black",
+                  width: "100%",
+                  paddingY: "12px",
+                  marginY: "18px",
+                }}
+                onClick={editBrandHandler}
+                disabled={getDisbledBtn}
+              >
+                Edit Brand
+              </Button>
+            </>
+          )}
         </Box>
       </Modal>
     </div>

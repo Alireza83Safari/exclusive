@@ -81,7 +81,10 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
 
   return (
     <div className="col-span-10 bg-gray w-full py-10">
-      <form onSubmit={(e) => e.preventDefault()} className="w-10/12 m-auto">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="md:w-10/12 w-11/12 m-auto"
+      >
         <textarea
           name="comment"
           value={commentValue}
@@ -148,7 +151,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
             <div>
               <label className="block text-sm text-gray-600">WeakPoints:</label>
               <div className="flex items-center bg-white p-2 rounded-lg border border-borderColor bg-white-100 ml-2">
-                <button className="text-2xl text-primary mr-2">
+                <button className="text-2xl text-primary mr-2 bg-gray">
                   <FaMinus onClick={addNewWeakPoints} className="text-red" />
                 </button>
 

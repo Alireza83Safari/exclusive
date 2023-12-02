@@ -71,6 +71,6 @@ const productFeatureReducer = createSlice({
   },
 });
 
-
-export const { resetAddProductFeatureKeyResponse } = productFeatureReducer.actions; 
+export const { resetAddProductFeatureKeyResponse } =
+  productFeatureReducer.actions;
 export default productFeatureReducer.reducer;

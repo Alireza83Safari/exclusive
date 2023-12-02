@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react";
+import Spinner from "../../components/Spinner/Spinner";
 const Topbar = lazy(() => import("../../components/Admin/Dashboard/Topbar"));
 const DashboardChart = lazy(
   () => import("../../components/Admin/Dashboard/DashboardChart")
@@ -14,7 +15,7 @@ const Orders = lazy(() => import("../../components/Admin/Dashboard/Orders"));
 function Dashboard() {
   return (
     <section className="pb-8">
-      <Suspense>
+     <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-7 py-3 md:mx-7 mx-3 rounded-xl mt-4 md:ml-7 ml-3 relative">
           <Topbar />
         </div>

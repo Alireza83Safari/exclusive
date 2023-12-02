@@ -20,6 +20,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import Pagination from "../../Pagination";
 import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../hooks/useHasAccess";
+import useRow from "../../../hooks/useRow";
 
 interface Column {
   id:
@@ -75,7 +76,6 @@ function UserTable() {
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
-    setSearchQuery("");
   };
   const { userHasAccess: accessList } = useHasAccess("action_user_admin_list");
   const { userHasAccess: accessCreate } = useHasAccess(
@@ -119,6 +119,9 @@ function UserTable() {
       toast.error("You Havent Access Create User");
     }
   };
+
+  const { rowNumber, limit } = useRow();
+
   return (
     <div className="col-span-12 m-3 bg-white p-2">
       <div className="h-8 md:mx-3 mb-4 flex justify-between">
@@ -176,7 +179,9 @@ function UserTable() {
                   users?.map((row: any, index: number) => (
                     <TableRow key={row.id}>
                       <TableCell style={{ width: 10 }} align="center">
-                        {index + 1}
+                        {(rowNumber as any) >= (limit as any)
+                          ? rowNumber + index + 1
+                          : index + 1}
                       </TableCell>
                       <TableCell align="center">{row.username}</TableCell>
                       <TableCell align="center">{row.roleName}</TableCell>

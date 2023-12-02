@@ -4,9 +4,12 @@ import Typography from "@mui/material/Typography";
 import { useContext, useMemo } from "react";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
 import { getCommentType } from "../../../types/Comment.type";
+import Spinner from "../../Spinner/Spinner";
 
 function CommentInfo() {
-  const { commentsTotal } = useContext(CommentContext) as commentContextType;
+  const { commentsTotal, commentsLoading } = useContext(
+    CommentContext
+  ) as commentContextType;
 
   const totalPendingComments = useMemo(() => {
     return commentsTotal?.data.filter(
@@ -28,105 +31,129 @@ function CommentInfo() {
 
   return (
     <div className="grid grid-cols-4 col-span-12">
-      <Card
-        sx={{
-          boxShadow: "0",
-          borderRadius: "12px",
-        }}
-        className="m-3"
-      >
-        <CardContent className="text-center">
-          <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", margin: "14px" }}
-            gutterBottom
-          >
-            Total Comment
-          </Typography>
-          <Typography
-            variant="h2"
-            style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
-            gutterBottom
-          >
-            {commentsTotal?.total}
-          </Typography>
-        </CardContent>
-      </Card>
+      {commentsLoading ? (
+        <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
+          <Spinner />
+        </div>
+      ) : (
+        <Card
+          sx={{
+            boxShadow: "0",
+            borderRadius: "12px",
+          }}
+          className="m-3"
+        >
+          <CardContent className="text-center">
+            <Typography
+              variant="h5"
+              style={{ fontWeight: "bold", margin: "14px" }}
+              gutterBottom
+            >
+              Total Comment
+            </Typography>
+            <Typography
+              variant="h2"
+              style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
+              gutterBottom
+            >
+              {commentsTotal?.total}
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
 
-      <Card
-        sx={{
-          boxShadow: "0",
-          borderRadius: "12px",
-        }}
-        className="m-3"
-      >
-        <CardContent className="text-center">
-          <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", margin: "14px" }}
-            gutterBottom
-          >
-            Pendding Comment
-          </Typography>
-          <Typography
-            variant="h2"
-            style={{ fontWeight: "bold", color: "orange", margin: "20px" }}
-            gutterBottom
-          >
-            {totalPendingComments?.length}
-          </Typography>
-        </CardContent>
-      </Card>
+      {commentsLoading ? (
+        <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
+          <Spinner />
+        </div>
+      ) : (
+        <Card
+          sx={{
+            boxShadow: "0",
+            borderRadius: "12px",
+          }}
+          className="m-3"
+        >
+          <CardContent className="text-center">
+            <Typography
+              variant="h5"
+              style={{ fontWeight: "bold", margin: "14px" }}
+              gutterBottom
+            >
+              Pendding Comment
+            </Typography>
+            <Typography
+              variant="h2"
+              style={{ fontWeight: "bold", color: "orange", margin: "20px" }}
+              gutterBottom
+            >
+              {totalPendingComments?.length}
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
 
-      <Card
-        sx={{
-          boxShadow: "0",
-          borderRadius: "12px",
-        }}
-        className="m-3"
-      >
-        <CardContent className="text-center">
-          <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", margin: "14px" }}
-            gutterBottom
-          >
-            Accept Comment
-          </Typography>
-          <Typography
-            variant="h2"
-            style={{ fontWeight: "bold", color: "green", margin: "20px" }}
-            gutterBottom
-          >
-            {totalAcceptComments?.length}
-          </Typography>
-        </CardContent>
-      </Card>
+      {commentsLoading ? (
+         <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
+          <Spinner />
+        </div>
+      ) : (
+        <Card
+          sx={{
+            boxShadow: "0",
+            borderRadius: "12px",
+          }}
+          className="m-3"
+        >
+          <CardContent className="text-center">
+            <Typography
+              variant="h5"
+              style={{ fontWeight: "bold", margin: "14px" }}
+              gutterBottom
+            >
+              Accept Comment
+            </Typography>
+            <Typography
+              variant="h2"
+              style={{ fontWeight: "bold", color: "green", margin: "20px" }}
+              gutterBottom
+            >
+              {totalAcceptComments?.length}
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
 
-      <Card
-        sx={{
-          boxShadow: "0",
-          borderRadius: "12px",
-        }}
-        className="m-3"
-      >
-        <CardContent className="text-center">
-          <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", margin: "14px" }}
-            gutterBottom
-          >
-            Reject Comment
-          </Typography>
-          <Typography
-            variant="h2"
-            style={{ fontWeight: "bold", color: "red", margin: "20px" }}
-            gutterBottom
-          >
-            {totalRejectComments?.length}
-          </Typography>
-        </CardContent>
-      </Card>
+      {commentsLoading ? (
+       <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
+          <Spinner />
+        </div>
+      ) : (
+        <Card
+          sx={{
+            boxShadow: "0",
+            borderRadius: "12px",
+          }}
+          className="m-3"
+        >
+          <CardContent className="text-center">
+            <Typography
+              variant="h5"
+              style={{ fontWeight: "bold", margin: "14px" }}
+              gutterBottom
+            >
+              Reject Comment
+            </Typography>
+            <Typography
+              variant="h2"
+              style={{ fontWeight: "bold", color: "red", margin: "20px" }}
+              gutterBottom
+            >
+              {totalRejectComments?.length}
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

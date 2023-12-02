@@ -18,7 +18,7 @@ function BestSelling() {
           Best Selling Products
         </h2>
         <Link to="/products?product&order=topSell">
-          <button className="px-4 bg-red text-white h-10 md:text-base text-sm">
+          <button className="px-4 bg-red text-white h-10 md:text-base text-sm hover:bg-rose-400 duration-300">
             View All Products
           </button>
         </Link>

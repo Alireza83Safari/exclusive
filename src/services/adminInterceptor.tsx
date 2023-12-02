@@ -2,15 +2,16 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const adminAxios = axios.create({
-  baseURL: "/api/v1/admin",
+  baseURL: "https://eshop-bak.iran.liara.run/api/v1/admin/",
   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 adminAxios.interceptors.request.use(
   function (config) {
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   function (error) {
@@ -20,15 +21,15 @@ adminAxios.interceptors.request.use(
 
 adminAxios.interceptors.response.use(
   function (response) {
-    // You can modify the response config here if needed
     return response;
   },
   function (error) {
     if (
       error.response.status === 401 &&
       error?.response?.request?.responseURL !==
-        "https://exclusive.iran.liara.run/api/v1/admin/is_authenticated"
+        "https://eshop-bak.iran.liara.run/api/v1/admin/is_authenticated"
     ) {
+      localStorage.removeItem("Authorization");
       toast.error("Unauthorized. Please log in.");
     }
 

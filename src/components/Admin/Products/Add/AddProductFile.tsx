@@ -9,7 +9,6 @@ import Spinner from "../../../Spinner/Spinner";
 import { useUploadImageMutation } from "../../../../Redux/apis/user/fileUserApi";
 
 export default function AddProductFile() {
-  const [serverError, setServerError] = useState("");
   const {
     setShowAddProductModal,
     createProductId,
@@ -21,12 +20,11 @@ export default function AddProductFile() {
   const [imageURLs, setImageURLs] = useState<any>([]);
   const [showUrl, setShowUrl] = useState<any>([]);
 
-  const [uploadImage, { isSuccess, status, isLoading }] =
+  const [uploadImage, { isSuccess, status, isLoading, error }] =
     useUploadImageMutation();
 
   const addFile = async () => {
     if (imageURLs.length === 0) {
-      setServerError("Please select at least one file.");
       return;
     }
 
@@ -44,6 +42,12 @@ export default function AddProductFile() {
       refetchProducts();
     }
   }, [status]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("please choose jpg , png ,jpeg file");
+    }
+  }, [error]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -88,7 +92,9 @@ export default function AddProductFile() {
             <h2 className="text-center mb-4 text-xl font-semibold">
               Upload images
             </h2>
-            <span className="text-center text-red">{serverError}</span>
+            <span className="text-center text-red">
+              {(error as any)?.message}
+            </span>
             {showUrl?.length ? (
               <div className="relative grid grid-cols-4">
                 {showUrl?.map((imageUrl: any, index: number) => (

@@ -1,6 +1,5 @@
 import { useContext, lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
-import Spinner from "../../../Spinner/Spinner";
 import {
   ProductsContext,
   ProductsContextType,
@@ -27,16 +26,10 @@ export default function AddProduct() {
       }`}
     >
       <div className="w-3/7 bg-white max-h-2/3 rounded-lg">
-        <Suspense fallback={<Spinner />}>
+        <Suspense>
           {showAddInfoModal && <AddProductInfo />}
-        </Suspense>
-        <Suspense fallback={<Spinner />}>
           {showAddItem && <AddProductItem />}
-        </Suspense>
-        <Suspense fallback={<Spinner />}>
           {showAddFeature && <AddProductFeature />}
-        </Suspense>
-        <Suspense fallback={<Spinner />}>
           {showAddFile && <AddProductFile />}
         </Suspense>
       </div>

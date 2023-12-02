@@ -1,4 +1,5 @@
-import  { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
+import Spinner from "../components/Spinner/Spinner";
 const Content = lazy(() => import("../components/Content/Content"));
 const Promotion = lazy(() => import("../components/Promotion"));
 const Brand = lazy(() => import("../components/Brand"));
@@ -12,20 +13,18 @@ const Footer = lazy(() => import("../components/Footer"));
 
 function Home() {
   return (
-    <>
-      <Suspense>
-        <Header />
-        <Content />
-        <Promotion />
-        <Brand />
-        <BestSelling />
-        <Suggestion />
-        <OurProducts />
-        <Arrival />
-        <Options />
-        <Footer />
-      </Suspense>
-    </>
+    <Suspense fallback={<Spinner />}>
+      <Header />
+      <Content />
+      <Promotion />
+      <Brand />
+      <BestSelling />
+      <Suggestion />
+      <OurProducts />
+      <Arrival />
+      <Options />
+      <Footer />
+    </Suspense>
   );
 }
 

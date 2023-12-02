@@ -50,7 +50,6 @@ function OrderTable() {
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
-    setSearchQuery("");
   };
 
   return (

@@ -14,15 +14,13 @@ function AddBrandFile() {
     setShowAddBrand,
     setShowAddBrandFile,
   } = useContext(BrandContext) as brandContextType;
-  const [addBrandImage, { isSuccess }] = useAddBrandImageMutation();
-
-
+  const [addBrandImage, { isSuccess, error }] = useAddBrandImageMutation();
 
   const createBrandHandler = () => {
     const imageFormData = new FormData();
     imageFormData.append("fileUrl", image[0]);
     addBrandImage({ itemId: createBrandId, image: imageFormData });
-    adminAxios.post(`/file/uploadImage/${createBrandId}/2` , imageFormData)
+    adminAxios.post(`/file/uploadImage/${createBrandId}/2`, imageFormData);
   };
 
   useEffect(() => {
@@ -33,6 +31,12 @@ function AddBrandFile() {
       refetchBrands();
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("please choose jpg , png ,jpeg file");
+    }
+  }, [error]);
 
   const setImageUploaded = (event: any) => {
     const files = event.target.files;

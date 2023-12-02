@@ -98,7 +98,6 @@ function BrandTable() {
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
-    setSearchQuery("");
   };
 
   return (
@@ -128,7 +127,7 @@ function BrandTable() {
             />
           </Box>
         </div>
-        <TableContainer sx={{ minHeight: 615 }}>
+        <TableContainer>
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
               {brandsLoading ? (

@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
-import { userProductTypeWithLoading } from "../../types/Product.type";
-import { addOrderItemType } from "../../types/Order.type";
-import ContentLoaders from "../ContentLoaders";
+import { userProductTypeWithLoading } from "../../../types/Product.type";
+import { addOrderItemType } from "../../../types/Order.type";
+import ContentLoaders from "../../ContentLoaders";
 import toast from "react-hot-toast";
-import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
+import { useCreateOrderItemMutation } from "../../../Redux/apis/user/orderUserApi";
+import { FaTrashAlt } from "react-icons/fa";
+import { useDeleteFavoriteMutation } from "../../../Redux/apis/user/favoriteUserApi";
+import { useGetProfileFavoritesUserQuery } from "../../../Redux/apis/user/prodileUserApi";
+import { useEffect } from "react";
 
-function ProductTemplate({
+function FavoriteTemplate({
   name,
   price,
   fileUrl,
@@ -16,7 +20,11 @@ function ProductTemplate({
   quantity,
   productsLoading,
 }: userProductTypeWithLoading) {
+  const { refetch } = useGetProfileFavoritesUserQuery("");
   const [createOrderItem] = useCreateOrderItemMutation();
+  const [deleteFavorite, { isLoading, isSuccess }] =
+    useDeleteFavoriteMutation();
+
   const addProductToBasket = () => {
     let orderItemInfo = {
       productItemId: itemId,
@@ -27,6 +35,16 @@ function ProductTemplate({
       .then(() => toast.success(`${name} Added To Cart`));
   };
 
+  const deleteFavoriteHandler = (id: string) => {
+    deleteFavorite(id);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      refetch();
+      toast.success("delete is successfully");
+    }
+  }, [isSuccess]);
   return (
     <div className="relative group my-4 px-2" key={id}>
       <div className="flex justify-center items-center sm:h-[250px] h-[220px] bg-gray relative">
@@ -36,13 +54,11 @@ function ProductTemplate({
           </p>
         )}
 
-        <div className="absolute top-3 right-3">
-          <Link
-            to={`/product/${id}`}
-            className="sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-green duration-300 rounded-full flex justify-center items-center"
-          >
-            <img src="/images/eye.png" className="sm:w-5 sm:h-5 h-4 w-4" />
-          </Link>
+        <div
+          className="absolute top-3 right-3"
+          onClick={() => deleteFavoriteHandler(itemId)}
+        >
+          <FaTrashAlt className="text-xl text-red" />
         </div>
         <button
           className="bg-black w-full absolute bottom-0 text-white py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
@@ -53,13 +69,13 @@ function ProductTemplate({
         <Link to={`/product/${id}`} className="w-9/12 h-3/4 ">
           <img
             src={fileUrl}
-            className="object-contain md:w-full md:h-full w-10/12 h-5/6"
+            className="object-contain w-full h-full"
             loading="lazy"
           />
         </Link>
       </div>
       <Link to={`/product/${id}`} className="mt-2">
-        {productsLoading ? (
+        {productsLoading || isLoading ? (
           <ContentLoaders width={100} height={20} />
         ) : (
           <h3 className="font-semibold md:text-lg text-base">{name}</h3>
@@ -71,7 +87,7 @@ function ProductTemplate({
           <p className="md:text-base text-sm">quantity:{quantity}</p>
         </div>
 
-        {productsLoading ? (
+        {productsLoading || isLoading ? (
           <div className="my-1">
             <ContentLoaders width={100} height={20} />
           </div>
@@ -86,7 +102,7 @@ function ProductTemplate({
           </div>
         )}
 
-        {productsLoading ? (
+        {productsLoading || isLoading ? (
           <div className="my-1">
             <ContentLoaders width={200} height={40} />
           </div>
@@ -104,4 +120,4 @@ function ProductTemplate({
   );
 }
 
-export default ProductTemplate;
+export default FavoriteTemplate;

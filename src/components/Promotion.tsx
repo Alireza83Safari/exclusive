@@ -6,7 +6,7 @@ import ProductTemplate from "./Product/ProductTemplate";
 const Timer = lazy(() => import("./Timer"));
 
 function Promotion() {
-  const { data: products, isLoading } = useGetProductsUserQuery("");
+  const { data: products, isLoading } = useGetProductsUserQuery("?onlyDiscount=true");
 
   const productsHaveDiscount = useMemo(() => {
     return products?.data.filter(
@@ -54,9 +54,9 @@ function Promotion() {
             </div>
           )}
           <div className="flex justify-center items-center py-10 text-center">
-            <Link to="/products">
-              <button className="bg-red text-white py-2 px-4 rounded-md">
-                View All Products
+            <Link to="/products?onlyDiscount=true">
+              <button className="bg-red text-white py-2 sm:px-4 px-2 rounded-md hover:bg-rose-400 duration-300 md:text-base text-sm">
+                View All Products Have Discount
               </button>
             </Link>
           </div>

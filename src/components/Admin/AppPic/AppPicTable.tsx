@@ -123,7 +123,7 @@ function AppPicTable() {
                         <TableCell align="center">
                           {row.appPicType === 0
                             ? "slider"
-                            : 1
+                            : row.appPicType === 1
                             ? "section"
                             : "bilbord"}
                         </TableCell>

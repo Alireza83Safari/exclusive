@@ -7,8 +7,11 @@ function NotFound() {
       <p className="mb-10">
         Your visited page not found. You may go home page.
       </p>
-      <Link to='/' className="bg-red text-white py-3 px-8 mt-10">
-       Navigate To Home
+      <Link
+        to="/"
+        className="bg-red text-white py-3 px-8 mt-10 hover:bg-lightRed duration-300"
+      >
+        Navigate To Home
       </Link>
     </section>
   );

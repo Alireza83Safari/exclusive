@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import Input from "../../Input";
 import reactDOM from "react-dom";
-import { useCreateAddressMutation } from "../../../Redux/apis/user/addressUserApi";
+import {
+  useEditAddressMutation,
+  useGetAddressWithIdQuery,
+} from "../../../Redux/apis/user/addressUserApi";
 import { addressType } from "../../../types/Address.type";
 import { addressErrorType } from "../../../types/Error.type";
 import toast from "react-hot-toast";
 import { addressShema } from "../../../validations/address";
 
-function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
+function EditAddress({ setShowEditModal, editId }: any) {
   const initialState = {
     address: "",
     firstName: "",
@@ -49,35 +52,43 @@ function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
     }
   };
 
-  const [createAddress, { isSuccess, error }] = useCreateAddressMutation();
+  const [editAddress, { isSuccess, error }] = useEditAddressMutation();
+  const { data: address } = useGetAddressWithIdQuery(editId);
+  useEffect(() => {
+    if (address) {
+      setAddressValue({
+        address: address?.address,
+        firstName: address?.firstName,
+        lastName: address?.lastName,
+        nationalCode: address?.nationalCode,
+        phoneNumber: address?.phoneNumber,
+        plaque: address?.plaque,
+        postalCode: address?.postalCode,
+      });
+    }
+  }, [address]);
 
   const addressError = error as addressErrorType;
   useEffect(() => {
     if (formIsValid) {
-      createAddress(addressValue);
+      editAddress({ id: editId, addressInfo: addressValue });
     }
   }, [formIsValid]);
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("create address is success");
-      setShowCreateAddress(false);
+      setShowEditModal(false);
     }
   }, [isSuccess]);
 
   return reactDOM.createPortal(
-    <div
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 bg-[#dddd] -translate-y-1/2 z-10 w-full h-screen flex items-center justify-center transition overflow-auto duration-400 ${
-        showCreateAddress ? "visible" : "invisible"
-      }`}
-    >
+    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 bg-[#dddd] -translate-y-1/2 z-10 w-full h-screen flex items-center justify-center transition overflow-auto duration-400">
       <form
         className="max-w-[38rem] bg-white rounded-lg"
         onSubmit={(e) => e.preventDefault()}
       >
-        <h2 className="text-center font-semibold text-xl my-3">
-          Create New Address
-        </h2>
+        <h2 className="text-center font-semibold text-xl my-3">Edit Address</h2>
         <p className="text-sm text-red">{addressError?.data?.message}</p>
         <div className="grid grid-cols-2 p-4 gap-5">
           <div>
@@ -175,12 +186,12 @@ function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
             className="bg-black text-white py-2 rounded-md mt-2"
             onClick={getFormIsValid}
           >
-            create
+            edit
           </button>
 
           <button
             className="border border-borderColor py-2 rounded-md mt-2"
-            onClick={() => setShowCreateAddress(false)}
+            onClick={() => setShowEditModal(false)}
           >
             cancel
           </button>
@@ -191,4 +202,4 @@ function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
   );
 }
 
-export default AddAddress;
+export default EditAddress;

@@ -14,7 +14,7 @@ const AddCategory = React.lazy(
 
 function Category() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
       <CategoryContextProvider>
         <div className="grid grid-cols-12 mt-4">
           <CategoryTable />

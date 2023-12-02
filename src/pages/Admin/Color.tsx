@@ -8,7 +8,7 @@ const AddColor = React.lazy(() => import("../../components/Admin/Color/AddColor"
 
 function Color() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
       <ColorContextProvider>
         <div className="grid grid-cols-12 mt-4">
           <ColorTable />

@@ -1,35 +1,60 @@
-import React, { Suspense, lazy, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { userRegisterType } from "../types/Auth.type";
 import Spinner from "../components/Spinner/Spinner";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import { useUserRegisterMutation } from "../Redux/apis/user/authUserApi";
 import { registerErrorType } from "../types/Error.type";
+import { registerSchema } from "../validations/auth";
+import toast from "react-hot-toast";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Register() {
-  const [registerInfos, setRegisterInfos] = useState<userRegisterType>({
+  const initialStata = {
     password: "",
     passwordConfirmation: "",
     username: "",
-  });
+  };
+  const [registerInfos, setRegisterInfos] =
+    useState<userRegisterType>(initialStata);
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState<userRegisterType>();
 
   const getInfoFromInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setRegisterInfos({ ...registerInfos, [name]: value });
   };
-  const isSubmitDisabled =
-    registerInfos.username.length < 7 ||
-    registerInfos.password.length < 7 ||
-    registerInfos.passwordConfirmation.length < 7;
 
-  const [userRegister, { error, isLoading }] = useUserRegisterMutation();
+  const [userRegister, { error, isLoading, isSuccess }] =
+    useUserRegisterMutation();
 
-  const getRegister = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    userRegister(registerInfos);
+  const getFormIsValid = async () => {
+    try {
+      const isValid = await registerSchema.validate(registerInfos, {
+        abortEarly: false,
+      });
+
+      if (isValid) {
+        userRegister(registerInfos);
+      }
+    } catch (error) {
+      let errors = (error as any)?.inner?.reduce(
+        (acc: any, error: any) => ({
+          ...acc,
+          [error.path]: error.message,
+        }),
+        {}
+      );
+      setErrors(errors);
+    }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("user register successfully");
+      navigate("/login");
+    }
+  }, [isSuccess]);
 
   const registerError = error as registerErrorType;
 
@@ -48,7 +73,7 @@ function Register() {
               <img src="/images/register.png" alt="" />
             </div>
             <div className="lg:px-16 md:px-8 px-3 lg:mt-8 mt-10">
-              <form action="" onSubmit={getRegister}>
+              <form action="" onSubmit={(e) => e.preventDefault()}>
                 <h1 className="text-4xl">Create an account</h1>
                 <p className="my-5">Enter your details below</p>
                 <div className="border-b border-borderColor py-5 mb-4">
@@ -59,10 +84,11 @@ function Register() {
                     placeholder="username"
                     onChange={getInfoFromInput}
                     value={registerInfos.username}
+                    onFocus={() => setErrors(initialStata)}
                   />
                 </div>
                 <p className="text-red text-xs">
-                  {registerError?.data?.errors?.username}
+                  {errors?.username || registerError?.data?.errors?.username}
                 </p>
                 <div className="border-b border-borderColor py-5 mb-4">
                   <input
@@ -72,6 +98,7 @@ function Register() {
                     placeholder="password"
                     onChange={getInfoFromInput}
                     value={registerInfos.password}
+                    onFocus={() => setErrors(initialStata)}
                   />
                 </div>
                 <p className="text-red text-xs"></p>
@@ -83,14 +110,16 @@ function Register() {
                     placeholder="passwordConfirmation"
                     onChange={getInfoFromInput}
                     value={registerInfos.passwordConfirmation}
+                    onFocus={() => setErrors(initialStata)}
                   />
                 </div>
                 <p className="text-red text-xs">
-                  {registerError?.data?.errors?.password}
+                  {errors?.passwordConfirmation ||
+                    registerError?.data?.errors?.password}
                 </p>
                 <button
-                  className="bg-red w-full py-4 mt-8 text-white disabled:bg-gray disabled:text-black"
-                  disabled={isSubmitDisabled}
+                  className="bg-red w-full py-4 mt-8 text-white disabled:bg-gray disabled:text-black outline-none"
+                  onClick={getFormIsValid}
                 >
                   Register
                 </button>

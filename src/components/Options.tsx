@@ -23,7 +23,7 @@ function Options() {
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative my-20">
       <div className="grid grid-cols-3 lg:px-16">
         {optiomsData?.map((option) => (
-          <div className="text-center mx-3" key={option.id}>
+          <div className="text-center sm:mx-3 mx-1 hover:opacity-70 duration-300" key={option.id}>
             <div className="flex justify-center items-center m-auto bg-black h-12 w-12 rounded-full border-8 border-borderColor">
               <img src={option.img} alt="s" className="w-6 h-6" />
             </div>

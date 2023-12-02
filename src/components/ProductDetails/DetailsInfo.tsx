@@ -13,6 +13,8 @@ import { DetailContext, DetailContextType } from "./Context/DetailsContext";
 function ProductDetailsInfo() {
   const { productItemLoading, productLoading, productItem, productFind } =
     useContext(DetailContext) as DetailContextType;
+console.log(productItem);
+console.log(productFind);
 
   const [count, setCount] = useState<number>(1);
 

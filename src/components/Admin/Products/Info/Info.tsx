@@ -85,9 +85,6 @@ export default function Info() {
         <Suspense fallback={<Spinner />}>
           <ProductImage />
         </Suspense>
-        {/*
-          {showAddFeature && <AddProductFeature />}
-          {showAddFile && <AddProductFile />} */}
       </div>
     </section>,
     document.getElementById("portal") as any

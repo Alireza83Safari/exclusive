@@ -24,6 +24,7 @@ import { useDeleteProductMutation } from "../../../Redux/apis/admin/productAdmin
 import Pagination from "../../Pagination";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
+import useRow from "../../../hooks/useRow";
 
 export default function ProductsTable() {
   const {
@@ -53,7 +54,6 @@ export default function ProductsTable() {
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchValue);
-    setSearchValue("");
   };
   const pageSize = 10;
   const totalPages = Math.ceil(total / pageSize);
@@ -70,6 +70,8 @@ export default function ProductsTable() {
       setShowDeleteModal(false);
     });
   };
+
+  const { rowNumber, limit } = useRow();
 
   return (
     <>
@@ -160,7 +162,9 @@ export default function ProductsTable() {
                     products?.map((row: any, index: number) => (
                       <TableRow key={row.id}>
                         <TableCell style={{ width: 160 }} align="center">
-                          {index + 1}
+                          {(rowNumber as any) >= (limit as any)
+                            ? rowNumber + index + 1
+                            : index + 1}
                         </TableCell>
                         <TableCell style={{ width: 160 }} align="center">
                           {row.name}

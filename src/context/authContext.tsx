@@ -39,7 +39,7 @@ export const authContext = createContext<authContextType | null>(null);
 export const AuthContextProvider = ({ children }: authContextProviderType) => {
   const { data, isSuccess, isLoading } = useUserIsAuthenticatedQuery("");
   const [userPermissions, setUserPermissions] = useState([]);
-  const [userIsLogin, setUserIsLogin] = useState<null | boolean>(null);
+  const [userIsLogin, setUserIsLogin] = useState<null | boolean>(false);
   const [userInfos, setUserInfos] = useState<userInfosType | null>(null);
 
   useEffect(() => {

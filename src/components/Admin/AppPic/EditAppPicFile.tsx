@@ -1,11 +1,10 @@
-import React, { useState, useEffect,  useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
-import { IconButton, Modal, Paper } from "@mui/material";
+import { IconButton, Input, Modal, Paper } from "@mui/material";
 import Spinner from "../../Spinner/Spinner";
-import Input from "../../Input";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useUploadImageMutation } from "../../../Redux/apis/user/fileUserApi";
 import toast from "react-hot-toast";
@@ -36,10 +35,11 @@ export default function EditAppPicFile() {
   } = useContext(AppPicContext) as appPicContextType;
 
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null);
+
   const [formData, setFormData] = useState<FormData>(new FormData());
   const { setShowAppPicFile } = useContext(AppPicContext) as appPicContextType;
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: any) => {
     const files = event.target.files;
     if (files) {
       setFormData(() => {
@@ -53,10 +53,12 @@ export default function EditAppPicFile() {
     }
   };
 
-  const [uploadImage, { isSuccess, isLoading,  error }] =
+  const [uploadImage, { isSuccess, isLoading, error }] =
     useUploadImageMutation();
 
   const uploadAppPicImage = () => {
+    console.log("sdddd");
+
     if (selectedFile) {
       uploadImage({ itemId: editAppPicId, fileType: 3, images: formData });
     }
@@ -101,7 +103,7 @@ export default function EditAppPicFile() {
                 marginBottom: "30px",
               }}
             >
-              Add AppPic File
+              Edit AppPic File
             </Typography>
             <Typography variant="body1" className="text-red"></Typography>
             <Input

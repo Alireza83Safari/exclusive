@@ -117,7 +117,6 @@ function CommentTable() {
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
-    setSearchQuery("");
   };
   return (
     <div className="col-span-12 m-3 lg:order-1 order-2">

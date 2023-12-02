@@ -18,7 +18,7 @@ export const brandAdminApi = createApi({
     getBrand: builder.mutation({
       query: (id: string) => ({
         url: `/${id}`,
-        method: "POST",
+        method: "GET",
       }),
     }),
     createBrand: builder.mutation({

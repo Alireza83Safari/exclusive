@@ -1,4 +1,4 @@
-/* import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { resetAddProductFeatureKeyResponse } from "../../../../Redux/slices/feature";
 import {
   addProductFeatureValue,
@@ -8,7 +8,8 @@ import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../../../Redux/store";
 
 export default function AddProductFeature() {
   const [dataIsFetched, setDataIsFetched] = useState(false);
@@ -30,7 +31,7 @@ export default function AddProductFeature() {
   };
 
   const { productFeatureKey, addProductFeatureKeyResponse, featureLoading } =
-    useSelector((state) => state?.feature)
+    useAppSelector((state) => state?.feature);
 
   useEffect(() => {
     if (!dataIsFetched) {
@@ -115,10 +116,3 @@ export default function AddProductFeature() {
     </div>
   );
 }
- */
-
-function AddProductFeature() {
-  return <div>AddProductFeature</div>;
-}
-
-export default AddProductFeature;

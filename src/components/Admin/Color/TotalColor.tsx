@@ -3,9 +3,10 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
+import Spinner from "../../Spinner/Spinner";
 
 function TotalColor() {
-  const { total } = useContext(ColorContext) as colorContextType;
+  const { total, colorsLoading } = useContext(ColorContext) as colorContextType;
   return (
     <Card
       sx={{
@@ -14,22 +15,28 @@ function TotalColor() {
       }}
       className="m-3"
     >
-      <CardContent className="text-center">
-        <Typography
-          variant="h4"
-          style={{ fontWeight: "bold", margin: "14px" }}
-          gutterBottom
-        >
-          Total Color
-        </Typography>
-        <Typography
-          variant="h2"
-          style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
-          gutterBottom
-        >
-          {total}
-        </Typography>
-      </CardContent>
+      {colorsLoading ? (
+        <div className="min-h-[12rem] flex items-center">
+          <Spinner />
+        </div>
+      ) : (
+        <CardContent className="text-center">
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold", margin: "14px" }}
+            gutterBottom
+          >
+            Total Color
+          </Typography>
+          <Typography
+            variant="h2"
+            style={{ fontWeight: "bold", color: "blue", margin: "20px" }}
+            gutterBottom
+          >
+            {total}
+          </Typography>
+        </CardContent>
+      )}
     </Card>
   );
 }

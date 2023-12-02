@@ -21,7 +21,7 @@ export const profileUserApi = createApi({
       query: (userInfo: profileUserInfo) => ({
         url: "/edit",
         method: "POST",
-        data: userInfo,
+        data: JSON.stringify(userInfo),
       }),
     }),
   }),

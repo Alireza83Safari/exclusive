@@ -3,9 +3,10 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
+import Spinner from "../../Spinner/Spinner";
 
 function TotalBrand() {
-  const { total } = useContext(BrandContext) as brandContextType;
+  const { total, brandsLoading } = useContext(BrandContext) as brandContextType;
   return (
     <Card
       sx={{
@@ -14,22 +15,28 @@ function TotalBrand() {
       }}
       className="m-3"
     >
-      <CardContent className="text-center">
-        <Typography
-          variant="h4"
-          style={{ fontWeight: "bold", margin: "14px" }}
-          gutterBottom
-        >
-          Total Brand
-        </Typography>
-        <Typography
-          variant="h2"
-          style={{ fontWeight: "bold", color: "blue", margin: "28px" }}
-          gutterBottom
-        >
-          {total}
-        </Typography>
-      </CardContent>
+      {brandsLoading ? (
+        <div className="min-h-[12rem] flex items-center">
+          <Spinner />
+        </div>
+      ) : (
+        <CardContent className="text-center">
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold", margin: "14px" }}
+            gutterBottom
+          >
+            Total Brand
+          </Typography>
+          <Typography
+            variant="h2"
+            style={{ fontWeight: "bold", color: "blue", margin: "28px" }}
+            gutterBottom
+          >
+            {total}
+          </Typography>
+        </CardContent>
+      )}
     </Card>
   );
 }

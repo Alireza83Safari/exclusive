@@ -98,7 +98,6 @@ function ColorTable() {
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
-    setSearchQuery("");
   };
 
   return (

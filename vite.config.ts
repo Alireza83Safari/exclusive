@@ -1,19 +1,12 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-
-// https://vitejs.dev/config/
 export default defineConfig({
-  server: {
+  /*   server: {
     proxy: {
       "/api": {
-        target: "https://eshop-bak.iran.liara.run/",
+        target: "http://127.0.0.1:6060",
         changeOrigin: true,
-        secure: false,
-        headers: {
-          "liara-Proxy-Target": "liara",
-        },
+        //rewrite: (path) => path.replace(/^\/api/, ""), // Optional rewrite if needed
       },
     },
-  },
-  plugins: [react()],
+  }, */
 });

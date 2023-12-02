@@ -50,7 +50,7 @@ function OurProducts() {
 
       <div className="felx justify-center items-center py-10 text-center">
         <Link to="/products">
-          <button className="bg-red text-white py-2 px-4 rounded-md">
+          <button className="bg-red text-white py-2 px-4 rounded-md hover:bg-rose-400 duration-300">
             View All Products
           </button>
         </Link>

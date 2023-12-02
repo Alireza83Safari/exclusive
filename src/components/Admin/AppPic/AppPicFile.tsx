@@ -27,10 +27,8 @@ function AddAppPicFile() {
     }
   };
 
-  const [uploadImage, { isSuccess, isLoading }] =
+  const [uploadImage, { isSuccess, isLoading, error }] =
     useUploadImageMutation();
-
-
 
   const uploadAppPicImage = () => {
     if (selectedFile) {
@@ -42,8 +40,14 @@ function AddAppPicFile() {
     if (isSuccess) {
       toast.success("add image successfully");
       setShowAppPicFile(false);
-    } 
+    }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("please choose jpg , png ,jpeg file");
+    }
+  }, [error]);
 
   return (
     <>

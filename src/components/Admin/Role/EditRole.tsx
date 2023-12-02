@@ -11,8 +11,13 @@ import { roleErrorType } from "../../../types/Error.type";
 import { roleType } from "../../../types/Role.type";
 
 export default function EditRole() {
-  const { setShowEditModal, editRoleId, permissions, showEditModal } =
-    useContext(RoleContext) as roleContextType;
+  const {
+    setShowEditModal,
+    editRoleId,
+    permissions,
+    showEditModal,
+    refetchRoles,
+  } = useContext(RoleContext) as roleContextType;
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   const [initiallySelectedPermissions, setInitiallySelectedPermissions] =
     useState([]);
@@ -73,6 +78,7 @@ export default function EditRole() {
     if (isSuccess) {
       setShowEditModal(false);
       toast.success("edit role is successfully");
+      refetchRoles();
     }
   }, [isSuccess]);
 

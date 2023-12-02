@@ -28,6 +28,7 @@ import { discountAdminApi } from "./apis/admin/discountAdminApi";
 import { discountUserApi } from "./apis/user/discountUserApi";
 import { authUserApi } from "./apis/user/authUserApi";
 import { authAdminApi } from "./apis/admin/authAdminApi";
+import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -63,7 +64,9 @@ const store = configureStore({
       authAdminApi.middleware,
     ]),
 });
-
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
 export default store;

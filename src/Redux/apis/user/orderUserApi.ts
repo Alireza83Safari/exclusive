@@ -19,7 +19,7 @@ export const orderUserApi = createApi({
       query: (orderItem: addOrderItemType) => ({
         url: `/orderItem`,
         method: "POST",
-        data: orderItem,
+        data: JSON.stringify(orderItem),
       }),
     }),
   }),

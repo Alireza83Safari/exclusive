@@ -7,7 +7,7 @@ const CommentInfo = React.lazy(() => import("../../components/Admin/Comment/Comm
 
 function Comment() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
       <CommentContextProvider>
         <div className="grid grid-cols-12 mt-4">
           <CommentInfo />

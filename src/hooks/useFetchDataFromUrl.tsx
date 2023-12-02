@@ -18,6 +18,7 @@ export const useFetchDataFromUrl = <T,>(
   const maxPrice = searchParams.get("maxPrice");
   const page = searchParams.get("page");
   const limit = searchParams.get("limit");
+  const onlyDiscount = searchParams.get("onlyDiscount");
 
   const fetchDataFormUrl = useCallback(async () => {
     setLoading(true);
@@ -49,8 +50,16 @@ export const useFetchDataFromUrl = <T,>(
       url += `&maxPrice=${maxPrice}`;
     }
 
+    if (onlyDiscount) {
+      url += `&onlyDiscount=${onlyDiscount}`;
+    }
+
     try {
-      const response = await axiosInstance.get(url);
+      const response = await axiosInstance.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.status === 200) {
         setFilterProducts(response.data.data);
         settotal(response.data.total);

@@ -28,22 +28,22 @@ export const authUserApi = createApi({
     userLogin: builder.mutation({
       query: (infos: userLoginType) => ({
         url: "/login",
-        method: "post",
-        data: infos,
+        method: "POST",
+        data: JSON.stringify(infos),
       }),
     }),
     userRegister: builder.mutation({
       query: (infos: userRegisterType) => ({
         url: "/register",
         method: "post",
-        data: infos,
+        data: JSON.stringify(infos),
       }),
     }),
     recoveryPassword: builder.mutation({
       query: (infos: recoveryPasswordType) => ({
         url: "/recoveryPasword",
         method: "post",
-        data: infos,
+        data: JSON.stringify(infos),
       }),
     }),
     setNewPassword: builder.mutation({
@@ -56,7 +56,7 @@ export const authUserApi = createApi({
       }) => ({
         url: `/recoveryPasword/${key}`,
         method: "post",
-        data: paswordInfo,
+        data: JSON.stringify(paswordInfo),
       }),
     }),
   }),

@@ -19,11 +19,12 @@ export default function ProductImage() {
   ) as ProductsContextType;
   const [productFile, setProductFile] = useState<any>([]);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [imageURLs, setImageURLs] = useState<string[]>([]);
-  const [newUrl, setNewUrl] = useState<string[]>([]);
+  const [imageURLs, setImageURLs] = useState<any>([]);
+  const [newUrl, setNewUrl] = useState<any>([]);
   const [showUrl, setShowUrl] = useState<string[]>([]);
   const [getFileItemId, { data: images }] = useGetFileItemIdMutation();
   const [changeImagePriority] = useChangeImagePriorityMutation();
+  console.log(imageURLs);
 
   useEffect(() => {
     if (editProductId) {
@@ -100,8 +101,9 @@ export default function ProductImage() {
     setImageURLs(endIndices);
   }, []);
   //------- finish drag drop -------////
-  const [uploadImage, { isSuccess: successAddImage, isLoading }] =
+  const [uploadImage, { isSuccess: successAddImage, isLoading, error }] =
     useUploadImageMutation();
+  console.log(error);
 
   const addFile = async () => {
     const formData = new FormData();
@@ -110,7 +112,7 @@ export default function ProductImage() {
       setServerError("Please select at least one file.");
       return;
     }
-    newUrl?.forEach((img) => formData.append(`fileUrl`, img));
+    newUrl?.forEach((img: any) => formData.append(`fileUrl`, img));
     uploadImage({ itemId: editProductId, fileType: 1, images: formData });
   };
 
@@ -121,11 +123,17 @@ export default function ProductImage() {
       toast.success("create product is successfully");
       changeImagePriority({
         itemId: editProductId,
-        fileId: productFile[0],
+        fileId: productFile[0]?.id,
         priority: 1,
       });
     }
   }, [successAddImage]);
+  
+  useEffect(() => {
+    if (error) {
+      toast.error("please choose jpg , png ,jpeg file");
+    }
+  }, [error]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -140,7 +148,10 @@ export default function ProductImage() {
         ...prevImageURLs,
         ...Array.from(files),
       ]);
-      setNewUrl((prevImageURLs:any) => [...prevImageURLs, ...Array.from(files)]);
+      setNewUrl((prevImageURLs: any) => [
+        ...prevImageURLs,
+        ...Array.from(files),
+      ]);
       setShowUrl((prev) => [...prev, ...newImageURLs]);
     }
   };
@@ -158,10 +169,12 @@ export default function ProductImage() {
       (product: any) => product?.fileUrl == ID
     );
     try {
-      const response = await userAxios.post(`/file/delete/${findDelete?.id}`);
-      if (response.status === 200) {
-        refetchProducts();
-        toast.success("delete image is success");
+      if (findDelete?.id) {
+        const response = await userAxios.post(`/file/delete/${findDelete?.id}`);
+        if (response.status === 200) {
+          refetchProducts();
+          toast.success("delete image is success");
+        }
       }
     } catch (error) {}
   };

@@ -36,9 +36,7 @@ export const fileUserApi = createApi({
         url: `/uploadImage/${itemId}/${fileType}`,
         method: "POST",
         data: images,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        "Content-Type": "multipart/form-data",
       }),
     }),
 

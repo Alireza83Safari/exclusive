@@ -6,9 +6,12 @@ import {
   CategoryContext,
   categoryContextType,
 } from "./Context/CayegoryContext";
+import Spinner from "../../Spinner/Spinner";
 
 function TotalCategory() {
-  const { total } = useContext(CategoryContext) as categoryContextType;
+  const { total, categoryLoading } = useContext(
+    CategoryContext
+  ) as categoryContextType;
   return (
     <Card
       sx={{
@@ -17,22 +20,28 @@ function TotalCategory() {
       }}
       className="m-3"
     >
-      <CardContent className="text-center">
-        <Typography
-          variant="h4"
-          style={{ fontWeight: "bold", margin: "10px" }}
-          gutterBottom
-        >
-          Total Category
-        </Typography>
-        <Typography
-          variant="h2"
-          style={{ fontWeight: "bold", color: "blue", margin: "16px" }}
-          gutterBottom
-        >
-          {total}
-        </Typography>
-      </CardContent>
+      {categoryLoading ? (
+        <div className="min-h-[12rem] flex items-center">
+          <Spinner />
+        </div>
+      ) : (
+        <CardContent className="text-center">
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold", margin: "10px" }}
+            gutterBottom
+          >
+            Total Category
+          </Typography>
+          <Typography
+            variant="h2"
+            style={{ fontWeight: "bold", color: "blue", margin: "16px" }}
+            gutterBottom
+          >
+            {total}
+          </Typography>
+        </CardContent>
+      )}
     </Card>
   );
 }

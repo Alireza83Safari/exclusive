@@ -29,9 +29,6 @@ function Header() {
   );
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -58,10 +55,10 @@ function Header() {
               aria-label="open sidebar"
               onClick={toggleSidebar}
               color="inherit"
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
             >
               <MenuIcon />
             </IconButton>
+
             <Link to="/admin">
               <Typography
                 variant="h6"
@@ -81,16 +78,6 @@ function Header() {
             </Link>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}

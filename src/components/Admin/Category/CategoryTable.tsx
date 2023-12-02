@@ -97,6 +97,7 @@ function CategoryTable() {
     setCurrentPage(1);
     searchHandler(searchQuery);
     setSearchQuery("");
+    setSearchQuery("");
   };
 
   const changePageHandler = (id: number) => {

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 function Banner() {
   const navigate = useNavigate();
   return (
-    <div className="lg:col-span-10 col-span-12 lg:py-8 lg:order-1 order-1">
+    <div className="lg:col-span-10 col-span-12 lg:py-8 lg:order-1 order-1 hover:opacity-70 duration-300">
       <div
         className="lg:w-[78%] w-full min-h-[344px] bg-black sm:px-16 grid sm:grid-cols-2 lg:absolute right-0 sm:py-0 py-10"
         onClick={() =>
@@ -14,7 +14,7 @@ function Banner() {
         <div className="mx-auto sm:order-1 order-2">
           <div className="flex items-center sm:pt-14">
             <img src="/images/apple.png" className="w-10" />
-            <p className="text-white md:text-base text-sm">iPhone 14 Series</p>
+            <p className="text-white md:text-base text-sm">IPhone 15 Series</p>
           </div>
           <div className="text-white md:text-5xl text-4xl font-semibold my-5">
             Up to 10% <br /> off Voucher
