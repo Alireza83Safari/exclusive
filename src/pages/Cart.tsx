@@ -1,9 +1,14 @@
-import  { Suspense, lazy, useContext, useEffect } from "react";
+import { Suspense, lazy, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Import useHistory
 import { orderUserType } from "../types/Order.type";
-import { useGetOrderUserQuery } from "../Redux/apis/user/orderUserApi";
+import {
+  useDeleteOrderItemMutation,
+  useGetOrderUserQuery,
+} from "../Redux/apis/user/orderUserApi";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import { authContext, authContextType } from "../context/authContext";
+import { FaTrashAlt } from "react-icons/fa";
+import toast from "react-hot-toast";
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
@@ -15,6 +20,17 @@ function Cart() {
   useEffect(() => {
     refetch();
   }, []);
+
+  const [deleteOrderItem, { isSuccess }] = useDeleteOrderItemMutation();
+  const deleteOrderItemHandler = (id: string) => {
+    deleteOrderItem(id);
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("delete orderItem is success");
+      refetch();
+    }
+  }, [isSuccess]);
 
   return (
     <>
@@ -44,6 +60,14 @@ function Cart() {
                     <p>${order.price}</p>
                     <p className="mr-3">{order.quantity}</p>
                     <p>$ {order.totalPrice}</p>
+                    <button
+                      className=" absolute sm:right-10 right-2"
+                      onClick={() =>
+                        deleteOrderItemHandler(order?.productItemId)
+                      }
+                    >
+                      <FaTrashAlt className="text-red" />
+                    </button>
                   </div>
                 ))}
 
@@ -62,7 +86,7 @@ function Cart() {
                   </Link>
                 </div>
               </div>
-              <div className="grid grid-cols-2 mt-10">
+              <div className="grid sm:grid-cols-2 mt-10">
                 <div className="border border-borderColor px-6 py-5 rounded-sm">
                   <h3 className="font-semibold text-lg mb-3">Cart Total</h3>
                   <div className="flex justify-between py-4 border-b border-borderColor">
@@ -92,7 +116,7 @@ function Cart() {
               <div className="mx-auto">
                 <p className="text-4xl font-semibold">Your Cart Is Empty</p>
                 <button className="bg-red text-white py-3 px-8 mt-10 flex justify-center text-center m-auto">
-                  <Link to="/Products">Go To Shop</Link>
+                  <Link to="/products">Go To Shop</Link>
                 </button>
               </div>
             </div>

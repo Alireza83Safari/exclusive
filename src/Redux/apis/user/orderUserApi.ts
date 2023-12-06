@@ -22,6 +22,14 @@ export const orderUserApi = createApi({
         data: JSON.stringify(orderItem),
       }),
     }),
+
+    deleteOrderItem: builder.mutation({
+      query: (id: string) => ({
+        url: `/orderItem/delete/${id}`,
+        method: "POST",
+        
+      }),
+    }),
   }),
 });
 
@@ -29,4 +37,5 @@ export const {
   useGetOrderUserQuery,
   useCreateOrderMutation,
   useCreateOrderItemMutation,
+  useDeleteOrderItemMutation,
 } = orderUserApi;
