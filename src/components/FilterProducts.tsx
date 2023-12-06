@@ -53,8 +53,7 @@ const FilterProducts = () => {
         return nextPrice;
       }
       return minPrice;
-    },
-    products?.data[0]
+    }
   );
 
   const rangeInputMaxValue = products?.data?.reduce(
@@ -63,8 +62,7 @@ const FilterProducts = () => {
         return nextPrice;
       }
       return minPrice;
-    },
-    products?.data[0]
+    }
   );
 
   const filterData = () => {
@@ -122,12 +120,17 @@ const FilterProducts = () => {
     filterData();
   }, [filterValue]);
   const setFilterPriceHandler = () => {
+    const updatedFilterValue = { ...filterValue };
+
     if (priceFilter.minPrice !== 0) {
-      setFilterValue({ ...filterValue, minPrice: priceFilter.minPrice });
+      updatedFilterValue.minPrice = priceFilter.minPrice;
     }
+
     if (priceFilter.maxPrice !== 0) {
-      setFilterValue({ ...filterValue, maxPrice: priceFilter.maxPrice });
+      updatedFilterValue.maxPrice = priceFilter.maxPrice;
     }
+
+    setFilterValue(updatedFilterValue);
   };
 
   return (
@@ -162,7 +165,6 @@ const FilterProducts = () => {
               name="order"
               defaultValue={filterValue.order}
               onChange={(selected) => {
-                console.log(selected);
                 setFilterValue({
                   ...filterValue,
                   order: selected.value,
@@ -198,12 +200,15 @@ const FilterProducts = () => {
           <div className="mt-4 flex">
             <div>
               <div>
-                <label className="text-xs">Min Price:</label>
+                <label className="text-xs">
+                  Min Price:{priceFilter.minPrice}
+                </label>
                 <input
                   type="range"
                   name="minPrice"
                   min={rangeInputMinValue?.price}
                   max={rangeInputMaxValue?.price}
+                  value={priceFilter.minPrice}
                   onChange={(event) =>
                     setFilterPrice((prevFilterValue) => ({
                       ...prevFilterValue,
@@ -213,16 +218,19 @@ const FilterProducts = () => {
                 />
               </div>
               <div>
-                <label className="text-xs">Max Price:</label>
+                <label className="text-xs">
+                  Max Price:{priceFilter.maxPrice}
+                </label>
                 <input
                   type="range"
                   name="maxPrice"
                   min={rangeInputMinValue?.price}
                   max={rangeInputMaxValue?.price}
+                  value={priceFilter.maxPrice}
                   onChange={(event) =>
                     setFilterPrice((prevFilterValue) => ({
                       ...prevFilterValue,
-                      minPrice: Number(event.target.value),
+                      maxPrice: Number(event.target.value),
                     }))
                   }
                 />
