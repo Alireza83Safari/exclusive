@@ -4,6 +4,7 @@ import { addOrderItemType } from "../../types/Order.type";
 import ContentLoaders from "../ContentLoaders";
 import toast from "react-hot-toast";
 import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
+import "../ProductDetails/Star.css";
 
 function ProductTemplate({
   name,
@@ -15,6 +16,7 @@ function ProductTemplate({
   categoryName,
   quantity,
   productsLoading,
+  rate,
 }: userProductTypeWithLoading) {
   const [createOrderItem] = useCreateOrderItemMutation();
   const addProductToBasket = () => {
@@ -92,11 +94,9 @@ function ProductTemplate({
           </div>
         ) : (
           <div className="flex items-center mt-2">
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
-            <img src="/images/star.png" className="w-4 h-4" alt="Star" />
+            <div className="flex items-center">
+              <i data-star={rate}></i>
+            </div>
           </div>
         )}
       </Link>

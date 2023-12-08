@@ -9,12 +9,11 @@ import { addOrderItemType } from "../../types/Order.type";
 import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
 import toast from "react-hot-toast";
 import { DetailContext, DetailContextType } from "./Context/DetailsContext";
+import "./Star.css";
 
 function ProductDetailsInfo() {
   const { productItemLoading, productLoading, productItem, productFind } =
     useContext(DetailContext) as DetailContextType;
-console.log(productItem);
-console.log(productFind);
 
   const [count, setCount] = useState<number>(1);
 
@@ -105,12 +104,8 @@ console.log(productFind);
           {productItemLoading || productLoading ? (
             <ContentLoaders width={70} height={25} />
           ) : (
-            <div className="flex">
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
-              <img src="/images/star.png" className="w-3 h-3" />
+            <div className="flex items-center">
+              <i data-star={productFind.rate}></i>
             </div>
           )}
           {productItemLoading || productLoading ? (
