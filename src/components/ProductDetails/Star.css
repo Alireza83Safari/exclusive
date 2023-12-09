@@ -9,7 +9,7 @@
 [data-star]::before {
   display: block;
   content: "★★★★★";
-  color: #eee;
+  color: #e0dbdb;
 }
 [data-star]::after {
   white-space: nowrap;

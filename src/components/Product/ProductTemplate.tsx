@@ -30,8 +30,15 @@ function ProductTemplate({
   };
 
   return (
-    <div className="relative group my-4 px-2" key={id}>
-      <div className="flex justify-center items-center sm:h-[250px] h-[220px] bg-gray relative">
+    <div
+      className="relative group my-4 mx-2 px-2 z-10"
+      key={id}
+      style={{
+        background:
+          "radial-gradient(circle, rgb(255, 255, 255) 30%, rgba(190, 190, 190, 0.3) 97%)",
+      }}
+    >
+      <div className="flex justify-center items-center sm:h-[250px] h-[220px] bg-gra relative">
         {discountValue && (
           <p className="sm:px-3 px-1 py-1 rounded-md bg-red absolute top-3 left-3 sm:text-xs text-[10px] text-white">
             {discountValue}%
@@ -70,7 +77,9 @@ function ProductTemplate({
           <p className="text-emerald-600 font-semibold md:text-base text-sm">
             {categoryName}
           </p>
-          <p className="md:text-base text-sm">quantity:{quantity}</p>
+          <p className="md:text-base text-sm sm:block hidden">
+            quantity:{quantity}
+          </p>
         </div>
 
         {productsLoading ? (
@@ -79,7 +88,7 @@ function ProductTemplate({
           </div>
         ) : (
           <div className="flex mt-2">
-            <p className="text-red mr-4 md:text-base text-sm">
+            <p className="text-red mr-4 md:text-base text-sm font-bold">
               ${discountValue ? price - (discountValue / 100) * price : price}
             </p>
             <p className="line-through md:text-base text-sm">
