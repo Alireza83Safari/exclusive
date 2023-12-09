@@ -30,15 +30,14 @@ function ProductTemplate({
   };
 
   return (
-    <div
-      className="relative group my-4 mx-2 px-2 z-10"
-      key={id}
-      style={{
-        background:
-          "radial-gradient(circle, rgb(255, 255, 255) 30%, rgba(190, 190, 190, 0.3) 97%)",
-      }}
-    >
-      <div className="flex justify-center items-center sm:h-[250px] h-[220px] bg-gra relative">
+    <div className="relative group my-4 mx-2 px-2 z-10" key={id}>
+      <div
+        className="flex justify-center items-center sm:h-[250px] h-[220px] relative"
+        style={{
+          background:
+            "radial-gradient(circle, rgb(255 255 255) 30%, rgb(211 208 208 / 94%) 97%)",
+        }}
+      >
         {discountValue && (
           <p className="sm:px-3 px-1 py-1 rounded-md bg-red absolute top-3 left-3 sm:text-xs text-[10px] text-white">
             {discountValue}%
