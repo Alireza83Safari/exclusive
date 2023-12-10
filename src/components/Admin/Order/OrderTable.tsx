@@ -6,13 +6,14 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { Box, TextField } from "@mui/material";
 import { OrderContext, orderContextType } from "./Context/OrderContext";
 import Pagination from "../../Pagination";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import SearchIcon from "@mui/icons-material/Search";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
+import { useLocation } from "react-router-dom";
 
 interface Column {
   id: "index" | "username" | "totalPrice" | "paidAt" | "status" | "price";
@@ -34,7 +35,10 @@ function OrderTable() {
   ) as orderContextType;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const pageSize = limitUrl ? +limitUrl : 12;
   const {} = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
   const changePageHandler = (id: number) => {
@@ -92,11 +96,15 @@ function OrderTable() {
             </TableHead>
             <TableBody>
               {orderLoading ? (
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <Spinner />
-                  </TableCell>
-                </TableRow>
+                Array.from(Array(orders?.length).keys()).map((_, index) => (
+                  <TableRow key={index}>
+                    {[...Array(6).keys()].map((cellIndex) => (
+                      <TableCell key={cellIndex}>
+                        <RowTableSkeleton />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
               ) : orders?.length ? (
                 orders?.map((row: any, index: any) => (
                   <TableRow key={index}>

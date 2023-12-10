@@ -1,4 +1,4 @@
-import  { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
@@ -17,6 +16,7 @@ import EditRole from "./EditRole";
 import { useDeleteRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { Box } from "@mui/material";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions" | "permissions";
@@ -47,7 +47,7 @@ function RoleTable() {
   } = useContext(RoleContext) as roleContextType;
 
   const { userHasAccess: accessList } = useHasAccess("action_role_admin_list");
- /*  const { userHasAccess: accessDelete } = useHasAccess(
+  /*  const { userHasAccess: accessDelete } = useHasAccess(
     "action_role_admin_delete"
   );
   const { userHasAccess: accessEdit } = useHasAccess(
@@ -100,67 +100,71 @@ function RoleTable() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rolesLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={7}>
-                      <Spinner />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  roles?.data?.map((row: any, index: any) => (
-                    <TableRow key={row.id}>
-                      <TableCell align="center">{index + 1}</TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.code}</TableCell>
-                      <TableCell align="center">
-                        <button
-                          className="text-xs border border-borderColor py-1 px-2 rounded-md"
-                          onClick={() => {
-                            setRoleId(row.id);
-                            setShowPermissions(true);
+                {rolesLoading
+                  ? Array.from(Array(roles?.data?.length).keys()).map(
+                      (_, index) => (
+                        <TableRow key={index}>
+                          {[...Array(6).keys()].map((cellIndex) => (
+                            <TableCell key={cellIndex}>
+                              <RowTableSkeleton />
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      )
+                    )
+                  : roles?.data?.map((row: any, index: any) => (
+                      <TableRow key={row.id}>
+                        <TableCell align="center">{index + 1}</TableCell>
+                        <TableCell align="center">{row.name}</TableCell>
+                        <TableCell align="center">{row.code}</TableCell>
+                        <TableCell align="center">
+                          <button
+                            className="text-xs border border-borderColor py-1 px-2 rounded-md"
+                            onClick={() => {
+                              setRoleId(row.id);
+                              setShowPermissions(true);
+                            }}
+                          >
+                            Permissions
+                          </button>
+                        </TableCell>
+                        <TableCell
+                          style={{ whiteSpace: "nowrap" }}
+                          align="center"
+                        >
+                          {row.createdAt.slice(0, 10)}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            mt: "12px",
                           }}
                         >
-                          Permissions
-                        </button>
-                      </TableCell>
-                      <TableCell
-                        style={{ whiteSpace: "nowrap" }}
-                        align="center"
-                      >
-                        {row.createdAt.slice(0, 10)}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          mt: "12px",
-                        }}
-                      >
-                        <FaTrash
-                          className="text-red mr-3"
-                          onClick={() => {
-                            setDeleteBrandId(row.id);
-                            setShowDeleteModal(true);
-                          }}
-                        />
-                        <FaPen
-                          className="text-orange-500"
-                          onClick={() => {
-                            setShowEditModal(true);
-                            setEditRoleId(row.id);
-                          }}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                          <FaTrash
+                            className="text-red mr-3"
+                            onClick={() => {
+                              setDeleteBrandId(row.id);
+                              setShowDeleteModal(true);
+                            }}
+                          />
+                          <FaPen
+                            className="text-orange-500"
+                            onClick={() => {
+                              setShowEditModal(true);
+                              setEditRoleId(row.id);
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           ) : (
             <Box sx={{ marginTop: "100px" }}>
               <h1 className="text-3xl font-bold  flex justify-center items-center ">
-                You Havent Access Color List
+                You Havent Access Role List
               </h1>
             </Box>
           )}

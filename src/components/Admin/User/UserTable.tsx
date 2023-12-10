@@ -21,6 +21,7 @@ import Pagination from "../../Pagination";
 import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../hooks/useHasAccess";
 import useRow from "../../../hooks/useRow";
+import { useLocation } from "react-router-dom";
 
 interface Column {
   id:
@@ -60,7 +61,10 @@ function UserTable() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const pageSize = 8;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const pageSize = limitUrl ? +limitUrl : 12;
   const {} = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
   const changePageHandler = (id: number) => {

@@ -17,7 +17,6 @@ import {
   ProductsContext,
   ProductsContextType,
 } from "./Context/ProductsContext";
-import Spinner from "../../Spinner/Spinner";
 import toast from "react-hot-toast";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDeleteProductMutation } from "../../../Redux/apis/admin/productAdminApi";
@@ -25,6 +24,8 @@ import Pagination from "../../Pagination";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import useRow from "../../../hooks/useRow";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
+import { useLocation } from "react-router-dom";
 
 export default function ProductsTable() {
   const {
@@ -55,7 +56,10 @@ export default function ProductsTable() {
     setCurrentPage(1);
     searchHandler(searchValue);
   };
-  const pageSize = 10;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const pageSize = limitUrl ? +limitUrl : 12;
   const totalPages = Math.ceil(total / pageSize);
   const {} = usePagination(currentPage, pageSize);
 
@@ -107,121 +111,125 @@ export default function ProductsTable() {
             aria-label="custom pagination table "
             className={`${loading && `min-h-[30rem]`}`}
           >
-            {loading ? (
-              <Spinner />
-            ) : (
-              <>
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      #
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  #
+                </TableCell>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  Name
+                </TableCell>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  Code
+                </TableCell>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  Brand
+                </TableCell>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  Category Name
+                </TableCell>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  Actions
+                </TableCell>
+                <TableCell
+                  style={{ width: 160, fontWeight: "bold" }}
+                  align="center"
+                >
+                  Infos
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loading ? (
+                Array.from(Array(products?.length).keys()).map((_, index) => (
+                  <TableRow key={index}>
+                    {[...Array(7).keys()].map((cellIndex) => (
+                      <TableCell key={cellIndex}>
+                        <RowTableSkeleton />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : products?.length ? (
+                products?.map((row: any, index: number) => (
+                  <TableRow key={row.id}>
+                    <TableCell style={{ width: 160 }} align="center">
+                      {(rowNumber as any) >= (limit as any)
+                        ? rowNumber + index + 1
+                        : index + 1}
                     </TableCell>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      Name
+                    <TableCell style={{ width: 160 }} align="center">
+                      {row.name}
                     </TableCell>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      Code
+                    <TableCell style={{ width: 160 }} align="center">
+                      {row.code}
                     </TableCell>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      Brand
+                    <TableCell style={{ width: 160 }} align="center">
+                      <div className=" flex justify-center">
+                        <img
+                          src={row?.brandFileUrl}
+                          className="w-8 h-8 object-contain"
+                        />
+                      </div>
                     </TableCell>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      Category Name
+                    <TableCell style={{ width: 160 }} align="center">
+                      {row.categoryName}
                     </TableCell>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      Actions
+                    <TableCell style={{ width: 160 }} align="center">
+                      <div className="flex justify-center gap-x-2">
+                        <FaTrash
+                          className="text-red"
+                          onClick={() => {
+                            setShowDeleteModal(true);
+                            setDeleteId(row.id);
+                          }}
+                        />
+                      </div>
                     </TableCell>
-                    <TableCell
-                      style={{ width: 160, fontWeight: "bold" }}
-                      align="center"
-                    >
-                      Infos
+                    <TableCell style={{ width: 160 }} align="center">
+                      <div className="flex justify-center">
+                        <button
+                          className="flex justify-center gap-x-2 border border-borderColor rounded-md px-2 text-xs py-1"
+                          onClick={() => {
+                            setEditProductId(row.id);
+                            setShowProductInfoModal(true);
+                            setProductInfo(row);
+                          }}
+                        >
+                          Infos
+                        </button>
+                      </div>
                     </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {products?.length > 0 ? (
-                    products?.map((row: any, index: number) => (
-                      <TableRow key={row.id}>
-                        <TableCell style={{ width: 160 }} align="center">
-                          {(rowNumber as any) >= (limit as any)
-                            ? rowNumber + index + 1
-                            : index + 1}
-                        </TableCell>
-                        <TableCell style={{ width: 160 }} align="center">
-                          {row.name}
-                        </TableCell>
-                        <TableCell style={{ width: 160 }} align="center">
-                          {row.code}
-                        </TableCell>
-                        <TableCell style={{ width: 160 }} align="center">
-                          <div className=" flex justify-center">
-                            <img
-                              src={row?.brandFileUrl}
-                              className="w-8 h-8 object-contain"
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell style={{ width: 160 }} align="center">
-                          {row.categoryName}
-                        </TableCell>
-                        <TableCell style={{ width: 160 }} align="center">
-                          <div className="flex justify-center gap-x-2">
-                            <FaTrash
-                              className="text-red"
-                              onClick={() => {
-                                setShowDeleteModal(true);
-                                setDeleteId(row.id);
-                              }}
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell style={{ width: 160 }} align="center">
-                          <div className="flex justify-center">
-                            <button
-                              className="flex justify-center gap-x-2 border border-borderColor rounded-md px-2 text-xs py-1"
-                              onClick={() => {
-                                setEditProductId(row.id);
-                                setShowProductInfoModal(true);
-                                setProductInfo(row);
-                              }}
-                            >
-                              Infos
-                            </button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={7}>
-                        <p className="text-xl text-center font-semibold">
-                          We couldn't find a product with these specifications.
-                        </p>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </>
-            )}
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <p className="text-xl text-center font-semibold">
+                      We couldn't find a product with these specifications.
+                    </p>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
         {totalPages > 1 && (

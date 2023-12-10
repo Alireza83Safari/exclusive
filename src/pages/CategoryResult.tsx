@@ -6,14 +6,18 @@ import { userProductType } from "../types/Product.type";
 import { userAxios } from "../services/userInterceptor";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductTemplate from "../components/Product/ProductTemplate";
-import FilterProducts from "../components/FilterProducts";
+import FilterProducts from "../components/Product/FilterProducts";
+import { useLocation } from "react-router-dom";
 const Pagination = lazy(() => import("../components/Pagination"));
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function CategoryResult() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const limitShow = 12;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const limitShow = limitUrl ? +limitUrl : 12;
   const { getFilterData, total, loading } =
     useFetchDataFromUrl<userProductType>(null, userAxios);
 

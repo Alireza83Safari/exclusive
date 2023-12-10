@@ -220,7 +220,6 @@ function AddProductInfo() {
         <div className="grid grid-cols-2 mt-4">
           <button
             onClick={getFormIsValid}
-            disabled={formIsValid}
             className="bg-black text-white py-2 disabled:bg-gray disabled:text-black"
           >
             Add Product
