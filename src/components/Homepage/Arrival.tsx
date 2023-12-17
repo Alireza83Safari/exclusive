@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetAppPicsUserQuery } from "../Redux/apis/user/appPicUserApi";
+import { useGetAppPicsUserQuery } from "../../Redux/apis/user/appPicUserApi";
 
 function Arrival() {
   const { data } = useGetAppPicsUserQuery("");
   const appPics = data?.filter((appPic: any) => appPic?.appPicType === 1);
-
 
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full sm:px-4 px-1 mx-auto relative my-20">

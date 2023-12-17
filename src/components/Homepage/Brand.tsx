@@ -1,10 +1,9 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { useGetBrandsUserQuery } from "../Redux/apis/user/brandUserApi";
-import BrandSkeleton from "../skelton/BrandSkeleton";
+import { useGetBrandsUserQuery } from "../../Redux/apis/user/brandUserApi";
+import BrandSkeleton from "../../skelton/BrandSkeleton";
 
 function Brand() {
   const { data: brands, isLoading } = useGetBrandsUserQuery("");
@@ -36,7 +35,6 @@ function Brand() {
           pagination={{
             clickable: true,
           }}
-          modules={[Pagination]}
           className="mySwiper"
         >
           {isLoading

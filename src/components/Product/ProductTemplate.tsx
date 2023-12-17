@@ -5,6 +5,11 @@ import ContentLoaders from "../ContentLoaders";
 import toast from "react-hot-toast";
 import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
 import "../ProductDetails/Star.css";
+import "./Style.css";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
+import { useCreateFavoriteMutation } from "../../Redux/apis/user/favoriteUserApi";
+import { useEffect, useMemo } from "react";
 
 function ProductTemplate({
   name,
@@ -17,6 +22,7 @@ function ProductTemplate({
   quantity,
   productsLoading,
   rate,
+  isUserFavorite,
 }: userProductTypeWithLoading) {
   const [createOrderItem] = useCreateOrderItemMutation();
   const addProductToBasket = () => {
@@ -29,15 +35,42 @@ function ProductTemplate({
       .then(() => toast.success(`${name} Added To Cart`));
   };
 
+  const [createFavorite, { isSuccess: createFavoriteSuccess }] =
+    useCreateFavoriteMutation();
+
+  useEffect(() => {
+    if (createFavoriteSuccess) {
+      toast.success("added to favorite is successfully");
+    }
+  }, [createFavoriteSuccess]);
+
+  const addProductToFavorite = () => {
+    console.log("worf");
+
+    const productItemId = {
+      productItemId: itemId,
+    } as any;
+
+    if (!isUserFavorite) {
+      createFavorite(productItemId);
+    }
+  };
+
+  const isFavoriteImg = useMemo(() => {
+    return (
+      <>
+        {isUserFavorite || createFavoriteSuccess ? (
+          <FaHeart className="text-xl text-red" />
+        ) : (
+          <CiHeart className="text-xl" onClick={() => addProductToFavorite()} />
+        )}
+      </>
+    );
+  }, [isUserFavorite, , createFavoriteSuccess]);
+
   return (
-    <div className="relative group my-4 mx-2 px-2 z-10" key={id}>
-      <div
-        className="flex justify-center items-center sm:h-[250px] h-[220px] relative"
-        style={{
-          background:
-            "radial-gradient(circle, rgb(255 255 255) 30%, rgb(211 208 208 / 94%) 97%)",
-        }}
-      >
+    <div className="relative group my-4 mx-2 px-2" key={id}>
+      <div className="flex justify-center items-center sm:h-[250px] h-[220px] relative bg-gradient">
         {discountValue && (
           <p className="sm:px-3 px-1 py-1 rounded-md bg-red absolute top-3 left-3 sm:text-xs text-[10px] text-white">
             {discountValue}%
@@ -45,12 +78,9 @@ function ProductTemplate({
         )}
 
         <div className="absolute top-3 right-3">
-          <Link
-            to={`/product/${id}`}
-            className="sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-green duration-300 rounded-full flex justify-center items-center"
-          >
-            <img src="/images/eye.png" className="sm:w-5 sm:h-5 h-4 w-4" />
-          </Link>
+          <div className="sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-rose-300 duration-300 rounded-full flex justify-center items-center">
+            {isFavoriteImg}
+          </div>
         </div>
         <button
           className="bg-black w-full absolute bottom-0 text-white py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"

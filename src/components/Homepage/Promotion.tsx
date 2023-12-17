@@ -1,12 +1,13 @@
 import React, { Suspense, lazy, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
-import ProductSkelton from "../skelton/ProductSkelton";
-import ProductTemplate from "./Product/ProductTemplate";
-const Timer = lazy(() => import("./Timer"));
+import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
+import ProductSkelton from "../../skelton/ProductSkelton";
+import ProductTemplate from "../Product/ProductTemplate";
+const Timer = lazy(() => import("../Timer"));
 
 function Promotion() {
-  const { data: products, isLoading } = useGetProductsUserQuery("?onlyDiscount=true");
+  const { data: products, isLoading } =
+    useGetProductsUserQuery("?onlyDiscount=true");
 
   const productsHaveDiscount = useMemo(() => {
     return products?.data.filter(

@@ -1,14 +1,20 @@
-import OrderTable from "../../components/Admin/Order/OrderTable";
 import { OrderContextProvider } from "../../components/Admin/Order/Context/OrderContext";
-import OrderInfo from "../../components/Admin/Order/OrderInfo";
+import { Suspense, lazy } from "react";
+import { OrderSkelton } from "../../skelton/admin/Order";
+const OrderInfo = lazy(() => import("../../components/Admin/Order/OrderInfo"));
+const OrderTable = lazy(
+  () => import("../../components/Admin/Order/OrderTable")
+);
 
 function Order() {
   return (
     <OrderContextProvider>
-      <div className="grid grid-cols-12 mt-4">
-        <OrderInfo />
-        <OrderTable />
-      </div>
+      <Suspense fallback={<OrderSkelton />}>
+        <div className="grid grid-cols-12 mt-4">
+          <OrderInfo />
+          <OrderTable />
+        </div>
+      </Suspense>
     </OrderContextProvider>
   );
 }

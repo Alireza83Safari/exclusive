@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
-import Spinner from "../../Spinner/Spinner";
+import { TotalColorSkeleton } from "../../../skelton/admin/Color";
 
 function TotalColor() {
   const { total, colorsLoading } = useContext(ColorContext) as colorContextType;
@@ -16,9 +16,7 @@ function TotalColor() {
       className="m-3"
     >
       {colorsLoading ? (
-        <div className="min-h-[12rem] flex items-center">
-          <Spinner />
-        </div>
+        <TotalColorSkeleton />
       ) : (
         <CardContent className="text-center">
           <Typography

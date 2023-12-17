@@ -80,13 +80,13 @@ export interface commentErrorType {
 }
 
 export interface productErrorType {
-  status: number;
+  status: number | null;
   data: {
     message?: string;
     errors?: {
       brandId: string;
       categoryId: string;
-      code: string;
+      code: string[];
       description: string;
       name: string;
       shortDescription: string;

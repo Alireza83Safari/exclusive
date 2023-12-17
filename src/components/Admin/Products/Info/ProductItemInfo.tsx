@@ -122,7 +122,7 @@ function ProductItemInfo() {
     <>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className={`p-6 relative w-[80vw] h-[35rem] overflow-auto ${
+        className={`p-6 relative w-[80vw] h-[35rem] max-h-[94%] overflow-auto ${
           showEditItem ? `visible` : `hidden`
         } `}
       >

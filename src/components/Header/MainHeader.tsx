@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { BiLogIn } from "react-icons/bi";
@@ -17,7 +17,6 @@ function MainHeader() {
 
   const searchProducts = () => {
     navigate(`/search/product?searchTerm=${searchQuery.replace(/ /g, "_")}`);
-    // setSearchQuery("");
   };
 
   const handleEnterPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -25,6 +24,14 @@ function MainHeader() {
       searchProducts();
     }
   };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const seachTerm = searchParams.get("searchTerm");
+    if (seachTerm) {
+      setSearchQuery(seachTerm);
+    }
+  }, [location]);
 
   return (
     <div className="border-b border-borderColor relative px-2">

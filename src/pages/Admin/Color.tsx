@@ -1,14 +1,20 @@
 import React, { Suspense } from "react";
 import { ColorContextProvider } from "../../components/Admin/Color/Context/ColorContext";
-import Spinner from "../../components/Spinner/Spinner";
+import { ColorSkeleton } from "../../skelton/admin/Color";
 
-const ColorTable = React.lazy(() => import("../../components/Admin/Color/ColorTable"));
-const TotalColor = React.lazy(() => import("../../components/Admin/Color/TotalColor"));
-const AddColor = React.lazy(() => import("../../components/Admin/Color/AddColor"));
+const ColorTable = React.lazy(
+  () => import("../../components/Admin/Color/ColorTable")
+);
+const TotalColor = React.lazy(
+  () => import("../../components/Admin/Color/TotalColor")
+);
+const AddColor = React.lazy(
+  () => import("../../components/Admin/Color/AddColor")
+);
 
 function Color() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
+    <Suspense fallback={<ColorSkeleton />}>
       <ColorContextProvider>
         <div className="grid grid-cols-12 mt-4">
           <ColorTable />

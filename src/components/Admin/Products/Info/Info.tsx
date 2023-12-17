@@ -1,6 +1,5 @@
 import { useContext, lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
-import Spinner from "../../../Spinner/Spinner";
 import {
   ProductsContext,
   ProductsContextType,
@@ -76,13 +75,9 @@ export default function Info() {
             3 product File
           </button>
         </div>
-        <Suspense fallback={<Spinner />}>
+        <Suspense>
           <ProductInfo />
-        </Suspense>
-        <Suspense fallback={<Spinner />}>
           <ProductItemInfo />
-        </Suspense>
-        <Suspense fallback={<Spinner />}>
           <ProductImage />
         </Suspense>
       </div>

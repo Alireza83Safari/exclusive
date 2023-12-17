@@ -9,7 +9,7 @@ import { DetailContext, DetailContextType } from "./Context/DetailsContext";
 function Details() {
   const { productItemLoading, productLoading, productItem, products } =
     useContext(DetailContext) as DetailContextType;
-  /* console.log(products); */
+
 
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative my-10 grid grid-cols-10">
@@ -27,7 +27,7 @@ function Details() {
           <RelatedProducts products={products} />
         </>
       ) : (
-        <div className="text-4xl flex justify-center items-center col-span-10 font-semibold">
+        <div className="sm:text-4xl text-2xl flex justify-center items-center col-span-10 font-semibold">
           product not found!
         </div>
       )}

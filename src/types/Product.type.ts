@@ -45,6 +45,8 @@ export interface userProductType extends productType {
   itemId: string;
   price: number;
   quantity: number;
+  rate: any;
+  isUserFavorite: boolean;
 }
 
 type productsLoading = {

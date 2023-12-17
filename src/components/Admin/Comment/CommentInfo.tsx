@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { useContext, useMemo } from "react";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
 import { getCommentType } from "../../../types/Comment.type";
-import Spinner from "../../Spinner/Spinner";
+import { CommentSkeleton } from "../../../skelton/admin/Comment";
 
 function CommentInfo() {
   const { commentsTotal, commentsLoading } = useContext(
@@ -30,11 +30,9 @@ function CommentInfo() {
   }, [commentsTotal]);
 
   return (
-    <div className="grid grid-cols-4 col-span-12">
+    <div className="grid md:grid-cols-4 sm:grid-cols-2 col-span-12">
       {commentsLoading ? (
-        <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <CommentSkeleton />
       ) : (
         <Card
           sx={{
@@ -63,9 +61,7 @@ function CommentInfo() {
       )}
 
       {commentsLoading ? (
-        <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <CommentSkeleton />
       ) : (
         <Card
           sx={{
@@ -94,9 +90,7 @@ function CommentInfo() {
       )}
 
       {commentsLoading ? (
-         <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <CommentSkeleton />
       ) : (
         <Card
           sx={{
@@ -125,9 +119,7 @@ function CommentInfo() {
       )}
 
       {commentsLoading ? (
-       <div className="min-h-[12rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <CommentSkeleton />
       ) : (
         <Card
           sx={{

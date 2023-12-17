@@ -6,8 +6,9 @@ import { addressType } from "../../../types/Address.type";
 import { addressErrorType } from "../../../types/Error.type";
 import toast from "react-hot-toast";
 import { addressShema } from "../../../validations/address";
+import { useGetProfileOrdersUserQuery } from "../../../Redux/apis/user/prodileUserApi";
 
-function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
+function AddAddress({ setShowCreateAddress, showCreateAddress, refetch }: any) {
   const initialState = {
     address: "",
     firstName: "",
@@ -20,6 +21,7 @@ function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
   const [addressValue, setAddressValue] = useState<addressType>(initialState);
   const [formIsValid, setFormIsValid] = useState(false);
   const [errors, setErrors] = useState<addressType>();
+  const { refetch: refetchOrders } = useGetProfileOrdersUserQuery("");
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = event.target;
@@ -60,8 +62,10 @@ function AddAddress({ setShowCreateAddress, showCreateAddress }: any) {
 
   useEffect(() => {
     if (isSuccess) {
+      refetchOrders();
       toast.success("create address is success");
       setShowCreateAddress(false);
+      refetch();
     }
   }, [isSuccess]);
 

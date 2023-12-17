@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
@@ -19,6 +18,8 @@ import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useSearch } from "../../../hooks/useSearch";
 import useHasAccess from "../../../hooks/useHasAccess";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
+import useRow from "../../../hooks/useRow";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions" | "image";
@@ -82,8 +83,8 @@ function BrandTable() {
     }
   };
 
-  const pageSize = 9;
-  const {} = usePagination(currentPage, pageSize);
+  const pageSize = 8;
+  const { paginationLoading } = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
   const changePageHandler = (id: number) => {
     setCurrentPage(id);
@@ -95,10 +96,13 @@ function BrandTable() {
   ) => {
     setSearchQuery(e.target.value);
   };
+
   const submitSearch = () => {
     setCurrentPage(1);
     searchHandler(searchQuery);
   };
+
+  const { rowNumber, limit } = useRow();
 
   return (
     <div className="lg:col-span-8 col-span-12 lg:order-1 order-2 rounded-xl bg-white m-3">
@@ -130,8 +134,18 @@ function BrandTable() {
         <TableContainer>
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
-              {brandsLoading ? (
-                <Spinner />
+              {brandsLoading || paginationLoading ? (
+                Array.from(
+                  Array(brands?.length ? brands?.length : 8).keys()
+                ).map((_, index) => (
+                  <TableRow key={index}>
+                    {[...Array(5).keys()].map((cellIndex) => (
+                      <TableCell key={cellIndex}>
+                        <RowTableSkeleton />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
               ) : (
                 <>
                   <TableHead>
@@ -147,7 +161,11 @@ function BrandTable() {
                     {brands?.length ? (
                       brands?.map((row: any, index: any) => (
                         <TableRow key={row.id}>
-                          <TableCell align="center">{index + 1}</TableCell>
+                          <TableCell align="center">
+                            {(rowNumber as any) >= (limit as any)
+                              ? rowNumber + index + 1
+                              : index + 1}
+                          </TableCell>
                           <TableCell align="center">{row.name}</TableCell>
                           <TableCell align="center">{row.code}</TableCell>
                           <TableCell

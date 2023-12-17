@@ -12,6 +12,8 @@ export default {
         green: "#00FF66",
         yellow: "#EEFF61",
         borderColor: "#B3B3B3",
+        customGrayLight: "#eaeaebed",
+        customGrayDark: "#a1a1a1f2",
       },
     },
   },

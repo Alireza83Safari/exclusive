@@ -122,7 +122,18 @@ function ProductDetailsInfo() {
           ) : (
             <>
               <p className="text-sm mr-3">Price:</p>
-              <p className="font-semibold">${productFind?.price}</p>
+              <div className="flex">
+                <p className="text-red mr-4 md:text-base text-sm font-bold">
+                  $
+                  {productItem?.discountValue
+                    ? productItem?.price -
+                      (productItem?.discountValue / 100) * productItem?.price
+                    : productItem?.price}
+                </p>
+                <p className="line-through md:text-base text-sm">
+                  {productItem?.discountValue ? `$ ${productItem?.price}` : ""}
+                </p>
+              </div>
             </>
           )}
         </div>

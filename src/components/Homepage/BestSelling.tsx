@@ -1,9 +1,9 @@
 import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
-import { userProductType } from "../types/Product.type";
-import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
-import ProductSkelton from "../skelton/ProductSkelton";
-const ProductTemplate = lazy(() => import("./Product/ProductTemplate"));
+import { userProductType } from "../../types/Product.type";
+import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
+import ProductSkelton from "../../skelton/ProductSkelton";
+const ProductTemplate = lazy(() => import("../Product/ProductTemplate"));
 
 function BestSelling() {
   const { data: topSellProducts, isLoading } =

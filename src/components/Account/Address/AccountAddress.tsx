@@ -45,16 +45,12 @@ function AccountAddress() {
           ) : addresses?.length ? (
             addresses?.map((address: any, index: number) => (
               <div
-                className={`py-8 px-6 relative grid grid-cols-12 gap-y-5 ${
+                className={`relative ${
                   index !== addresses?.length - 1
                     ? "border-b border-borderColor"
                     : ""
                 }`}
                 key={address?.id}
-                onClick={() => {
-                  setEditId(address.id);
-                  setShowEditModal(true);
-                }}
               >
                 <button
                   className=" absolute top-2 right-2"
@@ -62,17 +58,25 @@ function AccountAddress() {
                 >
                   <FaTrashAlt className="text-lg text-red" />
                 </button>
-                <AddressDetail label="First Name" value={address.firstName} />
-                <AddressDetail label="Last Name" value={address.lastName} />
-                <AddressDetail label="Plaque" value={address.plaque} />
-                <AddressDetail
-                  label="Phone"
-                  value={address.phoneNumber}
-                />
-                <AddressDetail label="Postal Code" value={address.postalCode} />
-                <div className="flex items-center col-span-12">
-                  <p className="mr-3 text-sm">Address:</p>
-                  <p className="font-semibold">{address.address}</p>
+                <div
+                  className="py-8 px-6 grid grid-cols-12 gap-y-5"
+                  onClick={() => {
+                    setEditId(address.id);
+                    setShowEditModal(true);
+                  }}
+                >
+                  <AddressDetail label="First Name" value={address.firstName} />
+                  <AddressDetail label="Last Name" value={address.lastName} />
+                  <AddressDetail label="Plaque" value={address.plaque} />
+                  <AddressDetail label="Phone" value={address.phoneNumber} />
+                  <AddressDetail
+                    label="Postal Code"
+                    value={address.postalCode}
+                  />
+                  <div className="flex items-center col-span-12">
+                    <p className="mr-3 text-sm">Address:</p>
+                    <p className="font-semibold">{address.address}</p>
+                  </div>
                 </div>
               </div>
             ))
@@ -87,6 +91,7 @@ function AccountAddress() {
           <AddAddress
             showCreateAddress={showCreateAddress}
             setShowCreateAddress={setShowCreateAddress}
+            refetch={refetch}
           />
         </div>
       </div>

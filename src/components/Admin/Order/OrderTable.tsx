@@ -14,6 +14,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import SearchIcon from "@mui/icons-material/Search";
 import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
 import { useLocation } from "react-router-dom";
+import useRow from "../../../hooks/useRow";
 
 interface Column {
   id: "index" | "username" | "totalPrice" | "paidAt" | "status" | "price";
@@ -56,6 +57,8 @@ function OrderTable() {
     searchHandler(searchQuery);
   };
 
+  const { rowNumber, limit } = useRow();
+
   return (
     <div className="col-span-12 m-3 bg-white p-2">
       <div className="h-8 md:mx-3 mb-4">
@@ -96,7 +99,9 @@ function OrderTable() {
             </TableHead>
             <TableBody>
               {orderLoading ? (
-                Array.from(Array(orders?.length).keys()).map((_, index) => (
+                Array.from(
+                  Array(orders?.length ? orders?.length : 8).keys()
+                ).map((_, index) => (
                   <TableRow key={index}>
                     {[...Array(6).keys()].map((cellIndex) => (
                       <TableCell key={cellIndex}>
@@ -109,7 +114,9 @@ function OrderTable() {
                 orders?.map((row: any, index: any) => (
                   <TableRow key={index}>
                     <TableCell style={{ width: 10 }} align="center">
-                      {index + 1}
+                      {(rowNumber as any) >= (limit as any)
+                        ? rowNumber + index + 1
+                        : index + 1}
                     </TableCell>
                     <TableCell align="center">{row.username}</TableCell>
                     <TableCell align="center">

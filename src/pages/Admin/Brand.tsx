@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { BrandContextProvider } from "../../components/Admin/Brand/Context/BrandContext";
-import Spinner from "../../components/Spinner/Spinner";
 
 const BrandTable = React.lazy(
   () => import("../../components/Admin/Brand/BrandTable")
@@ -18,7 +17,7 @@ const AddBrandFile = React.lazy(
 function Brand() {
   return (
     <BrandContextProvider>
-      <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
+      <Suspense>
         <div className="grid grid-cols-12 mt-4">
           <BrandTable />
           <div className="lg:col-span-4 col-span-12 grid grid-cols-1 lg:order-2 order-1">

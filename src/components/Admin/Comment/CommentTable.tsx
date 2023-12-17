@@ -20,6 +20,9 @@ import { useSearch } from "../../../hooks/useSearch";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, TextField } from "@mui/material";
 import useHasAccess from "../../../hooks/useHasAccess";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
+import { useLocation } from "react-router-dom";
+import useRow from "../../../hooks/useRow";
 
 interface Column {
   id:
@@ -101,7 +104,10 @@ function CommentTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const pageSize = 8;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const pageSize = limitUrl ? +limitUrl : 12;
   const {} = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
   const changePageHandler = (id: number) => {
@@ -118,6 +124,8 @@ function CommentTable() {
     setCurrentPage(1);
     searchHandler(searchQuery);
   };
+
+  const { rowNumber, limit } = useRow();
   return (
     <div className="col-span-12 m-3 lg:order-1 order-2">
       <Paper
@@ -149,7 +157,17 @@ function CommentTable() {
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
               {commentsLoading ? (
-                <Spinner />
+                Array.from(
+                  Array(comments?.length ? comments?.length : 12).keys()
+                ).map((_, index) => (
+                  <TableRow key={index}>
+                    {[...Array(6).keys()].map((cellIndex) => (
+                      <TableCell key={cellIndex}>
+                        <RowTableSkeleton />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
               ) : comments?.length ? (
                 <>
                   <TableHead>
@@ -172,7 +190,9 @@ function CommentTable() {
                       comments?.map((row: any, index: any) => (
                         <TableRow key={row.id}>
                           <TableCell style={{ width: 10 }} align="center">
-                            {index + 1}
+                            {(rowNumber as any) >= (limit as any)
+                              ? rowNumber + index + 1
+                              : index + 1}
                           </TableCell>
                           <TableCell align="center">
                             {row.productName}

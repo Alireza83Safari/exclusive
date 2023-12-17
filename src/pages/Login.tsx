@@ -12,6 +12,7 @@ const Footer = lazy(() => import("../components/Footer"));
 
 function Login() {
   const navigate = useNavigate();
+  const { refetch } = useContext(authContext) as authContextType;
   const [errors, setErrors] = useState<userLoginType>();
 
   const { setUserIsLogin } = useContext(authContext) as authContextType;
@@ -55,7 +56,7 @@ function Login() {
     if (isSuccess) {
       const expireTime = new Date(data?.expiresAt);
       document.cookie = `Authorization= ${data?.token} ; expires=${expireTime}; secure; path=/; `;
-
+      refetch();
       setUserIsLogin(true);
       navigate("/");
     }
@@ -69,17 +70,20 @@ function Login() {
       </Suspense>
 
       <section className="max-w-[1170px] mx-auto relative lg:mt-10">
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div className="grid md:grid-cols-2 grid-cols-1">
-            <div className="">
-              <img src="/images/register.png" />
+        <div className="grid md:grid-cols-2 grid-cols-1">
+          <div className="">
+            <img src="/images/register.png" />
+          </div>
+          {isLoading ? (
+            <div className="min-h-[20rem]">
+              <Spinner />
             </div>
+          ) : (
             <div className="lg:px-16 md:px-8 px-3 lg:mt-8 mt-10">
               <form action="" onSubmit={(e) => e.preventDefault()}>
                 <h1 className="sm:text-4xl text-3xl">Log in to Exclusive</h1>
                 <p className="my-5">Enter your details below</p>
+                <p className="my-5 text-red">{loginError?.data?.message}</p>
                 <div className="border-b border-borderColor py-5">
                   <input
                     type="text"
@@ -123,8 +127,8 @@ function Login() {
                 </div>
               </form>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
       <Suspense fallback={<Spinner />}>
         <Footer />

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsFilterLeft } from "react-icons/bs";
-import { useGetBrandsSelectListQuery } from "../Redux/apis/user/brandUserApi";
-import { useGetCategorySelectListQuery } from "../Redux/apis/user/categoryUserApi";
-import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
-import { categoryUserType } from "../types/Category.type";
-import SelectList from "./SelectList";
-import { brandSelectListType } from "../types/Brand.type";
+import { useGetBrandsSelectListQuery } from "../../Redux/apis/user/brandUserApi";
+import { useGetCategorySelectListQuery } from "../../Redux/apis/user/categoryUserApi";
+import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
+import { categoryUserType } from "../../types/Category.type";
+import SelectList from "../SelectList";
+import { brandSelectListType } from "../../types/Brand.type";
 
 type filterType = {
   brandId: string;
@@ -21,7 +21,7 @@ type filterType = {
 };
 
 const FilterProducts = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const orderKeys = [
     "newest",
@@ -30,7 +30,11 @@ const FilterProducts = () => {
     "expensive",
     "discount",
   ] as const;
-  const [priceFilter, setFilterPrice] = useState({ minPrice: 0, maxPrice: 0 });
+  
+  const [priceFilter, setFilterPrice] = useState({
+    minPrice: null,
+    maxPrice: null,
+  }) as any;
   const [filterValue, setFilterValue] = useState({
     brandId: "",
     categoryId: "",
@@ -139,7 +143,7 @@ const FilterProducts = () => {
         <BsFilterLeft onClick={() => setIsOpen(!isOpen)} />
       </div>
       {isOpen && (
-        <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-x-4 mb-2">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-4 mb-2">
           <div>
             <label className="text-xs">Category:</label>
             <SelectList
@@ -198,50 +202,97 @@ const FilterProducts = () => {
           </div>
 
           <div className="mt-4 flex">
-            <div>
-              <div>
-                <label className="text-xs">
-                  Min Price:{priceFilter.minPrice}
+            <div className="grid lg:grid-cols-2 grid-cols-5">
+              <div className="flex items-center lg:col-span-1 col-span-3">
+                <label htmlFor="" className="text-sm whitespace-nowrap">
+                  min:
                 </label>
                 <input
                   type="range"
                   name="minPrice"
+                  className="mr-4"
                   min={rangeInputMinValue?.price}
                   max={rangeInputMaxValue?.price}
                   value={priceFilter.minPrice}
                   onChange={(event) =>
-                    setFilterPrice((prevFilterValue) => ({
+                    setFilterPrice((prevFilterValue: any) => ({
                       ...prevFilterValue,
                       minPrice: Number(event.target.value),
                     }))
                   }
                 />
               </div>
-              <div>
-                <label className="text-xs">
-                  Max Price:{priceFilter.maxPrice}
+
+              <div className="relative lg:col-span-1 col-span-2">
+                <input
+                  type="number"
+                  name="minPrice"
+                  className="border border-borderColor w-full justify-end rounded-lg outline-none focus:border-blue-600 placeholder:text-sm placeholder:text-black"
+                  style={{ padding: "5px" }}
+                  placeholder="min price"
+                  value={priceFilter.minPrice}
+                  onChange={(event) =>
+                    setFilterPrice((prevFilterValue: any) => ({
+                      ...prevFilterValue,
+                      minPrice: Number(event.target.value),
+                    }))
+                  }
+                />
+                <button
+                  className="bg-black text-white text-xs px-2 rounded-r-md absolute right-0 h-full"
+                  onClick={setFilterPriceHandler}
+                >
+                  set
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex">
+            <div className="grid lg:grid-cols-2 grid-cols-5">
+              <div className="lg:flex items-center lg:col-span-1 col-span-3">
+                <label htmlFor="" className="text-sm whitespace-nowrap">
+                  max:
                 </label>
                 <input
                   type="range"
                   name="maxPrice"
+                  className="mr-4"
                   min={rangeInputMinValue?.price}
                   max={rangeInputMaxValue?.price}
                   value={priceFilter.maxPrice}
                   onChange={(event) =>
-                    setFilterPrice((prevFilterValue) => ({
+                    setFilterPrice((prevFilterValue: any) => ({
                       ...prevFilterValue,
                       maxPrice: Number(event.target.value),
                     }))
                   }
                 />
               </div>
+
+              <div className="relative lg:col-span-1 col-span-2">
+                <input
+                  type="number"
+                  name="maxPrice"
+                  className="border border-borderColor w-full rounded-lg outline-none focus:border-blue-600 placeholder:text-sm placeholder:text-black"
+                  style={{ padding: "5px" }}
+                  placeholder="max price"
+                  value={priceFilter.maxPrice}
+                  onChange={(event) =>
+                    setFilterPrice((prevFilterValue: any) => ({
+                      ...prevFilterValue,
+                      maxPrice: Number(event.target.value),
+                    }))
+                  }
+                />
+                <button
+                  className="bg-black text-white text-xs px-2 rounded-r-md absolute right-0 h-full"
+                  onClick={setFilterPriceHandler}
+                >
+                  set
+                </button>
+              </div>
             </div>
-            <button
-              className="bg-black text-white text-xs px-2 rounded-md"
-              onClick={setFilterPriceHandler}
-            >
-              set
-            </button>
           </div>
         </div>
       )}

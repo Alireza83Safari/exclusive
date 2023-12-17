@@ -12,7 +12,7 @@ export const usePagination = (
     () => new URLSearchParams(location.search),
     [location.search]
   );
-  const [pageSize, setPageSize] = useState<number>(initialPageSize);
+  const [pageSize, setPageSize] = useState<any>(initialPageSize);
 
   const fetchSearchResults = useCallback(async () => {
     try {
@@ -22,12 +22,10 @@ export const usePagination = (
         currentPage !== null ? currentPage.toString() : "1"
       );
       searchParams.set("limit", pageSize !== null ? pageSize.toString() : "12");
-      setTimeout(() => {
-        navigate(`?${searchParams.toString()}`);
-      }, 1000);
+      navigate(`?${searchParams.toString()}`);
       setPaginationLoading(false);
     } catch (error) {
-      // Handle error
+      setPaginationLoading(false);
     }
   }, [currentPage, pageSize, searchParams]);
 
@@ -36,11 +34,11 @@ export const usePagination = (
     if (limitParam) {
       setPageSize(+limitParam);
     }
-  }, [searchParams]);
+  }, [currentPage, pageSize]);
 
   useEffect(() => {
     fetchSearchResults();
-  }, [currentPage, pageSize]);
+  }, [fetchSearchResults]);
 
   return { paginationLoading, pageSize };
 };

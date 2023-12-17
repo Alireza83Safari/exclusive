@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
@@ -22,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../hooks/useHasAccess";
 import useRow from "../../../hooks/useRow";
 import { useLocation } from "react-router-dom";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
 
 interface Column {
   id:
@@ -174,11 +174,17 @@ function UserTable() {
               </TableHead>
               <TableBody>
                 {userLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={7}>
-                      <Spinner />
-                    </TableCell>
-                  </TableRow>
+                  Array.from(
+                    Array(users?.length ? users?.length : 8).keys()
+                  ).map((_, index) => (
+                    <TableRow key={index}>
+                      {[...Array(7).keys()].map((cellIndex) => (
+                        <TableCell key={cellIndex}>
+                          <RowTableSkeleton />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
                 ) : users?.length ? (
                   users?.map((row: any, index: number) => (
                     <TableRow key={row.id}>

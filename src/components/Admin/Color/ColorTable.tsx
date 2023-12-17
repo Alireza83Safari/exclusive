@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
@@ -19,6 +18,9 @@ import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "../../Pagination";
 import useHasAccess from "../../../hooks/useHasAccess";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
+import { useLocation } from "react-router-dom";
+import useRow from "../../../hooks/useRow";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions" | "colorHex";
@@ -80,7 +82,10 @@ function ColorTable() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const pageSize = 9;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const pageSize = limitUrl ? +limitUrl : 10;
   const {} = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
 
@@ -99,6 +104,7 @@ function ColorTable() {
     setCurrentPage(1);
     searchHandler(searchQuery);
   };
+  const { rowNumber, limit } = useRow();
 
   return (
     <div className="lg:col-span-8 col-span-12 m-3 lg:order-1 order-2">
@@ -142,16 +148,24 @@ function ColorTable() {
                 </TableHead>
                 <TableBody>
                   {colorsLoading ? (
-                    <TableRow>
-                      <TableCell colSpan={7}>
-                        <Spinner />
-                      </TableCell>
-                    </TableRow>
+                    Array.from(
+                      Array(colors?.length ? colors?.length : 8).keys()
+                    ).map((_, index) => (
+                      <TableRow key={index}>
+                        {[...Array(6).keys()].map((cellIndex) => (
+                          <TableCell key={cellIndex}>
+                            <RowTableSkeleton />
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
                   ) : colors?.length ? (
                     colors?.map((row: any, index: any) => (
                       <TableRow key={row.id}>
                         <TableCell style={{ width: 10 }} align="center">
-                          {index + 1}
+                          {(rowNumber as any) >= (limit as any)
+                            ? rowNumber + index + 1
+                            : index + 1}
                         </TableCell>
                         <TableCell align="center">{row.name}</TableCell>
                         <TableCell align="center">{row.code}</TableCell>
@@ -199,7 +213,6 @@ function ColorTable() {
                   )}
                 </TableBody>
               </Table>
-              :
             </>
           ) : (
             <Box sx={{ marginTop: "100px" }}>

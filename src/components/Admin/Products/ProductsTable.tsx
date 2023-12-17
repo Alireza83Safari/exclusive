@@ -26,6 +26,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import useRow from "../../../hooks/useRow";
 import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
 import { useLocation } from "react-router-dom";
+import useHasAccess from "../../../hooks/useHasAccess";
 
 export default function ProductsTable() {
   const {
@@ -56,22 +57,31 @@ export default function ProductsTable() {
     setCurrentPage(1);
     searchHandler(searchValue);
   };
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const limitUrl = searchParams.get("limit");
   const pageSize = limitUrl ? +limitUrl : 12;
   const totalPages = Math.ceil(total / pageSize);
-  const {} = usePagination(currentPage, pageSize);
+  const { paginationLoading } = usePagination(currentPage, pageSize);
 
   const changePageHandler = (id: number) => {
     setCurrentPage(id);
   };
 
+  const { userHasAccess: userHaveAccessDelete } = useHasAccess(
+    "action_product_admin_delete"
+  );
+
   const deleteProductHandler = async (id: string) => {
     await deleteProduct(id).then(() => {
-      toast.success("delete product is success");
-      refetchProducts();
-      setShowDeleteModal(false);
+      if (userHaveAccessDelete) {
+        toast.success("delete product is success");
+        refetchProducts();
+        setShowDeleteModal(false);
+      } else {
+        toast.error("You Havent Access Delete Product");
+      }
     });
   };
 
@@ -141,7 +151,7 @@ export default function ProductsTable() {
                   style={{ width: 160, fontWeight: "bold" }}
                   align="center"
                 >
-                  Category Name
+                  Category
                 </TableCell>
                 <TableCell
                   style={{ width: 160, fontWeight: "bold" }}
@@ -158,8 +168,10 @@ export default function ProductsTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading ? (
-                Array.from(Array(products?.length).keys()).map((_, index) => (
+              {loading || paginationLoading ? (
+                Array.from(
+                  Array(products?.length ? products?.length : 10).keys()
+                ).map((_, index) => (
                   <TableRow key={index}>
                     {[...Array(7).keys()].map((cellIndex) => (
                       <TableCell key={cellIndex}>

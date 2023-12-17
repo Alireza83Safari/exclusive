@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import { OrderContext, orderContextType } from "./Context/OrderContext";
-import Spinner from "../../Spinner/Spinner";
+import { OrderInfosSkeleton } from "../../../skelton/admin/Order";
 
 function OrderInfo() {
   const { totalOrders, orderLoading } = useContext(
@@ -23,9 +23,7 @@ function OrderInfo() {
   return (
     <div className="grid md:grid-cols-3 col-span-12">
       {orderLoading ? (
-        <div className="min-h-[10rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <OrderInfosSkeleton />
       ) : (
         <Card
           sx={{
@@ -54,9 +52,7 @@ function OrderInfo() {
       )}
 
       {orderLoading ? (
-        <div className="min-h-[10rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <OrderInfosSkeleton />
       ) : (
         <Card
           sx={{
@@ -87,9 +83,7 @@ function OrderInfo() {
       )}
 
       {orderLoading ? (
-        <div className="min-h-[10rem] flex items-center bg-white rounded-lg m-3">
-          <Spinner />
-        </div>
+        <OrderInfosSkeleton />
       ) : (
         <Card
           sx={{

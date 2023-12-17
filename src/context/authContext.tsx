@@ -32,12 +32,14 @@ export type authContextType = {
   userInfos: userInfosType | null;
   isLoading: boolean;
   userPermissions: string[];
+  refetch: any;
 };
 
 export const authContext = createContext<authContextType | null>(null);
 
 export const AuthContextProvider = ({ children }: authContextProviderType) => {
-  const { data, isSuccess, isLoading } = useUserIsAuthenticatedQuery("");
+  const { data, isSuccess, isLoading, refetch } =
+    useUserIsAuthenticatedQuery("");
   const [userPermissions, setUserPermissions] = useState([]);
   const [userIsLogin, setUserIsLogin] = useState<null | boolean>(false);
   const [userInfos, setUserInfos] = useState<userInfosType | null>(null);
@@ -58,6 +60,7 @@ export const AuthContextProvider = ({ children }: authContextProviderType) => {
         userInfos,
         isLoading,
         userPermissions,
+        refetch,
       }}
     >
       {children}

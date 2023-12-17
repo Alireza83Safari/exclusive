@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import Options from "../components/Options";
+import Options from "../components/Homepage/Options";
 import { Link } from "react-router-dom";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 const Header = lazy(() => import("./Header"));

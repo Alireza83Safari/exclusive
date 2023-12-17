@@ -79,7 +79,7 @@ function AddProductItem() {
       <form action="" onSubmit={(e) => e.preventDefault()}>
         <div className="grid grid-cols-2 p-4 rounded-lg gap-x-4 gap-y-6">
           {isLoading ? (
-            <div className="flex justify-center items-center min-h-[24rem] min-w-[30rem]">
+            <div className="flex col-span-2 justify-center items-center min-h-[24rem] min-w-[30rem]">
               <Spinner />
             </div>
           ) : (

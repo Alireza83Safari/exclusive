@@ -1,10 +1,10 @@
 import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
-import Spinner from "./Spinner/Spinner";
-import { useGetProductsUserQuery } from "../Redux/apis/user/productApiUser";
-import ProductSkelton from "../skelton/ProductSkelton";
-import ProductTemplate from "./Product/ProductTemplate";
-const Timer = lazy(() => import("./Timer"));
+import Spinner from "../Spinner/Spinner";
+import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
+import ProductSkelton from "../../skelton/ProductSkelton";
+import ProductTemplate from "../Product/ProductTemplate";
+const Timer = lazy(() => import("../Timer"));
 
 function OurProducts() {
   const { data: expensiveProducts, isLoading } = useGetProductsUserQuery(

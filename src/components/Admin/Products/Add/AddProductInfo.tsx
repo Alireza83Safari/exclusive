@@ -7,14 +7,14 @@ import {
   ProductsContextType,
 } from "../Context/ProductsContext";
 import toast from "react-hot-toast";
-import { productErrorType } from "../../../../types/Error.type";
-import { categoryUserType } from "../../../../types/Category.type";
 import { brandSelectListType } from "../../../../types/Brand.type";
 import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
 import { useCreateProductMutation } from "../../../../Redux/apis/admin/productAdminApi";
 import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
 import Spinner from "../../../Spinner/Spinner";
 import { productSchema } from "../../../../validations/Product";
+import { productErrorType } from "../../../../types/Error.type";
+import { categoryUserType } from "../../../../types/Category.type";
 
 export type createProductType = {
   data: {
@@ -56,7 +56,6 @@ function AddProductInfo() {
   const [createProduct, { error: createProductError, isSuccess, isLoading }] =
     useCreateProductMutation();
 
-  const [formIsValid, setFormIsValid] = useState(false);
   const [errors, setErrors] = useState<any>([]);
 
   const getFormIsValid = () => {
@@ -64,7 +63,9 @@ function AddProductInfo() {
       const isValid = productSchema.validate(addProductInfo, {
         abortEarly: false,
       });
-      setFormIsValid(Boolean(isValid));
+      if (Boolean(isValid) == true) {
+        addNewProductHandler();
+      }
     } catch (error: any) {
       let errors = error.inner.reduce(
         (acc: any, error: any) => ({
@@ -87,12 +88,6 @@ function AddProductInfo() {
   };
 
   useEffect(() => {
-    if (formIsValid) {
-      addNewProductHandler();
-    }
-  }, [formIsValid]);
-
-  useEffect(() => {
     if (isSuccess) {
       setShowAddInfoModal(false);
       setShowAddItem(true);
@@ -103,7 +98,13 @@ function AddProductInfo() {
     }
   }, [isSuccess]);
 
-  const addProductError = createProductError as productErrorType;
+  const [productError, setProductError] = useState<productErrorType>();
+
+  useEffect(() => {
+    if (createProductError) {
+      setProductError(createProductError as productErrorType);
+    }
+  }, [createProductError]);
 
   return (
     <div className="rounded-xl min-w-[20rem]">
@@ -111,7 +112,7 @@ function AddProductInfo() {
         Add New Product
       </h1>
       <p className="text-red text-center text-xs">
-        {addProductError?.data?.message}
+        {productError?.data?.message}
       </p>
       <form onSubmit={(e) => e.preventDefault()}>
         {isLoading ? (
@@ -128,7 +129,10 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.name}
                 onChange={setInputValue}
-                Error={addProductError?.data?.errors?.name}
+                callback={() => {
+                  setErrors(""), setProductError("" as any);
+                }}
+                Error={productError?.data?.errors?.name}
               />
             </div>
 
@@ -140,7 +144,10 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.code}
                 onChange={setInputValue}
-                Error={errors?.code || addProductError?.data?.errors?.code}
+                callback={() => {
+                  setErrors(""), setProductError("" as any);
+                }}
+                Error={errors?.code || productError?.data?.errors?.code}
               />
             </div>
 
@@ -152,9 +159,11 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.description}
                 onChange={setInputValue}
+                callback={() => {
+                  setErrors(""), setProductError("" as any);
+                }}
                 Error={
-                  errors?.description ||
-                  addProductError?.data?.errors?.description
+                  errors?.description || productError?.data?.errors?.description
                 }
               />
             </div>
@@ -167,9 +176,12 @@ function AddProductInfo() {
                 className="border"
                 value={addProductInfo.shortDescription}
                 onChange={setInputValue}
+                callback={() => {
+                  setErrors(""), setProductError("" as any);
+                }}
                 Error={
                   errors?.shortDescription ||
-                  addProductError?.data?.errors?.shortDescription
+                  productError?.data?.errors?.shortDescription
                 }
               />
             </div>
@@ -191,8 +203,7 @@ function AddProductInfo() {
                 }))}
               />
               <p className="text-xs text-red">
-                {errors?.categoryId ||
-                  addProductError?.data?.errors?.categoryId}
+                {errors?.categoryId || productError?.data?.errors?.categoryId}
               </p>
             </div>
             <div>
@@ -212,7 +223,7 @@ function AddProductInfo() {
                 }))}
               />
               <p className="text-xs text-red">
-                {errors?.brandId || addProductError?.data?.errors?.brandId}
+                {errors?.brandId || productError?.data?.errors?.brandId}
               </p>
             </div>
           </div>

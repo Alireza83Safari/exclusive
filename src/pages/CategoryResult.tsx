@@ -1,13 +1,13 @@
 import React, { Suspense, lazy, useState } from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { usePagination } from "../hooks/usePagination";
-import Spinner from "../components/Spinner/Spinner";
 import { userProductType } from "../types/Product.type";
 import { userAxios } from "../services/userInterceptor";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductTemplate from "../components/Product/ProductTemplate";
 import FilterProducts from "../components/Product/FilterProducts";
 import { useLocation } from "react-router-dom";
+import ProductSkelton from "../skelton/ProductSkelton";
 const Pagination = lazy(() => import("../components/Pagination"));
 const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
@@ -27,6 +27,7 @@ function CategoryResult() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const totalSkeletonShow = Array.from(Array(12).keys());
 
   return (
     <>
@@ -37,7 +38,13 @@ function CategoryResult() {
         <FilterProducts />
 
         {loading ? (
-          <Spinner />
+          <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
+            {totalSkeletonShow?.map((index) => (
+              <React.Fragment key={index}>
+                <ProductSkelton />
+              </React.Fragment>
+            ))}
+          </div>
         ) : getFilterData.length >= 1 ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
             {getFilterData?.map((product) => (

@@ -6,7 +6,8 @@ import Spinner from "../components/Spinner/Spinner";
 import { userAxios } from "../services/userInterceptor";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductSkelton from "../skelton/ProductSkelton";
-import FilterProducts from "../components/FilterProducts";
+import FilterProducts from "../components/Product/FilterProducts";
+import { useLocation } from "react-router-dom";
 const ProductTemplate = lazy(
   () => import("../components/Product/ProductTemplate")
 );
@@ -16,10 +17,13 @@ const Footer = lazy(() => import("../components/Footer"));
 
 function SearchResult() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const limitShow = 12;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const limitUrl = searchParams.get("limit");
+  const limitShow = limitUrl ? +limitUrl : 12;
   const { getFilterData, total, loading } =
     useFetchDataFromUrl<userProductType>(null, userAxios);
-  const {} = usePagination(1, 2);
+  const {} = usePagination(currentPage, limitShow);
   const totalPages = Math.ceil(total / limitShow);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -32,7 +36,7 @@ function SearchResult() {
         <Header />
       </Suspense>
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
-          <FilterProducts />
+        <FilterProducts />
         {loading || loading ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
             {totalSkeletonShow?.map((_, index) => (
@@ -52,10 +56,12 @@ function SearchResult() {
                 ))}
               </div>
             ) : !getFilterData.length ? (
-              <div className="text-5xl flex justify-center items-center mt-28">
+              <div className="sm:text-5xl text-2xl flex justify-center items-center mt-28">
                 No exact matches found
               </div>
-            ) : ""}
+            ) : (
+              ""
+            )}
           </>
         )}
 

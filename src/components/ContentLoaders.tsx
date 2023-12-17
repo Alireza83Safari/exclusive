@@ -1,8 +1,8 @@
 import ContentLoader from "react-content-loader";
 
 type ContextLoaderProps = {
-  width: number;
-  height: number;
+  width: number |string;
+  height: number | string;
 };
 function ContentLoaders({ width, height }: ContextLoaderProps) {
   return (

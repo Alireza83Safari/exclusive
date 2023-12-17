@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,6 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const menuItem = [
   { name: "dashboard", value: "dashboard" },
@@ -21,6 +22,7 @@ const menuItem = [
 ];
 
 function Header() {
+  const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -32,7 +34,6 @@ function Header() {
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
@@ -44,6 +45,9 @@ function Header() {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.search]);
 
   return (
     <>

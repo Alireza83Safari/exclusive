@@ -22,11 +22,11 @@ export const DetailContextProvider = ({
 }: DetailContextProviderType) => {
   const { productId } = useParams();
   const [productFind, setProductFind] = useState<userProductType>();
-  console.log(productId);
+
 
   const { data: products, isLoading: productLoading } =
     useGetProductsUserQuery("?limit=100");
-console.log(products);
+
 
   useEffect(() => {
     let findProduct = products?.data.find(

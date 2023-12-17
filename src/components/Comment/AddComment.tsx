@@ -21,18 +21,22 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
 
   const addNewStrength = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      setStrengths([...strengths, strengthValue]);
-      setStrengthValue("");
+      if (strengthValue.length) {
+        e.preventDefault();
+        setStrengths([...strengths, strengthValue]);
+        setStrengthValue("");
+      }
     },
     [strengths, strengthValue]
   );
 
   const addNewWeakPoints = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      setWeakPoints([...weakPoints, weakPointsValue]);
-      setWeakPointsValue("");
+      if (weakPointsValue.length) {
+        e.preventDefault();
+        setWeakPoints([...weakPoints, weakPointsValue]);
+        setWeakPointsValue("");
+      }
     },
     [weakPoints, weakPointsValue]
   );
@@ -151,7 +155,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
             <div>
               <label className="block text-sm text-gray-600">WeakPoints:</label>
               <div className="flex items-center bg-white p-2 rounded-lg border border-borderColor bg-white-100 ml-2">
-                <button className="text-2xl text-primary mr-2 bg-gray">
+                <button className="text-2xl text-primary mr-2">
                   <FaMinus onClick={addNewWeakPoints} className="text-red" />
                 </button>
 

@@ -22,9 +22,9 @@ export const useFetchDataFromUrl = <T,>(
 
   const fetchDataFormUrl = useCallback(async () => {
     setLoading(true);
-    let url = `${
-      urlName !== null ? urlName : `product`
-    }?page=${page}&limit=${limit}`;
+    let url = `${urlName !== null ? urlName : `product`}?page=${
+      page ? page : 1
+    }&limit=${limit ? limit : 10}`;
 
     if (searchTerm) {
       url += `&searchTerm=${searchTerm}`;
@@ -55,15 +55,17 @@ export const useFetchDataFromUrl = <T,>(
     }
 
     try {
-      const response = await axiosInstance.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status === 200) {
-        setFilterProducts(response.data.data);
-        settotal(response.data.total);
-        setLoading(false);
+      if (page !== null) {
+        const response = await axiosInstance.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          setFilterProducts(response.data.data);
+          settotal(response.data.total);
+          setLoading(false);
+        }
       }
     } catch (error) {
       setLoading(false);
@@ -71,9 +73,7 @@ export const useFetchDataFromUrl = <T,>(
   }, [categoryId, brandId, order, minPrice, maxPrice, searchTerm, page, limit]);
 
   useEffect(() => {
-    if (page != null) {
-      fetchDataFormUrl();
-    }
+    fetchDataFormUrl();
   }, [
     location.search,
     categoryId,

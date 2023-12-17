@@ -51,7 +51,7 @@ const MenuItem = ({ isMenuVisible }: { isMenuVisible: boolean }) => {
         </Link>
       </ul>
       {isMenuVisible && (
-        <ul className="items-center fixed left-4 top-32 bg-gray rounded-md z-10">
+        <ul className="items-center absolute left-4 top-20 bg-gray rounded-md z-10">
           <Link
             className={` mx-5 hover:text-red lg:my-0 my-6 ${
               (userInfos?.role?.name === "admin" ||

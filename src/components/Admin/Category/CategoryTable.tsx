@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import {
@@ -22,6 +21,8 @@ import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../hooks/useHasAccess";
 import DeleteModal from "../DeleteModal";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
+import useRow from "../../../hooks/useRow";
 
 interface Column {
   id: "index" | "code" | "name" | "createAt" | "actions";
@@ -82,10 +83,10 @@ function CategoryTable() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-  const pageSize = 8;
+  const pageSize = 12;
   const totalPages = Math.ceil(total / pageSize);
   const [currentPage, setCurrentPage] = useState(1);
-  const {} = usePagination(currentPage, pageSize);
+  const { paginationLoading } = usePagination(currentPage, pageSize);
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -113,6 +114,8 @@ function CategoryTable() {
       toast.error("delete category get error!!");
     }
   }, [isSuccess, deleteCategoryError]);
+
+  const { rowNumber, limit } = useRow();
 
   return (
     <div className="lg:col-span-8 col-span-12 m-3 lg:order-1 order-2">
@@ -144,8 +147,18 @@ function CategoryTable() {
         <TableContainer sx={{ minHeight: 530 }}>
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
-              {categoryLoading ? (
-                <Spinner />
+              {categoryLoading || paginationLoading ? (
+                Array.from(
+                  Array(category?.length ? category?.length : 8).keys()
+                ).map((_, index) => (
+                  <TableRow key={index}>
+                    {[...Array(5).keys()].map((cellIndex) => (
+                      <TableCell key={cellIndex}>
+                        <RowTableSkeleton />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
               ) : (
                 <>
                   <TableHead>
@@ -161,7 +174,12 @@ function CategoryTable() {
                     {category?.length ? (
                       category?.map((row: any, index: any) => (
                         <TableRow key={row.id}>
-                          <TableCell align="center">{index + 1}</TableCell>
+                          <TableCell align="center">
+                            {" "}
+                            {(rowNumber as any) >= (limit as any)
+                              ? rowNumber + index + 1
+                              : index + 1}
+                          </TableCell>
                           <TableCell align="center">{row.name}</TableCell>
                           <TableCell align="center">{row.code}</TableCell>
                           <TableCell

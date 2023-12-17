@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
@@ -15,6 +14,7 @@ import EditAppPic from "./EditAppPic";
 import { useDeleteAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import EditAppPicFile from "./EditAppPicFile";
+import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
 
 interface Column {
   id: "index" | "createAt" | "actions" | "url" | "title" | "type";
@@ -72,7 +72,7 @@ function AppPicTable() {
   };
 
   return (
-    <div className="lg:col-span-8 col-span-12 m-3 lg:order-1 order-2">
+    <div className="lg:col-span-8 col-span-12 m-3 sm:mt-3 sm:px-0 px-3 mt-64 lg:order-1 order-2">
       <Paper
         sx={{
           width: "100%",
@@ -82,38 +82,38 @@ function AppPicTable() {
           borderRadius: "12px",
         }}
       >
-        {appPicLoading ? (
-          <div className="flex justify-center items-center min-h-[44rem]">
-            <Spinner />
-          </div>
-        ) : (
-          <TableContainer
-            sx={{
-              maxHeight: 750,
-              minHeight: 710,
-              display: !userHasAccess ? "flex" : "block",
-            }}
-          >
-            {userHasAccess ? (
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {columns?.map((column) => (
-                      <TableCell key={column.id} align="center">
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {appPicLoading ? (
-                    <TableRow>
-                      <TableCell colSpan={7}>
-                        <Spinner />
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    appPics?.map((row: any, index: any) => (
+        <TableContainer
+          sx={{
+            maxHeight: 750,
+            minHeight: 710,
+            display: !userHasAccess ? "flex" : "block",
+          }}
+        >
+          {userHasAccess ? (
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns?.map((column) => (
+                    <TableCell key={column.id} align="center">
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {appPicLoading
+                  ? Array.from(
+                      Array(appPics?.length ? appPics?.length : 8).keys()
+                    ).map((_, index) => (
+                      <TableRow key={index}>
+                        {[...Array(6).keys()].map((cellIndex) => (
+                          <TableCell key={cellIndex}>
+                            <RowTableSkeleton />
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  : appPics?.map((row: any, index: any) => (
                       <TableRow key={row.id}>
                         <TableCell style={{ width: 10 }} align="center">
                           {index + 1}
@@ -160,19 +160,17 @@ function AppPicTable() {
                           />
                         </TableCell>
                       </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            ) : (
-              <div className=" flex justify-center items-center min-h-full w-full">
-                <h1 className="text-3xl font-bold  flex justify-center items-center ">
-                  You Havent Access AppPic List
-                </h1>
-              </div>
-            )}
-          </TableContainer>
-        )}
+                    ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className=" flex justify-center items-center min-h-full w-full">
+              <h1 className="text-3xl font-bold  flex justify-center items-center ">
+                You Havent Access AppPic List
+              </h1>
+            </div>
+          )}
+        </TableContainer>
       </Paper>
 
       <EditAppPic />
