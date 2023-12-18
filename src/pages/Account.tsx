@@ -1,5 +1,5 @@
 import { Suspense, lazy, useContext, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import { authContext, authContextType } from "../context/authContext";
 import { FaBars } from "react-icons/fa";
@@ -8,7 +8,6 @@ const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Account() {
-  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const { userIsLogin } = useContext(authContext) as authContextType;
   return (
@@ -41,7 +40,7 @@ function Account() {
           </div>
         </section>
       ) : (
-        <>{navigate("/")}</>
+        <Navigate to="/" />
       )}
       <Suspense>
         <Footer />
