@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsFilterLeft } from "react-icons/bs";
 import { useGetBrandsSelectListQuery } from "../../Redux/apis/user/brandUserApi";
@@ -30,7 +30,7 @@ const FilterProducts = () => {
     "expensive",
     "discount",
   ] as const;
-  
+
   const [priceFilter, setFilterPrice] = useState({
     minPrice: null,
     maxPrice: null,
@@ -51,23 +51,23 @@ const FilterProducts = () => {
   const { data: products } = useGetProductsUserQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
-  const rangeInputMinValue = products?.data?.reduce(
-    (minPrice: any, nextPrice: any) => {
+  const rangeInputMinValue = useMemo(() => {
+    products?.data?.reduce((minPrice: any, nextPrice: any) => {
       if (minPrice?.price > nextPrice?.price) {
         return nextPrice;
       }
       return minPrice;
-    }
-  );
+    });
+  }, [products]);
 
-  const rangeInputMaxValue = products?.data?.reduce(
-    (minPrice: any, nextPrice: any) => {
+  const rangeInputMaxValue = useMemo(() => {
+    products?.data?.reduce((minPrice: any, nextPrice: any) => {
       if (minPrice?.price < nextPrice?.price) {
         return nextPrice;
       }
       return minPrice;
-    }
-  );
+    });
+  }, [products]);
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();
@@ -123,19 +123,17 @@ const FilterProducts = () => {
   useEffect(() => {
     filterData();
   }, [filterValue]);
-  const setFilterPriceHandler = () => {
+
+  const setFilterPriceHandler = useCallback(() => {
     const updatedFilterValue = { ...filterValue };
 
-    if (priceFilter.minPrice !== 0) {
+    if (priceFilter.minPrice !== 0 || priceFilter.maxPrice !== 0) {
       updatedFilterValue.minPrice = priceFilter.minPrice;
-    }
-
-    if (priceFilter.maxPrice !== 0) {
       updatedFilterValue.maxPrice = priceFilter.maxPrice;
     }
 
     setFilterValue(updatedFilterValue);
-  };
+  }, [filterValue, priceFilter]);
 
   return (
     <div>

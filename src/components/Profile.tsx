@@ -4,7 +4,7 @@ import { useContext } from "react";
 import toast from "react-hot-toast";
 import { authContext, authContextType } from "../context/authContext";
 
-function Profile({ toggleProfile }: any) {
+function Profile({ toggleProfile }: { toggleProfile: () => void }) {
   const navigate = useNavigate();
   const { setUserIsLogin } = useContext(authContext) as authContextType;
   const [userLogout] = useUserLogoutMutation();
@@ -17,7 +17,7 @@ function Profile({ toggleProfile }: any) {
 
   return (
     <section
-      className="absolute top-7 sm:right-0 z-10 right-1 bg-gradient-to-br from-[#8A808B] grad z-10 bg-[#423A44] w-52 text-white px-4 py-2 rounded-md"
+      className="absolute top-7 sm:right-0 right-1 bg-gradient-to-br from-[#8A808B] grad z-10 bg-[#423A44] w-52 text-white px-4 py-2 rounded-md"
       onMouseLeave={toggleProfile}
     >
       <Link className="flex items-center my-3" to="/account">

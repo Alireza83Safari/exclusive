@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import { userProductType } from "../../../types/Product.type";
 import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
 import { useGetProductItemUserMutation } from "../../../Redux/apis/user/productItemUserApi";
+import { productItemItemIdType } from "../../../types/productItem.type";
 
 export type DetailContextProviderType = {
   children: React.ReactNode;
 };
 export type DetailContextType = {
-  productItem: any;
+  productItem: productItemItemIdType;
   productItemLoading: boolean;
   productFind: any;
   productLoading: boolean;
@@ -23,10 +24,8 @@ export const DetailContextProvider = ({
   const { productId } = useParams();
   const [productFind, setProductFind] = useState<userProductType>();
 
-
   const { data: products, isLoading: productLoading } =
     useGetProductsUserQuery("?limit=100");
-
 
   useEffect(() => {
     let findProduct = products?.data.find(

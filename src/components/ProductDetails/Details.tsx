@@ -10,7 +10,6 @@ function Details() {
   const { productItemLoading, productLoading, productItem, products } =
     useContext(DetailContext) as DetailContextType;
 
-
   return (
     <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative my-10 grid grid-cols-10">
       {productItemLoading || productLoading ? (

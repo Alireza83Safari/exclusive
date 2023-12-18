@@ -4,6 +4,7 @@ import Spinner from "../Spinner/Spinner";
 import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
 import ProductSkelton from "../../skelton/ProductSkelton";
 import ProductTemplate from "../Product/ProductTemplate";
+import { userProductType } from "../../types/Product.type";
 const Timer = lazy(() => import("../Timer"));
 
 function OurProducts() {
@@ -40,7 +41,7 @@ function OurProducts() {
         </div>
       ) : (
         <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-          {expensiveProducts?.data?.map((product: any) => (
+          {expensiveProducts?.data?.map((product: userProductType) => (
             <React.Fragment key={product.id}>
               <ProductTemplate {...product} />
             </React.Fragment>

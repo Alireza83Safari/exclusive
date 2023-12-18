@@ -10,7 +10,7 @@ function Banner() {
   const [appPics, setAppPics] = useState<getAppPicType[]>([]);
   useEffect(() => {
     if (data) {
-      const totalAppPics = data?.filter((item: any) => item.appPicType === 0);
+      const totalAppPics = data?.filter((item: getAppPicType) => item.appPicType === 0);
       setAppPics(totalAppPics);
     }
   }, [data]);

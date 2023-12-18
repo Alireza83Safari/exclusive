@@ -45,14 +45,8 @@ function ProductTemplate({
   }, [createFavoriteSuccess]);
 
   const addProductToFavorite = () => {
-    console.log("worf");
-
-    const productItemId = {
-      productItemId: itemId,
-    } as any;
-
     if (!isUserFavorite) {
-      createFavorite(productItemId);
+      createFavorite(itemId);
     }
   };
 

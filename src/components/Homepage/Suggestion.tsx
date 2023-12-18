@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { useGetAppPicsUserQuery } from "../../Redux/apis/user/appPicUserApi";
 import { useEffect, useState } from "react";
+import { getAppPicType } from "../../types/AppPic.type";
 
 function Suggestion() {
   const { data } = useGetAppPicsUserQuery("");
-  const appPics = data?.filter((appPic: any) => appPic?.appPicType === 2);
+  const appPics = data?.filter(
+    (appPic: getAppPicType) => appPic?.appPicType === 2
+  );
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

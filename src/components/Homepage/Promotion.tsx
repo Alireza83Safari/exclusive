@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
 import ProductSkelton from "../../skelton/ProductSkelton";
 import ProductTemplate from "../Product/ProductTemplate";
+import { userProductType } from "../../types/Product.type";
 const Timer = lazy(() => import("../Timer"));
 
 function Promotion() {
@@ -47,11 +48,13 @@ function Promotion() {
             </div>
           ) : (
             <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-              {productsHaveDiscount?.slice(0, 4)?.map((product: any) => (
-                <React.Fragment key={product.id}>
-                  <ProductTemplate {...product} />
-                </React.Fragment>
-              ))}
+              {productsHaveDiscount
+                ?.slice(0, 4)
+                ?.map((product: userProductType) => (
+                  <React.Fragment key={product.id}>
+                    <ProductTemplate {...product} />
+                  </React.Fragment>
+                ))}
             </div>
           )}
           <div className="flex justify-center items-center py-10 text-center">

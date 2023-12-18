@@ -27,7 +27,7 @@ const DetailsImage = () => {
             modules={[FreeMode, Navigation, Thumbs]}
             className="mySwiper2"
           >
-            {productItem?.files?.map((file: any) => (
+            {productItem?.files?.map((file) => (
               <SwiperSlide key={file?.id}>
                 <img
                   src={file?.fileUrl}
@@ -45,7 +45,7 @@ const DetailsImage = () => {
             modules={[FreeMode, Navigation, Thumbs]}
             className="mySwiper mt-6"
           >
-            {productItem?.files?.map((file: any) => (
+            {productItem?.files?.map((file) => (
               <SwiperSlide key={file?.id}>
                 <img
                   src={file?.fileUrl}
