@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const userAxios = axios.create({
-  baseURL: "https://eshop-bak.iran.liara.run/api/v1/user/",
+  baseURL: "https://eshop-bak.liara.run/api/v1/user/",
   withCredentials: true,
 });
 
@@ -27,7 +27,7 @@ userAxios.interceptors.response.use(
     if (
       error.response.status === 401 &&
       error?.response?.request?.responseURL !==
-        "https://eshop-bak.iran.liara.run/api/v1/user/is_authenticated"
+        "https://eshop-bak.liara.run/api/v1/user/is_authenticated"
     ) {
       toast.error("Unauthorized. Please log in.");
     }
