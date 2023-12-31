@@ -12,6 +12,7 @@ import {
   useUploadImageMutation,
 } from "../../../../Redux/apis/user/fileUserApi";
 import { FaTrash } from "react-icons/fa";
+import useHasAccess from "../../../../hooks/useHasAccess";
 
 export default function ProductImage() {
   const { editProductId, showEditFile, refetchProducts } = useContext(
@@ -24,7 +25,9 @@ export default function ProductImage() {
   const [showUrl, setShowUrl] = useState<string[]>([]);
   const [getFileItemId, { data: images }] = useGetFileItemIdMutation();
   const [changeImagePriority] = useChangeImagePriorityMutation();
-  console.log(imageURLs);
+
+  const { userHasAccess: userHasAccessDelete } =
+    useHasAccess("action_file_delete");
 
   useEffect(() => {
     if (editProductId) {
@@ -128,7 +131,7 @@ export default function ProductImage() {
       });
     }
   }, [successAddImage]);
-  
+
   useEffect(() => {
     if (error) {
       toast.error("please choose jpg , png ,jpeg file");
@@ -169,12 +172,14 @@ export default function ProductImage() {
       (product: any) => product?.fileUrl == ID
     );
     try {
-      if (findDelete?.id) {
+      if (userHasAccessDelete && findDelete?.id) {
         const response = await userAxios.post(`/file/delete/${findDelete?.id}`);
         if (response.status === 200) {
           refetchProducts();
           toast.success("delete image is success");
         }
+      } else {
+        toast.error("You Havent Access Delete Image");
       }
     } catch (error) {}
   };

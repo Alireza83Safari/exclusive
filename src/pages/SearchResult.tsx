@@ -7,24 +7,21 @@ import { userAxios } from "../services/userInterceptor";
 import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductSkelton from "../skelton/ProductSkelton";
 import FilterProducts from "../components/Product/FilterProducts";
-import { useLocation } from "react-router-dom";
+
 const ProductTemplate = lazy(
   () => import("../components/Product/ProductTemplate")
 );
 const Pagination = lazy(() => import("../components/Pagination"));
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function SearchResult() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const limitUrl = searchParams.get("limit");
-  const limitShow = limitUrl ? +limitUrl : 12;
+  const limit = 12;
   const { getFilterData, total, loading } =
     useFetchDataFromUrl<userProductType>(null, userAxios);
-  const {} = usePagination(currentPage, limitShow);
-  const totalPages = Math.ceil(total / limitShow);
+  const {} = usePagination(currentPage, limit);
+  const totalPages = Math.ceil(total / limit);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

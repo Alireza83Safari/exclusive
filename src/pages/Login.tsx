@@ -7,19 +7,19 @@ import { authContext, authContextType } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { loginErrorType } from "../types/Error.type";
 import { loginSchema } from "../validations/auth";
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Login() {
   const navigate = useNavigate();
-  const { refetch } = useContext(authContext) as authContextType;
-  const [errors, setErrors] = useState<userLoginType>();
-
-  const { setUserIsLogin } = useContext(authContext) as authContextType;
   const [loginInfos, setLoginInfos] = useState<userLoginType>({
     username: "",
     password: "",
   });
+  const { refetch } = useContext(authContext) as authContextType;
+  const [errors, setErrors] = useState<userLoginType>();
+
+  const { setUserIsLogin } = useContext(authContext) as authContextType;
 
   const [userLogin, { isLoading, isSuccess, error, data }] =
     useUserLoginMutation();

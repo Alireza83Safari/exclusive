@@ -7,7 +7,7 @@ export const useFetchDataFromUrl = <T,>(
 ) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [getFilterData, setFilterProducts] = useState<T[]>([]);
-  const [total, settotal] = useState<number>(0);
+  const [total, setTotal] = useState(0);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get("searchTerm");
@@ -56,14 +56,10 @@ export const useFetchDataFromUrl = <T,>(
 
     try {
       if (page !== null) {
-        const response = await axiosInstance.get(url, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axiosInstance.get(url);
         if (response.status === 200) {
           setFilterProducts(response.data.data);
-          settotal(response.data.total);
+          setTotal(response.data.total);
           setLoading(false);
         }
       }

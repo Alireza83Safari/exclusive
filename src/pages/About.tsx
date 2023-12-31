@@ -2,7 +2,7 @@ import { Suspense, lazy } from "react";
 import Options from "../components/Homepage/Options";
 import { Link } from "react-router-dom";
 import HeaderSkelton from "../skelton/HeaderSkelton";
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function About() {

@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner/Spinner";
 import HeaderSkelton from "../skelton/HeaderSkelton";
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 type contactType = {

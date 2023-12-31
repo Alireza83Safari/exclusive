@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsFilterLeft } from "react-icons/bs";
 import { useGetBrandsSelectListQuery } from "../../Redux/apis/user/brandUserApi";
@@ -35,6 +35,7 @@ const FilterProducts = () => {
     minPrice: null,
     maxPrice: null,
   }) as any;
+
   const [filterValue, setFilterValue] = useState({
     brandId: "",
     categoryId: "",
@@ -51,23 +52,23 @@ const FilterProducts = () => {
   const { data: products } = useGetProductsUserQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
-  const rangeInputMinValue = useMemo(() => {
-    products?.data?.reduce((minPrice: any, nextPrice: any) => {
+  const rangeInputMinValue = products?.data?.reduce(
+    (minPrice: any, nextPrice: any) => {
       if (minPrice?.price > nextPrice?.price) {
-        return nextPrice;
+        return nextPrice?.price;
       }
-      return minPrice;
-    });
-  }, [products]);
+      return minPrice?.price;
+    }
+  );
 
-  const rangeInputMaxValue = useMemo(() => {
-    products?.data?.reduce((minPrice: any, nextPrice: any) => {
+  const rangeInputMaxValue = products?.data?.reduce(
+    (minPrice: any, nextPrice: any) => {
       if (minPrice?.price < nextPrice?.price) {
         return nextPrice;
       }
       return minPrice;
-    });
-  }, [products]);
+    }
+  );
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();
@@ -210,7 +211,7 @@ const FilterProducts = () => {
                   name="minPrice"
                   className="mr-4"
                   min={rangeInputMinValue?.price}
-                  max={rangeInputMaxValue?.price}
+                  max={+rangeInputMaxValue?.price}
                   value={priceFilter.minPrice}
                   onChange={(event) =>
                     setFilterPrice((prevFilterValue: any) => ({
@@ -256,8 +257,8 @@ const FilterProducts = () => {
                   type="range"
                   name="maxPrice"
                   className="mr-4"
-                  min={rangeInputMinValue?.price}
-                  max={rangeInputMaxValue?.price}
+                  min={+rangeInputMinValue?.price}
+                  max={+rangeInputMaxValue?.price}
                   value={priceFilter.maxPrice}
                   onChange={(event) =>
                     setFilterPrice((prevFilterValue: any) => ({

@@ -6,29 +6,25 @@ import { userAxios } from "../services/userInterceptor";
 import ProductSkelton from "../skelton/ProductSkelton";
 import ProductTemplate from "../components/Product/ProductTemplate";
 import HeaderSkelton from "../skelton/HeaderSkelton";
-import { useLocation } from "react-router-dom";
 const FilterProducts = lazy(
   () => import("../components/Product/FilterProducts")
 );
 const Pagination = lazy(() => import("../components/Pagination"));
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Products() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const limitUrl = searchParams.get("limit");
-  const limitShow = limitUrl ? +limitUrl : 12;
+  const limit = 12;
 
   const { getFilterData, total, loading } =
     useFetchDataFromUrl<userProductType>(null, userAxios);
 
-  const { paginationLoading } = usePagination(currentPage, limitShow);
+  const {} = usePagination(currentPage, limit);
 
   const totalPages = useMemo(() => {
-    return Math.ceil(total / limitShow);
-  }, [limitShow, total]);
+    return Math.ceil(total / limit);
+  }, [limit, total]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -46,7 +42,7 @@ function Products() {
           <FilterProducts />
         </Suspense>
 
-        {loading || paginationLoading ? (
+        {loading ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
             {totalSkeletonShow?.map((index) => (
               <React.Fragment key={index}>

@@ -7,7 +7,7 @@ import { useUserRegisterMutation } from "../Redux/apis/user/authUserApi";
 import { registerErrorType } from "../types/Error.type";
 import { registerSchema } from "../validations/auth";
 import toast from "react-hot-toast";
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Register() {

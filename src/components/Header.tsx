@@ -1,5 +1,5 @@
-import TopHeader from "../components/Header/TopHeader";
-import MainHeader from "../components/Header/MainHeader";
+import TopHeader from "./Header/TopHeader";
+import MainHeader from "./Header/MainHeader";
 function Header() {
   return (
     <header>

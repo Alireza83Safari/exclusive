@@ -45,7 +45,7 @@ function Brand() {
                 </SwiperSlide>
               ))
             : brands?.data?.map((data: getBrandType) => (
-                <SwiperSlide key={data.id}>
+                <SwiperSlide key={data.id} data-aos="fade-left">
                   <Link to={`/brand/product?brandId=${data.id}`}>
                     <div className="border border-borderColor rounded-md h-44 mx-2 text-center flex justify-center items-center my-10 hover:bg-red duration-200 hover:text-white">
                       <div>

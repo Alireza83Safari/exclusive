@@ -1,22 +1,22 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const usePagination = (
   currentPage: number | null,
   initialPageSize: number
 ) => {
-  const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [paginationLoading, setPaginationLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const searchParams = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  );
-  const [pageSize, setPageSize] = useState<any>(initialPageSize);
+
+  const limit = new URLSearchParams(location.search).get("limit");
+  const pageSize = limit ? +limit : initialPageSize;
 
   const fetchSearchResults = useCallback(async () => {
     try {
       setPaginationLoading(true);
+      const searchParams = new URLSearchParams(location.search);
+
       searchParams.set(
         "page",
         currentPage !== null ? currentPage.toString() : "1"
@@ -27,18 +27,11 @@ export const usePagination = (
     } catch (error) {
       setPaginationLoading(false);
     }
-  }, [currentPage, pageSize, searchParams]);
-
-  useEffect(() => {
-    const limitParam = searchParams.get("limit");
-    if (limitParam) {
-      setPageSize(+limitParam);
-    }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, location.search]);
 
   useEffect(() => {
     fetchSearchResults();
-  }, [fetchSearchResults]);
+  }, [fetchSearchResults, currentPage]);
 
   return { paginationLoading, pageSize };
 };

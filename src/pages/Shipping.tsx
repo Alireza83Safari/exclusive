@@ -21,7 +21,7 @@ import { userAxios } from "../services/userInterceptor";
 import { authContext, authContextType } from "../context/authContext";
 import Spinner from "../components/Spinner/Spinner";
 
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Shipping() {

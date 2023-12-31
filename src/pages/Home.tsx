@@ -8,8 +8,8 @@ const Suggestion = lazy(() => import("../components/Homepage/Suggestion"));
 const OurProducts = lazy(() => import("../components/Homepage/OurProducts"));
 const Arrival = lazy(() => import("../components/Homepage/Arrival"));
 const Options = lazy(() => import("../components/Homepage/Options"));
-const Header = lazy(() => import("./Header"));
 const Footer = lazy(() => import("../components/Footer"));
+const Header = lazy(() => import("../components/Header"));
 
 function Home() {
   return (

@@ -10,21 +10,18 @@ import { authContext, authContextType } from "../context/authContext";
 import { FaTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 import CartSkeleton from "../skelton/CartSkeleton";
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Cart() {
   const { data: order, refetch, isLoading } = useGetOrderUserQuery("");
   const { userIsLogin } = useContext(authContext) as authContextType;
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   const [deleteOrderItem, { isSuccess }] = useDeleteOrderItemMutation();
   const deleteOrderItemHandler = (id: string) => {
     deleteOrderItem(id);
   };
+  
   useEffect(() => {
     if (isSuccess) {
       toast.success("delete orderItem is success");

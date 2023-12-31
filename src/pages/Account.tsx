@@ -4,12 +4,12 @@ import HeaderSkelton from "../skelton/HeaderSkelton";
 import { authContext, authContextType } from "../context/authContext";
 import { FaBars } from "react-icons/fa";
 const AccountMenu = lazy(() => import("../components/Account/AccountMenu"));
-const Header = lazy(() => import("./Header"));
+const Header = lazy(() => import("../components/Header"));
 const Footer = lazy(() => import("../components/Footer"));
 
 function Account() {
-  const [showMenu, setShowMenu] = useState(false);
   const { userIsLogin } = useContext(authContext) as authContextType;
+  const [showMenu, setShowMenu] = useState(false);
   return (
     <>
       <Suspense fallback={<HeaderSkelton />}>

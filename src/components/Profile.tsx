@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useUserLogoutMutation } from "../Redux/apis/user/authUserApi";
+import { useUserLogoutMutation } from "../redux/apis/user/authUserApi";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { authContext, authContextType } from "../context/authContext";
