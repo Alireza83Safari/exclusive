@@ -8,7 +8,7 @@ import { useGetCommentsUserQuery } from "../../Redux/apis/user/commentUserApi";
 import { userAxios } from "../../services/userInterceptor";
 import AccountSkelton from "../../skelton/AccountSkelton";
 
-function AccountAddress() {
+function AccountComments() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
   const { data: comments } = useGetCommentsUserQuery("");
@@ -103,7 +103,7 @@ function AccountAddress() {
   );
 }
 
-export default AccountAddress;
+export default AccountComments;
 
 const CommentDetails = ({
   label,

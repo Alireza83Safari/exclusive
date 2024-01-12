@@ -1,28 +1,26 @@
-import { Suspense, lazy, useContext, useEffect } from "react";
+import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { orderUserType } from "../types/Order.type";
 import {
   useDeleteOrderItemMutation,
   useGetOrderUserQuery,
 } from "../Redux/apis/user/orderUserApi";
-import HeaderSkelton from "../skelton/HeaderSkelton";
 import { authContext, authContextType } from "../context/authContext";
 import { FaTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 import CartSkeleton from "../skelton/CartSkeleton";
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Footer, Header } from "../components";
 
 function Cart() {
   const { data: order, refetch, isLoading } = useGetOrderUserQuery("");
-  const { userIsLogin } = useContext(authContext) as authContextType;
+  const { userIsLogin } = React.useContext(authContext) as authContextType;
 
   const [deleteOrderItem, { isSuccess }] = useDeleteOrderItemMutation();
   const deleteOrderItemHandler = (id: string) => {
     deleteOrderItem(id);
   };
-  
-  useEffect(() => {
+
+  React.useEffect(() => {
     if (isSuccess) {
       toast.success("delete orderItem is success");
       refetch();
@@ -33,9 +31,8 @@ function Cart() {
 
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
+
       {userIsLogin ? (
         isLoading ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
@@ -135,9 +132,8 @@ function Cart() {
       ) : (
         <Navigate to="/" />
       )}
-      <Suspense>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }

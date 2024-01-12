@@ -1,14 +1,11 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userRegisterType } from "../types/Auth.type";
-import Spinner from "../components/Spinner/Spinner";
-import HeaderSkelton from "../skelton/HeaderSkelton";
 import { useUserRegisterMutation } from "../Redux/apis/user/authUserApi";
 import { registerErrorType } from "../types/Error.type";
 import { registerSchema } from "../validations/auth";
 import toast from "react-hot-toast";
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Footer, Header, Spinner } from "../components";
 
 function Register() {
   const initialStata = {
@@ -17,9 +14,9 @@ function Register() {
     username: "",
   };
   const [registerInfos, setRegisterInfos] =
-    useState<userRegisterType>(initialStata);
+    React.useState<userRegisterType>(initialStata);
   const navigate = useNavigate();
-  const [errors, setErrors] = useState<userRegisterType>();
+  const [errors, setErrors] = React.useState<userRegisterType>();
 
   const getInfoFromInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -49,7 +46,7 @@ function Register() {
       setErrors(errors);
     }
   };
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       toast.success("user register successfully");
       navigate("/login");
@@ -60,9 +57,7 @@ function Register() {
 
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
 
       <section className="max-w-[1170px] mx-auto relative lg:mt-10">
         <div className="grid md:grid-cols-2 grid-cols-1">
@@ -138,9 +133,7 @@ function Register() {
         </div>
       </section>
 
-      <Suspense fallback={<Spinner />}>
-        <Footer />
-      </Suspense>
+      <Footer />
     </>
   );
 }

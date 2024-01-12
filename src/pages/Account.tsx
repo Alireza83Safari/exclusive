@@ -1,20 +1,15 @@
-import { Suspense, lazy, useContext, useState } from "react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import HeaderSkelton from "../skelton/HeaderSkelton";
 import { authContext, authContextType } from "../context/authContext";
 import { FaBars } from "react-icons/fa";
-const AccountMenu = lazy(() => import("../components/Account/AccountMenu"));
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { AccountMenu, Footer, Header } from "../components";
 
 function Account() {
-  const { userIsLogin } = useContext(authContext) as authContextType;
-  const [showMenu, setShowMenu] = useState(false);
+  const { userIsLogin } = React.useContext(authContext) as authContextType;
+  const [showMenu, setShowMenu] = React.useState(false);
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
 
       {userIsLogin ? (
         <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-5 relative">
@@ -25,13 +20,10 @@ function Account() {
             >
               <FaBars className="md:hidden text-xl text-center" />
             </div>
-            <div className="col-span-5">
-              <Suspense>{showMenu && <AccountMenu />}</Suspense>
-            </div>
+            <div className="col-span-5">{showMenu && <AccountMenu />}</div>
             <div className="col-span-1 md:block hidden">
-              <Suspense>
-                <AccountMenu />
-              </Suspense>
+              <AccountMenu />
+
               <button></button>
             </div>
             <div className="md:col-span-4 col-span-5">
@@ -42,9 +34,8 @@ function Account() {
       ) : (
         <Navigate to="/" />
       )}
-      <Suspense>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }

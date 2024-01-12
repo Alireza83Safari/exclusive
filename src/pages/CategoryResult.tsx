@@ -1,20 +1,22 @@
-import React, { Suspense, lazy, useState } from "react";
+import React from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { usePagination } from "../hooks/usePagination";
 import { userProductType } from "../types/Product.type";
 import { userAxios } from "../services/userInterceptor";
-import HeaderSkelton from "../skelton/HeaderSkelton";
-import ProductTemplate from "../components/Product/ProductTemplate";
-import FilterProducts from "../components/Product/FilterProducts";
 import ProductSkelton from "../skelton/ProductSkelton";
-const Pagination = lazy(() => import("../components/Pagination"));
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import {
+  FilterProducts,
+  Footer,
+  Header,
+  Pagination,
+  ProductTemplate,
+} from "../components";
 
 function CategoryResult() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const limit =12
-  const { getFilterData, total, loading } = useFetchDataFromUrl<userProductType>(null, userAxios);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const limit = 12;
+  const { getFilterData, total, loading } =
+    useFetchDataFromUrl<userProductType>(null, userAxios);
 
   const {} = usePagination(currentPage, limit);
   const totalPages = Math.ceil(total / limit);
@@ -26,9 +28,8 @@ function CategoryResult() {
 
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
+
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-5 relative px-2 min-h-[400px]">
         <FilterProducts />
 
@@ -54,18 +55,15 @@ function CategoryResult() {
           </h2>
         )}
         {totalPages > 1 && (
-          <Suspense>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </Suspense>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         )}
       </section>
-      <Suspense>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }

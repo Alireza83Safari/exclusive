@@ -1,24 +1,16 @@
-import { Suspense, lazy } from "react";
 import { DetailContextProvider } from "../components/ProductDetails/Context/DetailsContext";
-import Details from "../components/ProductDetails/Details";
-import HeaderSkelton from "../skelton/HeaderSkelton";
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Details, Footer, Header } from "../components";
 
 const ProductDetails = () => {
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
 
       <DetailContextProvider>
         <Details />
       </DetailContextProvider>
 
-      <Suspense>
-        <Footer />
-      </Suspense>
+      <Footer />
     </>
   );
 };

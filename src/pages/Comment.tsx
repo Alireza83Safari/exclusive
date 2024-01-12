@@ -1,8 +1,7 @@
-import  { useEffect } from "react";
-import CommentDetails from "../components/Comment/CommentDetails";
-import AddComment from "../components/Comment/AddComment";
+import { useEffect } from "react";
 import { useGetCommentsProudctMutation } from "../Redux/apis/user/commentUserApi";
 import { useParams } from "react-router-dom";
+import { AddComment, CommentDetails } from "../components";
 
 function Comment() {
   const { productId } = useParams();

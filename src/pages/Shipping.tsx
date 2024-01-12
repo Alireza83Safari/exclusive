@@ -1,11 +1,4 @@
-import React, {
-  Suspense,
-  lazy,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React from "react";
 import { addressType } from "../types/Address.type";
 import toast from "react-hot-toast";
 import { addressErrorType } from "../types/Error.type";
@@ -15,14 +8,10 @@ import {
   useCreateAddressMutation,
   useGetAddressesQuery,
 } from "../Redux/apis/user/addressUserApi";
-import HeaderSkelton from "../skelton/HeaderSkelton";
 import { useValidateCopunMutation } from "../Redux/apis/user/discountUserApi";
 import { userAxios } from "../services/userInterceptor";
 import { authContext, authContextType } from "../context/authContext";
-import Spinner from "../components/Spinner/Spinner";
-
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Footer, Header, Spinner } from "../components";
 
 function Shipping() {
   const navigate = useNavigate();
@@ -35,16 +24,16 @@ function Shipping() {
     plaque: 0,
     postalCode: "",
   };
-  const [copunValue, setCopunValue] = useState<string>("");
-  const [chooseAddress, setChooseAddress] = useState<string>("");
-  const [newAddress, setNewAddress] = useState<addressType>(initialState);
+  const [copunValue, setCopunValue] = React.useState("");
+  const [chooseAddress, setChooseAddress] = React.useState("");
+  const [newAddress, setNewAddress] = React.useState<addressType>(initialState);
 
   const { data: order } = useGetOrderUserQuery("");
   const { data: addresses, refetch } = useGetAddressesQuery("");
   const [createAddress, { error: createAddressError, isSuccess, isLoading }] =
     useCreateAddressMutation();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       refetch();
       setNewAddress(initialState);
@@ -52,7 +41,7 @@ function Shipping() {
     }
   }, [isSuccess]);
   // check if inputs havent value get disabled button
-  const btnDisabled = useMemo(() => {
+  const btnDisabled = React.useMemo(() => {
     const newAddresValue = Object.values(newAddress);
     return newAddresValue.some((item) => item.length < 4);
   }, [newAddress]);
@@ -81,7 +70,7 @@ function Shipping() {
     validateCopun(copunValue);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (status == "rejected") {
       toast.success("copun is not valid");
     }
@@ -101,13 +90,12 @@ function Shipping() {
 
   const addAddressError = createAddressError as addressErrorType;
 
-  const { userIsLogin } = useContext(authContext) as authContextType;
+  const { userIsLogin } = React.useContext(authContext) as authContextType;
 
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
+
       {userIsLogin ? (
         <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto my-10 relative sm:px-5 px-2">
           <div className="grid md:grid-cols-2 md:mt-20 mt-10">
@@ -351,9 +339,8 @@ function Shipping() {
       ) : (
         <>{navigate("/")}</>
       )}
-      <Suspense>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }

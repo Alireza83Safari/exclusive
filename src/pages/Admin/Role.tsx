@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import { RoleContextProvider } from "../../components/Admin/Role/Context/RoleContext";
-import Spinner from "../../components/Spinner/Spinner";
+import { Spinner } from "../../components";
 const RoleTable = lazy(() => import("../../components/Admin/Role/RoleTable"));
 
 function Role() {

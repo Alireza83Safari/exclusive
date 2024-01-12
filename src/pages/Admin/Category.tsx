@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { CategoryContextProvider } from "../../components/Admin/Category/Context/CayegoryContext";
-import Spinner from "../../components/Spinner/Spinner";
+import { Spinner } from "../../components";
 
 const CategoryTable = React.lazy(
   () => import("../../components/Admin/Category/CategoryTable")

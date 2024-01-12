@@ -1,25 +1,22 @@
-import React, { Suspense, lazy, useContext, useEffect, useState } from "react";
-import Spinner from "../components/Spinner/Spinner";
+import React from "react";
 import { userLoginType } from "../types/Auth.type";
-import HeaderSkelton from "../skelton/HeaderSkelton";
 import { useUserLoginMutation } from "../Redux/apis/user/authUserApi";
 import { authContext, authContextType } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { loginErrorType } from "../types/Error.type";
 import { loginSchema } from "../validations/auth";
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Footer, Header, Spinner } from "../components";
 
 function Login() {
   const navigate = useNavigate();
-  const [loginInfos, setLoginInfos] = useState<userLoginType>({
+  const [loginInfos, setLoginInfos] = React.useState<userLoginType>({
     username: "",
     password: "",
   });
-  const { refetch } = useContext(authContext) as authContextType;
-  const [errors, setErrors] = useState<userLoginType>();
+  const { refetch } = React.useContext(authContext) as authContextType;
+  const [errors, setErrors] = React.useState<userLoginType>();
 
-  const { setUserIsLogin } = useContext(authContext) as authContextType;
+  const { setUserIsLogin } = React.useContext(authContext) as authContextType;
 
   const [userLogin, { isLoading, isSuccess, error, data }] =
     useUserLoginMutation();
@@ -52,7 +49,7 @@ function Login() {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       const expireTime = new Date(data?.expiresAt);
       document.cookie = `Authorization= ${data?.token} ; expires=${expireTime}; secure; path=/; `;
@@ -65,9 +62,7 @@ function Login() {
   const loginError = error as loginErrorType;
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
 
       <section className="max-w-[1170px] mx-auto relative lg:mt-10">
         <div className="grid md:grid-cols-2 grid-cols-1">
@@ -130,9 +125,8 @@ function Login() {
           )}
         </div>
       </section>
-      <Suspense fallback={<Spinner />}>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }

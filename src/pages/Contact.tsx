@@ -1,9 +1,6 @@
-import React, { Suspense, lazy, useMemo, useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
-import Spinner from "../components/Spinner/Spinner";
-import HeaderSkelton from "../skelton/HeaderSkelton";
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Footer, Header } from "../components";
 
 type contactType = {
   name: string;
@@ -12,14 +9,14 @@ type contactType = {
   text: string;
 };
 function Contact() {
-  const [contactInfo, setContactInfo] = useState<contactType>({
+  const [contactInfo, setContactInfo] = React.useState<contactType>({
     name: "",
     email: "",
     phone: "",
     text: "",
   });
 
-  const btnDisabled = useMemo(() => {
+  const btnDisabled = React.useMemo(() => {
     if (
       contactInfo.name.length <= 2 ||
       contactInfo.email.length <= 2 ||
@@ -41,9 +38,8 @@ function Contact() {
   };
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
+
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative md:my-20">
         <div className="grid grid-cols-10 gap-x-10">
           <div className="md:col-span-3 col-span-10 shadow-md p-5 md:block grid sm:grid-cols-2">
@@ -126,9 +122,8 @@ function Contact() {
           </div>
         </div>
       </section>
-      <Suspense fallback={<Spinner />}>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }

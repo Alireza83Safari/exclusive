@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import { UserContextProvider } from "../../components/Admin/User/Context/UserContext";
-import Spinner from "../../components/Spinner/Spinner";
+import { Spinner } from "../../components";
 const UserTable = lazy(() => import("../../components/Admin/User/UserTable"));
 
 function User() {

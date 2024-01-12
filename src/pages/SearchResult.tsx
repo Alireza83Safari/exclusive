@@ -1,22 +1,16 @@
-import React, { Suspense, lazy, useState } from "react";
+import React from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { userProductType } from "../types/Product.type";
 import { usePagination } from "../hooks/usePagination";
-import Spinner from "../components/Spinner/Spinner";
 import { userAxios } from "../services/userInterceptor";
-import HeaderSkelton from "../skelton/HeaderSkelton";
 import ProductSkelton from "../skelton/ProductSkelton";
-import FilterProducts from "../components/Product/FilterProducts";
-
-const ProductTemplate = lazy(
+import { Footer, Header, Pagination, FilterProducts } from "../components";
+const ProductTemplate = React.lazy(
   () => import("../components/Product/ProductTemplate")
 );
-const Pagination = lazy(() => import("../components/Pagination"));
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
 
 function SearchResult() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const limit = 12;
   const { getFilterData, total, loading } =
     useFetchDataFromUrl<userProductType>(null, userAxios);
@@ -29,9 +23,8 @@ function SearchResult() {
 
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
+
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative mt-5">
         <FilterProducts />
         {loading || loading ? (
@@ -63,19 +56,15 @@ function SearchResult() {
         )}
 
         {totalPages > 1 && (
-          <Suspense fallback={<Spinner />}>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </Suspense>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         )}
       </section>
 
-      <Suspense fallback={<Spinner />}>
-        <Footer />
-      </Suspense>
+      <Footer />
     </>
   );
 }

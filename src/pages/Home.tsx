@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import Spinner from "../components/Spinner/Spinner";
+import { Spinner } from "../components";
 const Content = lazy(() => import("../components/Content/Content"));
 const Promotion = lazy(() => import("../components/Homepage/Promotion"));
 const Brand = lazy(() => import("../components/Homepage/Brand"));

@@ -1,9 +1,5 @@
-import { Suspense, lazy } from "react";
-import Options from "../components/Homepage/Options";
 import { Link } from "react-router-dom";
-import HeaderSkelton from "../skelton/HeaderSkelton";
-const Header = lazy(() => import("../components/Header"));
-const Footer = lazy(() => import("../components/Footer"));
+import { Footer, Header, Options } from "../components";
 
 function About() {
   const userInfo = [
@@ -25,9 +21,8 @@ function About() {
   ];
   return (
     <>
-      <Suspense fallback={<HeaderSkelton />}>
-        <Header />
-      </Suspense>
+      <Header />
+
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative">
         <div className="grid lg:grid-cols-2 md:mb-20">
           <div className=" m-auto lg:pr-16 lg:order-1 order-2 px-2">
@@ -193,9 +188,8 @@ function About() {
         </div>
         <Options />
       </section>
-      <Suspense>
-        <Footer />
-      </Suspense>
+
+      <Footer />
     </>
   );
 }
