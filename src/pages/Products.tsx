@@ -13,20 +13,15 @@ const FilterProducts = React.lazy(
 function Products() {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const limit = 12;
-
   const { getFilterData, total, loading } =
     useFetchDataFromUrl<userProductType>(null, userAxios);
 
   const {} = usePagination(currentPage, limit);
-
-  const totalPages = React.useMemo(() => {
-    return Math.ceil(total / limit);
-  }, [limit, total]);
+  const totalPages = Math.ceil(total / limit);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
   const totalSkeletonShow = Array.from(Array(12).keys());
 
   return (

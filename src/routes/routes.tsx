@@ -7,13 +7,10 @@ import About from "../pages/About";
 import Contact from "../pages/Contact";
 import ProductDetails from "../pages/ProductDetails";
 import Products from "../pages/Products";
-import CategoryResult from "../pages/CategoryResult";
-import BrandResult from "../pages/BrandResult";
 import FavoriteProducts from "../components/Account/Favorite/FavoriteProducts";
 import AccountOrders from "../components/Account/AccountOrders";
 import AccountAddress from "../components/Account/Address/AccountAddress";
 import AccountComments from "../components/Account/AccountComments";
-import SearchResult from "../pages/SearchResult";
 import Shipping from "../pages/Shipping";
 import IndexPanel from "../components/Admin/index";
 import AdminProducts from "../pages/Admin/Products";
@@ -40,9 +37,6 @@ const routes = [
   { path: "contact", element: <Contact /> },
   { path: "product/:productId", element: <ProductDetails /> },
   { path: "products", element: <Products /> },
-  { path: "category/:category", element: <CategoryResult /> },
-  { path: "brand/:brand", element: <BrandResult /> },
-  { path: "search/:search", element: <SearchResult /> },
   {
     path: "account/*",
     element: <Account />,

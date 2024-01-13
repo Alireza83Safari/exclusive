@@ -8,111 +8,102 @@ import { categoryUserType } from "../../types/Category.type";
 import SelectList from "../SelectList";
 import { brandSelectListType } from "../../types/Brand.type";
 
-type filterType = {
+enum OrderKeys {
+  Newest = "newest",
+  TopSell = "topSell",
+  Cheap = "cheap",
+  Expensive = "expensive",
+  Discount = "discount",
+  SearchTerm = "searchTerm",
+}
+
+const orderKeys: OrderKeys[] = [
+  OrderKeys.Newest,
+  OrderKeys.TopSell,
+  OrderKeys.Cheap,
+  OrderKeys.Expensive,
+  OrderKeys.Discount,
+  OrderKeys.SearchTerm,
+];
+
+type FilterType = {
   brandId: string;
   categoryId: string;
-  brandName: any;
-  categoryName: any;
+  brandName: string;
+  categoryName: string;
   order: string;
   onlyDiscount: boolean;
-  minPrice: number;
-  maxPrice: number;
+  minPrice: number | null;
+  maxPrice: number | null;
   orderName: string;
+  searchTerm: string;
 };
 
-const FilterProducts = () => {
+const FilterProducts: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
-  const orderKeys = [
-    "newest",
-    "topSell",
-    "cheap",
-    "expensive",
-    "discount",
-  ] as const;
 
   const [priceFilter, setFilterPrice] = useState({
-    minPrice: null,
-    maxPrice: null,
-  }) as any;
+    minPrice: 0,
+    maxPrice: 0,
+  });
 
-  const [filterValue, setFilterValue] = useState({
+  const [filterValue, setFilterValue] = useState<FilterType>({
     brandId: "",
     categoryId: "",
     brandName: "",
     categoryName: "",
+    searchTerm: "",
     order: "",
     orderName: "",
     onlyDiscount: false,
-    minPrice: 0,
-    maxPrice: 0,
-  } as filterType);
+    minPrice: null,
+    maxPrice: null,
+  });
 
   const { data: brands } = useGetBrandsSelectListQuery("");
   const { data: products } = useGetProductsUserQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
-  const rangeInputMinValue = products?.data?.reduce(
-    (minPrice: any, nextPrice: any) => {
-      if (minPrice?.price > nextPrice?.price) {
-        return nextPrice?.price;
-      }
-      return minPrice?.price;
-    }
-  );
+  const searchParams = new URLSearchParams(location.search);
 
-  const rangeInputMaxValue = products?.data?.reduce(
-    (minPrice: any, nextPrice: any) => {
-      if (minPrice?.price < nextPrice?.price) {
-        return nextPrice;
-      }
-      return minPrice;
-    }
-  );
+  useEffect(() => {
+    const lastFilterValue: FilterType = {
+      brandId: searchParams.get("brandId") || "",
+      categoryId: searchParams.get("categoryId") || "",
+      brandName: searchParams.get("brandName") || "",
+      categoryName: searchParams.get("categoryName") || "",
+      searchTerm: searchParams.get("searchTerm") || "",
+      order: searchParams.get("order") || "",
+      orderName: searchParams.get("orderName") || "",
+      onlyDiscount: Boolean(searchParams.get("onlyDiscount")),
+      minPrice: Number(searchParams.get("minPrice")) || 0,
+      maxPrice: Number(searchParams.get("maxPrice")) || 0,
+    };
+
+    setFilterValue(lastFilterValue);
+  }, []);
+
+  console.log(filterValue);
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();
-    if (filterValue?.brandName || filterValue?.categoryName) {
-      delete filterValue?.brandName;
-      delete filterValue?.categoryName;
-    }
 
-    for (const key in filterValue) {
+    for (const [key, value] of Object.entries(filterValue)) {
       switch (key) {
         case "brandId":
-          if (filterValue[key]) {
-            filteredParams.set(key, filterValue[key].toString());
-          }
-          break;
+        case "searchTerm":
         case "categoryId":
-          if (filterValue[key]) {
-            filteredParams.set(key, filterValue[key].toString());
-          }
-          break;
         case "order":
-          if (filterValue[key]) {
-            filteredParams.set(key, filterValue[key]);
-          }
-          break;
-
         case "onlyDiscount":
-          if (filterValue[key]) {
-            filteredParams.set(key, filterValue[key].toString());
-          }
-          break;
-
         case "minPrice":
-          if (filterValue[key]) {
-            filteredParams.set(key, filterValue[key].toString());
-          }
-          break;
-
         case "maxPrice":
-          if (filterValue[key]) {
-            filteredParams.set(key, filterValue[key].toString());
+          if (value) {
+            console.log(value);
+
+            filteredParams.set(key, value.toString());
           }
           break;
-
         default:
           break;
       }
@@ -122,10 +113,16 @@ const FilterProducts = () => {
   };
 
   useEffect(() => {
-    filterData();
+    const hasData = Object.values(filterValue).every(
+      (item) => !(item as any)?.length
+    );
+
+    if (!hasData) {
+      filterData();
+    }
   }, [filterValue]);
 
-  const setFilterPriceHandler = useCallback(() => {
+  const setFilterPriceHandler = useCallback((): void => {
     const updatedFilterValue = { ...filterValue };
 
     if (priceFilter.minPrice !== 0 || priceFilter.maxPrice !== 0) {
@@ -135,6 +132,16 @@ const FilterProducts = () => {
 
     setFilterValue(updatedFilterValue);
   }, [filterValue, priceFilter]);
+
+  const rangeInputMinValue = products?.data?.reduce(
+    (minPrice: any, nextPrice: any) =>
+      minPrice?.price > nextPrice?.price ? nextPrice?.price : minPrice?.price
+  );
+
+  const rangeInputMaxValue = products?.data?.reduce(
+    (minPrice: any, nextPrice: any) =>
+      minPrice?.price < nextPrice?.price ? nextPrice : minPrice
+  );
 
   return (
     <div>

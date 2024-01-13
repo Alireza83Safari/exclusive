@@ -19,7 +19,7 @@ function Menu() {
                 className="lg:my-4 my-2 hover:text-red duration-300"
                 key={index}
               >
-                <Link to={`/category/product?categoryId=${item.key}`}>
+                <Link to={`/products?categoryId=${item.key}`}>
                   {item.value}
                 </Link>
               </li>

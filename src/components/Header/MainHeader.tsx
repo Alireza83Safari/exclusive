@@ -16,7 +16,7 @@ function MainHeader() {
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
 
   const searchProducts = () => {
-    navigate(`/search/product?searchTerm=${searchQuery.replace(/ /g, "_")}`);
+    navigate(`/products?searchTerm=${searchQuery.replace(/ /g, "_")}`);
   };
 
   const handleEnterPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
