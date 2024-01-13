@@ -4,6 +4,7 @@ import routes from "./routes/routes";
 import { useEffect, useState } from "react";
 import { AuthContextProvider } from "./context/authContext";
 import { Toaster } from "react-hot-toast";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const route = useRoutes(routes);
@@ -23,10 +24,11 @@ function App() {
     }
   }, [showAlert]);
 
-
   return (
     <div className="App">
-      <AuthContextProvider>{route}</AuthContextProvider>
+      <ErrorBoundary>
+        <AuthContextProvider>{route}</AuthContextProvider>
+      </ErrorBoundary>
       <Toaster />
     </div>
   );
