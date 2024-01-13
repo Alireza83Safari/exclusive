@@ -1,10 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import {
-  recoveryPasswordType,
-  setNewPasswordType,
-  userLoginType,
-  userRegisterType,
-} from "../../../types/Auth.type";
+import { recoveryPasswordType, setNewPasswordType, userLoginType, userRegisterType } from '../../../types/Auth.type';
 import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
 
 export const authUserApi = createApi({

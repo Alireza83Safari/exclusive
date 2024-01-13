@@ -28,7 +28,7 @@ import { fileUserApi } from "./apis/user/fileUserApi";
 import { discountAdminApi } from "./apis/admin/discountAdminApi";
 import { discountUserApi } from "./apis/user/discountUserApi";
 import { authAdminApi } from "./apis/admin/authAdminApi";
-import { authUserApi } from "./apis/user/authUserApi";
+import { authUserApi } from "./apis/user/authUserApi"; 
 
 export const rootReducer = combineReducers({
   feature: featureReducer,

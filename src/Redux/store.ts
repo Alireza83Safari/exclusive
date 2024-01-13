@@ -26,7 +26,7 @@ import { appPicUserApi } from "./apis/user/appPicUserApi";
 import { fileUserApi } from "./apis/user/fileUserApi";
 import { discountAdminApi } from "./apis/admin/discountAdminApi";
 import { discountUserApi } from "./apis/user/discountUserApi";
-import { authUserApi } from "./apis/user/authUserApi";
+import { authUserApi } from "./apis/user/authUserApi"; 
 import { authAdminApi } from "./apis/admin/authAdminApi";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
