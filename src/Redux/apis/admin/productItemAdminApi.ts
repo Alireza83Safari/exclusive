@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
-import { productItemType, productItemProductType } from '../../../types/productItem.type';
+import { productItemType, productItemProductType } from '../../../types/ProductItem.type';
 
 export const productItemAdminApi = createApi({
   baseQuery: axiosBaseQueryAdmin({ baseUrl: "/productItem" }),

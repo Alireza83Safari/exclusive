@@ -13,11 +13,8 @@ import ProductTemplate from "./Product/ProductTemplate";
 import FilterProducts from "./Product/FilterProducts";
 /* HomePage */
 import Arrival from "./Homepage/Arrival";
-import BestSelling from "./Homepage/BestSelling";
 import Brand from "./Homepage/Brand";
 import Options from "./Homepage/Options";
-import OurProducts from "./Homepage/OurProducts";
-import Promotion from "./Homepage/Promotion";
 import Suggestion from "./Homepage/Suggestion";
 import Details from "./ProductDetails/Details";
 /*  */
@@ -32,6 +29,7 @@ import FavoriteProducts from "./Account/Favorite/FavoriteProducts";
 import AccountAddress from "./Account/Address/AccountAddress";
 import AddAddress from "./Account/Address/AddAddress";
 import EditAddress from "./Account/Address/EditAddress";
+import ProductSlider from "./ProductSlider";
 
 export {
   AddComment,
@@ -59,11 +57,9 @@ export {
   ProductTemplate,
   FilterProducts,
   Arrival,
-  BestSelling,
   Brand,
   Options,
-  OurProducts,
-  Promotion,
   Suggestion,
   Details,
+  ProductSlider,
 };

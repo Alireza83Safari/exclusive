@@ -4,7 +4,7 @@ import { UserContext, UserContextType } from "./Context/UserContext";
 import reactDOM from "react-dom";
 import Input from "../../Input";
 import SelectList from "../../SelectList";
-import { userType } from "../../../types/user.type";
+import { userType } from "../../../types/User.type";
 import { roleType } from "../../../types/Role.type";
 import Spinner from "../../Spinner/Spinner";
 import { useCreateUserMutation } from "../../../Redux/apis/admin/userAdminApi";

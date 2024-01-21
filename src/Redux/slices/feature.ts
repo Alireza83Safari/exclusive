@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import { adminAxios } from "../../services/adminInterceptor";
-import { getFeatureKeyType } from "../../types/feature.type";
+import { getFeatureKeyType } from "../../types/Feature.type";
 
 export const getProductFeatureKey = createAsyncThunk(
   "productFeature/getProductFeatureKey",

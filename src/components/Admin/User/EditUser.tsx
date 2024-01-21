@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import toast from "react-hot-toast";
 import { UserContext, UserContextType } from "./Context/UserContext";
-import { userType } from "../../../types/user.type";
+import { userType } from "../../../types/User.type";
 import Input from "../../Input";
 import reactDOM from "react-dom";
 import SelectList from "../../SelectList";

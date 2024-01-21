@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { useCreateProductItemMutation } from "../../../../Redux/apis/admin/productItemAdminApi";
 import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
 import Spinner from "../../../Spinner/Spinner";
-import { productItemType } from "../../../../types/productItem.type";
+import { productItemType } from "../../../../types/ProductItem.type";
 
 function AddProductItem() {
   const {

@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { userType } from "../../../types/user.type";
+import { userType } from "../../../types/User.type";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
 export const userAdminApi = createApi({
