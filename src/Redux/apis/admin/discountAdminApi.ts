@@ -16,7 +16,7 @@ export const discountAdminApi = createApi({
       }),
     }),
     createDiscount: builder.mutation({
-      query: (discountInfo: discountUserType) => ({
+      query: (discountInfo: any) => ({
         url: "",
         method: "POST",
         data: discountInfo,

@@ -5,7 +5,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, useLocation } from "react-router-dom";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdDiscount } from "react-icons/md";
 import { FaBox, FaRegComment, FaRegUser } from "react-icons/fa";
 import { TbCategory, TbLockAccess } from "react-icons/tb";
 import { TbBrandApple } from "react-icons/tb";
@@ -16,6 +16,7 @@ interface SidebarProps {
   open: boolean;
   onClose: () => void;
 }
+
 const mentItem = [
   { key: "dashboard", icon: <MdDashboard /> },
   { key: "product", icon: <FaBox /> },
@@ -27,6 +28,7 @@ const mentItem = [
   { key: "comment", icon: <FaRegComment /> },
   { key: "appPic", icon: <PiFlagBannerFill /> },
   { key: "user", icon: <FaRegUser /> },
+  { key: "discount", icon: <MdDiscount /> },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {

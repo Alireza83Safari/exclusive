@@ -24,6 +24,7 @@ import User from "../pages/Admin/User";
 import Order from "../pages/Admin/Order";
 import Role from "../pages/Admin/Role";
 import NotFound from "../components/404";
+import Discount from "../pages/Admin/Discount";
 
 const routes = [
   { path: "*", element: <NotFound /> },
@@ -64,6 +65,7 @@ const routes = [
       { path: "user", element: <User /> },
       { path: "order", element: <Order /> },
       { path: "role", element: <Role /> },
+      { path: "discount", element: <Discount /> },
     ],
   },
 ];
