@@ -83,7 +83,7 @@ function CategoryTable() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-  const pageSize = 12;
+  const pageSize = 9;
   const totalPages = Math.ceil(total / pageSize);
   const [currentPage, setCurrentPage] = useState(1);
   const { paginationLoading } = usePagination(currentPage, pageSize);

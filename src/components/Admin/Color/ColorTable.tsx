@@ -19,7 +19,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "../../Pagination";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
-import { useLocation } from "react-router-dom";
 import useRow from "../../../hooks/useRow";
 
 interface Column {
@@ -82,10 +81,7 @@ function ColorTable() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const limitUrl = searchParams.get("limit");
-  const pageSize = limitUrl ? +limitUrl : 10;
+  const pageSize = 9;
   const {} = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
 
@@ -117,7 +113,7 @@ function ColorTable() {
           borderRadius: "12px",
         }}
       >
-        <TableContainer sx={{ minHeight: colors?.length ? 650 : 650 }}>
+        <TableContainer sx={{ minHeight: 608 }}>
           {accessList ? (
             <>
               <div className="h-8 md:mx-3 mb-4">
@@ -149,10 +145,10 @@ function ColorTable() {
                 <TableBody>
                   {colorsLoading ? (
                     Array.from(
-                      Array(colors?.length ? colors?.length : 8).keys()
+                      Array(colors?.length ? colors?.length : 5).keys()
                     ).map((_, index) => (
                       <TableRow key={index}>
-                        {[...Array(6).keys()].map((cellIndex) => (
+                        {[...Array(5).keys()].map((cellIndex) => (
                           <TableCell key={cellIndex}>
                             <RowTableSkeleton />
                           </TableCell>

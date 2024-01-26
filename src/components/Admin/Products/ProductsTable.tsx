@@ -115,7 +115,10 @@ export default function ProductsTable() {
             Add New Product
           </Button>
         </div>
-        <TableContainer component={Paper} sx={{ boxShadow: "0" }}>
+        <TableContainer
+          component={Paper}
+          sx={{ boxShadow: "0", minHeight: "660px" }}
+        >
           <Table
             sx={{ minWidth: 500 }}
             aria-label="custom pagination table "
@@ -167,6 +170,7 @@ export default function ProductsTable() {
                 </TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {loading || paginationLoading ? (
                 Array.from(
@@ -180,7 +184,7 @@ export default function ProductsTable() {
                     ))}
                   </TableRow>
                 ))
-              ) : products?.length ? (
+              ) : !!products?.length ? (
                 products?.map((row: any, index: number) => (
                   <TableRow key={row.id}>
                     <TableCell style={{ width: 160 }} align="center">

@@ -17,12 +17,13 @@ export const useFetchDataFromUrl = <T,>(
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
   const page = searchParams.get("page") || 1;
-  const limit = searchParams.get("limit") || 12;
+  const limit = searchParams.get("limit");
   const onlyDiscount = searchParams.get("onlyDiscount");
 
   const fetchDataFormUrl = useCallback(async () => {
     setLoading(true);
-    let url = urlName ? urlName : `/product?page=${page}&limit=${limit}`;
+    let url = `/${urlName ? urlName : `product`}?page=${page}&limit=${limit}`;
+    console.log(url);
 
     if (searchTerm) {
       url += `&searchTerm=${searchTerm}`;

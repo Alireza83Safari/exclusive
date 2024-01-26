@@ -5,12 +5,14 @@ import { getAppPicType } from "../../types/AppPic.type";
 
 function Banner() {
   const navigate = useNavigate();
-  const { data } = useGetAppPicsUserQuery("");
+  const { data, isLoading } = useGetAppPicsUserQuery("");
 
   const [appPics, setAppPics] = useState<getAppPicType[]>([]);
   useEffect(() => {
     if (data) {
-      const totalAppPics = data?.filter((item: getAppPicType) => item.appPicType === 0);
+      const totalAppPics = data?.filter(
+        (item: getAppPicType) => item.appPicType === 0
+      );
       setAppPics(totalAppPics);
     }
   }, [data]);
@@ -42,10 +44,12 @@ function Banner() {
             {appPics[currentIndex]?.title}
           </div>
           <div className="md:block flex text-center justify-center items-center">
-            <button className="flex text-center justify-center items-center md:text-base text-sm bg-black py-2 px-5 text-white mt-7 rounded-lg">
-              Shop Now
-              <img src="/images/arrowRight.png" className="w-4" />
-            </button>
+            {!isLoading && (
+              <button className="flex text-center justify-center items-center md:text-base text-sm bg-black py-2 px-5 text-white mt-7 rounded-lg">
+                Shop Now
+                <img src="/images/arrowRight.png" className="w-4" />
+              </button>
+            )}
           </div>
         </div>
         <div className="sm:h-[344px] h-[200px] m-auto sm:order-2 order-1">

@@ -83,7 +83,7 @@ function BrandTable() {
     }
   };
 
-  const pageSize = 8;
+  const pageSize = 9;
   const { paginationLoading } = usePagination(currentPage, pageSize);
   const totalPages = Math.ceil(total / pageSize);
   const changePageHandler = (id: number) => {
@@ -131,7 +131,7 @@ function BrandTable() {
             />
           </Box>
         </div>
-        <TableContainer>
+        <TableContainer sx={{ minHeight: 570 }}>
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
               {brandsLoading || paginationLoading ? (
