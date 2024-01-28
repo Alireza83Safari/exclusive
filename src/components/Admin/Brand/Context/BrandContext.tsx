@@ -33,7 +33,7 @@ export const BrandContextProvider = ({
   const [showAddBrand, setShowAddBrand] = useState(true);
   const [showAddBrandFile, setShowAddBrandFile] = useState(false);
   const {
-    getFilterData: brands,
+    datas: brands,
     total,
     loading: brandsLoading,
     fetchDataFormUrl: refetchBrands,

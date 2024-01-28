@@ -28,7 +28,7 @@ export const UserContextProvider = ({ children }: UserContextProviderType) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const {
-    getFilterData: users,
+    datas: users,
     total,
     loading: userLoading,
     fetchDataFormUrl: refetchUser,

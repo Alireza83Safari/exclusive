@@ -29,7 +29,7 @@ export const DiscountContextProvider = ({
   const [discountType, setDiscountType] = useState("");
 
   const {
-    getFilterData: discounts,
+    datas: discounts,
     total,
     loading: discountsLoading,
     fetchDataFormUrl: refetchDiscount,

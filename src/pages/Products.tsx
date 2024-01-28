@@ -11,12 +11,15 @@ const FilterProducts = React.lazy(
 );
 
 function Products() {
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const limit = 12;
-  const { getFilterData, total, loading } =
-    useFetchDataFromUrl<userProductType>(null, userAxios);
+  const { isLoading } = usePagination(currentPage, limit);
+  const {
+    datas: products,
+    total,
+    loading,
+  } = useFetchDataFromUrl<userProductType>("product", userAxios);
 
-  const {} = usePagination(currentPage, limit);
   const totalPages = Math.ceil(total / limit);
 
   const handlePageChange = (page: number) => {
@@ -29,9 +32,7 @@ function Products() {
       <Header />
 
       <section className="xl:max-w-[1280px] md:max-w-[98%] w-full min-h-[400px] sm:px-4 px-1 mx-auto relative my-4">
-        <React.Suspense>
-          <FilterProducts />
-        </React.Suspense>
+        <React.Suspense>{!isLoading && <FilterProducts />}</React.Suspense>
 
         {loading ? (
           <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
@@ -43,31 +44,29 @@ function Products() {
           </div>
         ) : (
           <>
-            {getFilterData.length ? (
+            {!!products.length ? (
               <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2">
-                {getFilterData?.map((product) => (
+                {products?.map((product) => (
                   <React.Fragment key={product.id}>
                     <ProductTemplate {...product} />
                   </React.Fragment>
                 ))}
               </div>
-            ) : getFilterData.length >= 1 ? (
+            ) : (
               <div className="sm:text-5xl text-2xl flex justify-center items-center mt-28">
                 No exact matches found
               </div>
-            ) : (
-              ""
             )}
           </>
         )}
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        )}
       </section>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       <Footer />
     </>

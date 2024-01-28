@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
@@ -84,7 +86,9 @@ function BrandTable() {
   };
 
   const pageSize = 9;
-  const { paginationLoading } = usePagination(currentPage, pageSize);
+  const {} = usePagination(currentPage, pageSize);
+  console.log(currentPage);
+
   const totalPages = Math.ceil(total / pageSize);
   const changePageHandler = (id: number) => {
     setCurrentPage(id);
@@ -134,7 +138,7 @@ function BrandTable() {
         <TableContainer sx={{ minHeight: 570 }}>
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
-              {brandsLoading || paginationLoading ? (
+              {brandsLoading ? (
                 Array.from(
                   Array(brands?.length ? brands?.length : 8).keys()
                 ).map((_, index) => (

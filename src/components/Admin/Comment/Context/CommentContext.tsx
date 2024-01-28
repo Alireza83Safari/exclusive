@@ -26,7 +26,7 @@ export const CommentContextProvider = ({
   const [editCommentId, setDditCommentId] = useState("");
 
   const {
-    getFilterData: comments,
+    datas: comments,
     total,
     loading: commentsLoading,
     fetchDataFormUrl: refetchComments,

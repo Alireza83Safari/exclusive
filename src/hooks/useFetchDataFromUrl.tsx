@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export const useFetchDataFromUrl = <T,>(
@@ -6,58 +6,21 @@ export const useFetchDataFromUrl = <T,>(
   axiosInstance: any
 ) => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [getFilterData, setFilterProducts] = useState<T[]>([]);
+  const [datas, setDatas] = useState<T[]>([]);
   const [total, setTotal] = useState(0);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const searchTerm = searchParams.get("searchTerm");
-  const categoryId = searchParams.get("categoryId");
-  const brandId = searchParams.get("brandId");
-  const order = searchParams.get("order");
-  const minPrice = searchParams.get("minPrice");
-  const maxPrice = searchParams.get("maxPrice");
-  const page = searchParams.get("page") || 1;
-  const limit = searchParams.get("limit");
-  const onlyDiscount = searchParams.get("onlyDiscount");
+  const page = searchParams.get("page");
 
   const fetchDataFormUrl = useCallback(async () => {
     setLoading(true);
-    let url = `/${urlName ? urlName : `product`}?page=${page}&limit=${limit}`;
-    console.log(url);
-
-    if (searchTerm) {
-      url += `&searchTerm=${searchTerm}`;
-    }
-
-    if (categoryId) {
-      url += `&categoryId=${categoryId}`;
-    }
-
-    if (brandId) {
-      url += `&brandId=${brandId}`;
-    }
-
-    if (order) {
-      url += `&order=${order}`;
-    }
-
-    if (minPrice) {
-      url += `&minPrice=${minPrice}`;
-    }
-
-    if (maxPrice) {
-      url += `&maxPrice=${maxPrice}`;
-    }
-
-    if (onlyDiscount) {
-      url += `&onlyDiscount=${onlyDiscount}`;
-    }
+    let url = `/${urlName}${location.search}`;
 
     try {
-      if (page !== null) {
+      if (page) {
         const response = await axiosInstance.get(url);
         if (response.status === 200) {
-          setFilterProducts(response.data.data);
+          setDatas(response.data.data);
           setTotal(response.data.total);
           setLoading(false);
         }
@@ -65,25 +28,11 @@ export const useFetchDataFromUrl = <T,>(
     } catch (error) {
       setLoading(false);
     }
-  }, [categoryId, brandId, order, minPrice, maxPrice, searchTerm, page, limit]);
+  }, [location.search]);
 
   useEffect(() => {
     fetchDataFormUrl();
-  }, [
-    location.search,
-    categoryId,
-    brandId,
-    order,
-    minPrice,
-    maxPrice,
-    searchTerm,
-    page,
-    limit,
-  ]);
+  }, [location.search]);
 
-  const memoizedData = useMemo(
-    () => ({ getFilterData, total, loading, fetchDataFormUrl }),
-    [getFilterData, total, loading]
-  );
-  return memoizedData;
+  return { datas, total, loading, fetchDataFormUrl };
 };

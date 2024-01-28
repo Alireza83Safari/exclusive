@@ -65,7 +65,7 @@ export const ProductsContextProvider = ({
   
   const [productInfo, setProductInfo] = useState({});
   const {
-    getFilterData: products,
+    datas: products,
     fetchDataFormUrl: refetchProducts,
     loading,
     total,

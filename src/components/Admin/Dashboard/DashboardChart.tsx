@@ -34,11 +34,11 @@ function DashboardChart() {
     setSelectedDataType(newDataType);
   };
   return (
-    <section className="md:ml-7 ml-3 mt-3 md:mr-4 mr-3 md:mb-0">
+    <section className="md:ml-7 ml-3 mt-3 md:mr-4 mr-12 md:mb-0 min-w-full">
       {isLoading ? (
         <ChartSkelton />
       ) : (
-        <div className="pb-10 py-5 rounded-xl bg-white">
+        <div className="pb-10 py-5 rounded-xl bg-white md:mr-11 mr-6">
           <div className="flex justify-between px-6">
             <p className="text-xs font-bold dark:text-white-100 2xl:text-lg">
               Sales Chart
@@ -58,7 +58,7 @@ function DashboardChart() {
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center mx-2  text-white-100"></div>
             </div>
           </div>
-          <div className="flex justify-center px-2 container text-xs">
+          <div className="flex justify-center px-2 container text-xs min-w-full">
             <BarChartComponent datas={chartData} />
           </div>
         </div>

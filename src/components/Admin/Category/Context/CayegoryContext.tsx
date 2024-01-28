@@ -23,7 +23,7 @@ export const CategoryContextProvider = ({
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState("");
   const {
-    getFilterData: category,
+    datas: category,
     total,
     loading: categoryLoading,
     fetchDataFormUrl: refetchCategory,

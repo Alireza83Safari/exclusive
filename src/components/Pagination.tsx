@@ -17,7 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const renderPageNumbers = () => {
     const pageNumbers = [];
 
-    const maxPages = 6; 
+    const maxPages = 6;
 
     let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     let endPage = Math.min(startPage + maxPages - 1, totalPages);
@@ -49,7 +49,7 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-center mt-4 min-w-screen">
+    <div className="flex items-center justify-center mt-4">
       {canGoBack && (
         <button
           className="px-3 py-1 mx-1 bg-black text-white"

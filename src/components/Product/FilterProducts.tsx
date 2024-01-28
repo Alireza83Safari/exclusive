@@ -37,16 +37,13 @@ type FilterType = {
   maxPrice: number | null;
   orderName: string;
   searchTerm: string;
+  limit: string;
+  page: string;
 };
 
 const FilterProducts: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  const [priceFilter, setFilterPrice] = useState({
-    minPrice: 0,
-    maxPrice: 0,
-  });
 
   const [filterValue, setFilterValue] = useState<FilterType>({
     brandId: "",
@@ -57,8 +54,10 @@ const FilterProducts: React.FC = () => {
     order: "",
     orderName: "",
     onlyDiscount: false,
-    minPrice: null,
-    maxPrice: null,
+    minPrice: 0,
+    maxPrice: 0,
+    limit: "",
+    page: "",
   });
 
   const { data: brands } = useGetBrandsSelectListQuery("");
@@ -71,6 +70,8 @@ const FilterProducts: React.FC = () => {
     const lastFilterValue: FilterType = {
       brandId: searchParams.get("brandId") || "",
       categoryId: searchParams.get("categoryId") || "",
+      page: searchParams.get("page") || "",
+      limit: searchParams.get("limit") || "",
       brandName: searchParams.get("brandName") || "",
       categoryName: searchParams.get("categoryName") || "",
       searchTerm: searchParams.get("searchTerm") || "",
@@ -82,9 +83,7 @@ const FilterProducts: React.FC = () => {
     };
 
     setFilterValue(lastFilterValue);
-  }, []);
-
-  console.log(filterValue);
+  }, [location.search]);
 
   const filterData = () => {
     const filteredParams = new URLSearchParams();
@@ -96,6 +95,8 @@ const FilterProducts: React.FC = () => {
         case "categoryId":
         case "order":
         case "onlyDiscount":
+        case "page":
+        case "limit":
         case "minPrice":
         case "maxPrice":
           if (value) {
@@ -109,7 +110,7 @@ const FilterProducts: React.FC = () => {
       }
     }
 
-    navigate(`?${filteredParams.toString()}`);
+    navigate(`?${filteredParams.toString()}`, { replace: false });
   };
 
   useEffect(() => {
@@ -125,13 +126,13 @@ const FilterProducts: React.FC = () => {
   const setFilterPriceHandler = useCallback((): void => {
     const updatedFilterValue = { ...filterValue };
 
-    if (priceFilter.minPrice !== 0 || priceFilter.maxPrice !== 0) {
-      updatedFilterValue.minPrice = priceFilter.minPrice;
-      updatedFilterValue.maxPrice = priceFilter.maxPrice;
+    if (filterValue?.minPrice !== 0 || filterValue?.maxPrice !== 0) {
+      updatedFilterValue.minPrice = filterValue?.minPrice;
+      updatedFilterValue.maxPrice = filterValue?.maxPrice;
     }
 
     setFilterValue(updatedFilterValue);
-  }, [filterValue, priceFilter]);
+  }, [filterValue, filterValue]);
 
   const rangeInputMinValue = products?.data?.reduce(
     (minPrice: any, nextPrice: any) =>
@@ -219,10 +220,10 @@ const FilterProducts: React.FC = () => {
                   className="mr-4"
                   min={rangeInputMinValue?.price}
                   max={+rangeInputMaxValue?.price}
-                  value={priceFilter.minPrice}
+                  value={filterValue.minPrice as number}
                   onChange={(event) =>
-                    setFilterPrice((prevFilterValue: any) => ({
-                      ...prevFilterValue,
+                    setFilterValue(() => ({
+                      ...filterValue,
                       minPrice: Number(event.target.value),
                     }))
                   }
@@ -236,10 +237,10 @@ const FilterProducts: React.FC = () => {
                   className="border border-borderColor w-full justify-end rounded-lg outline-none focus:border-blue-600 placeholder:text-sm placeholder:text-black"
                   style={{ padding: "5px" }}
                   placeholder="min price"
-                  value={priceFilter.minPrice}
+                  value={filterValue.minPrice as number}
                   onChange={(event) =>
-                    setFilterPrice((prevFilterValue: any) => ({
-                      ...prevFilterValue,
+                    setFilterValue(() => ({
+                      ...filterValue,
                       minPrice: Number(event.target.value),
                     }))
                   }
@@ -266,10 +267,10 @@ const FilterProducts: React.FC = () => {
                   className="mr-4"
                   min={+rangeInputMinValue?.price}
                   max={+rangeInputMaxValue?.price}
-                  value={priceFilter.maxPrice}
+                  value={filterValue.maxPrice as number}
                   onChange={(event) =>
-                    setFilterPrice((prevFilterValue: any) => ({
-                      ...prevFilterValue,
+                    setFilterValue(() => ({
+                      ...filterValue,
                       maxPrice: Number(event.target.value),
                     }))
                   }
@@ -283,10 +284,10 @@ const FilterProducts: React.FC = () => {
                   className="border border-borderColor w-full rounded-lg outline-none focus:border-blue-600 placeholder:text-sm placeholder:text-black"
                   style={{ padding: "5px" }}
                   placeholder="max price"
-                  value={priceFilter.maxPrice}
+                  value={filterValue.maxPrice as number}
                   onChange={(event) =>
-                    setFilterPrice((prevFilterValue: any) => ({
-                      ...prevFilterValue,
+                    setFilterValue(() => ({
+                      ...filterValue,
                       maxPrice: Number(event.target.value),
                     }))
                   }

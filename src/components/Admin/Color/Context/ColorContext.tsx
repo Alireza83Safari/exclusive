@@ -24,7 +24,7 @@ export const ColorContextProvider = ({
   const [editColorId, setEditColorId] = useState("");
 
   const {
-    getFilterData: colors,
+    datas: colors,
     total,
     loading: colorsLoading,
     fetchDataFormUrl: refetchColor,

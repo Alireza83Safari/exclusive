@@ -1,37 +1,35 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const usePagination = (
-  currentPage: number | null,
-  initialPageSize: number
-) => {
-  const [paginationLoading, setPaginationLoading] = useState(false);
+export const usePagination = (currentPage: number, initialLimit: number) => {
+  const [isLoading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
 
-  const limit = new URLSearchParams(location.search).get("limit");
-  const pageSize = limit ? +limit : initialPageSize;
+  const searchParamsPage = searchParams.get("page");
+  const searchParamsLimit = searchParams.get("limit");
 
-  const fetchSearchResults = useCallback(async () => {
-    try {
-      setPaginationLoading(true);
-      const searchParams = new URLSearchParams(location.search);
+  const page = currentPage ? currentPage : searchParamsPage;
+  const limit = searchParamsLimit ? searchParamsLimit : initialLimit;
 
-      searchParams.set(
-        "page",
-        currentPage !== null ? currentPage.toString() : "1"
-      );
-      searchParams.set("limit", pageSize !== null ? pageSize.toString() : "12");
-      navigate(`?${searchParams.toString()}`);
-      setPaginationLoading(false);
-    } catch (error) {
-      setPaginationLoading(false);
+  const getPaginationUrl = useCallback(async () => {
+    setLoading(true);
+    const searchParams = new URLSearchParams(location.search);
+
+    if (page) {
+      searchParams.set("page", String(page));
     }
-  }, [currentPage, pageSize, location.search]);
+    if (limit) {
+      searchParams.set("limit", String(limit));
+    }
+    navigate(`?${searchParams.toString()}`);
+    setLoading(false);
+  }, [page, limit]);
 
   useEffect(() => {
-    fetchSearchResults();
-  }, [fetchSearchResults, currentPage]);
+    getPaginationUrl();
+  }, [page, currentPage]);
 
-  return { paginationLoading, pageSize };
+  return { isLoading };
 };
