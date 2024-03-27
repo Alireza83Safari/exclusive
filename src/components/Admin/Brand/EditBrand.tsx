@@ -6,12 +6,12 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
-import { brandType } from "../../../types/Brand.type";
+import { brand } from "../../../types/brand";
 import {
   useEditBrandMutation,
   useGetBrandMutation,
 } from "../../../Redux/apis/admin/brandAdminApi";
-import { brandErrorType } from "../../../types/Error.type";
+import { brandErrorType } from "../../../types/error";
 import Spinner from "../../Spinner/Spinner";
 
 const style = {
@@ -34,7 +34,7 @@ export default function EditBrand() {
   };
 
   const [editBrandValue, setEditBrandValue] =
-    useState<brandType>(inintialBrandState);
+    useState<brand>(inintialBrandState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

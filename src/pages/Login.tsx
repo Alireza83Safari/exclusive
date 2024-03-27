@@ -1,20 +1,20 @@
 import React from "react";
-import { userLoginType } from "../types/Auth.type";
+import { userLogin } from "../types/auth";
 import { useUserLoginMutation } from "../Redux/apis/user/authUserApi";
 import { authContext, authContextType } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
-import { loginErrorType } from "../types/Error.type";
+import { loginErrorType } from "../types/error";
 import { loginSchema } from "../validations/auth";
 import { Footer, Header, Spinner } from "../components";
 
 function Login() {
   const navigate = useNavigate();
-  const [loginInfos, setLoginInfos] = React.useState<userLoginType>({
+  const [loginInfos, setLoginInfos] = React.useState<userLogin>({
     username: "",
     password: "",
   });
   const { refetch } = React.useContext(authContext) as authContextType;
-  const [errors, setErrors] = React.useState<userLoginType>();
+  const [errors, setErrors] = React.useState<userLogin>();
 
   const { setUserIsLogin } = React.useContext(authContext) as authContextType;
 

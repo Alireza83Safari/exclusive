@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
-import { orderUserType } from "../types/Order.type";
+import { orderUserType } from "../types/order";
 import {
   useDeleteOrderItemMutation,
   useGetOrderUserQuery,

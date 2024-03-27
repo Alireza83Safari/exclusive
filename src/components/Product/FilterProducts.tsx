@@ -4,9 +4,9 @@ import { BsFilterLeft } from "react-icons/bs";
 import { useGetBrandsSelectListQuery } from "../../Redux/apis/user/brandUserApi";
 import { useGetCategorySelectListQuery } from "../../Redux/apis/user/categoryUserApi";
 import { useGetProductsUserQuery } from "../../Redux/apis/user/productApiUser";
-import { categoryUserType } from "../../types/Category.type";
+import { categoryUserType } from "../../types/category";
 import SelectList from "../SelectList";
-import { brandSelectListType } from "../../types/Brand.type";
+import { brandSelectListType } from "../../types/brand";
 
 enum OrderKeys {
   Newest = "newest",

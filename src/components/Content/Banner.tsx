@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useGetAppPicsUserQuery } from "../../Redux/apis/user/appPicUserApi";
 import { useEffect, useState } from "react";
-import { getAppPicType } from "../../types/AppPic.type";
+import { getAppPicType } from "../../types/appPic";
 
 function Banner() {
   const navigate = useNavigate();

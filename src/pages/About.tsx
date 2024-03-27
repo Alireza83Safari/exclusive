@@ -23,7 +23,7 @@ function About() {
     <>
       <Header />
 
-      <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative">
+      <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto relative">
         <div className="grid lg:grid-cols-2 md:mb-20">
           <div className=" m-auto lg:pr-16 lg:order-1 order-2 px-2">
             <h1 className="text-5xl font-semibold">Our Story</h1>
@@ -102,9 +102,7 @@ function About() {
         <div className="grid grid-cols-3 md:gap-x-6 gap-x-1 md:my-32 my-12">
           {userInfo?.map((info, index) => (
             <div key={index}>
-              <div>
-                <img src={info.img} />
-              </div>
+              <img src={info.img} />
               <div>
                 <h2 className="md:text-2xl text-base font-semibold md:mt-3 mt-1">
                   {info.name}

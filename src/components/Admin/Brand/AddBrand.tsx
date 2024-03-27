@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
 import { BrandContext, brandContextType } from "./Context/BrandContext";
-import { brandType } from "../../../types/Brand.type";
+import { brand } from "../../../types/brand";
 import { useCreateBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
-import { brandErrorType } from "../../../types/Error.type";
+import { brandErrorType } from "../../../types/error";
 
 function AddBrand() {
   const inintialBrandState = {
@@ -21,7 +21,7 @@ function AddBrand() {
   } = useContext(BrandContext) as brandContextType;
 
   const [createBrandValue, setcCeateBrandValue] =
-    useState<brandType>(inintialBrandState);
+    useState<brand>(inintialBrandState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

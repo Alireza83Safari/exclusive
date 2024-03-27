@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { addressType } from "../../../types/Address.type";
+import { address } from "../../../types/address";
 import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
 
 export const addressUserApi = createApi({
@@ -14,7 +14,7 @@ export const addressUserApi = createApi({
     }),
 
     createAddress: builder.mutation({
-      query: (addressInfo: addressType) => ({
+      query: (addressInfo: address) => ({
         url: "",
         method: "POST",
         data: addressInfo,
@@ -22,13 +22,7 @@ export const addressUserApi = createApi({
     }),
 
     editAddress: builder.mutation({
-      query: ({
-        id,
-        addressInfo,
-      }: {
-        id: string;
-        addressInfo: addressType;
-      }) => ({
+      query: ({ id, addressInfo }: { id: string; addressInfo: address }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: addressInfo,

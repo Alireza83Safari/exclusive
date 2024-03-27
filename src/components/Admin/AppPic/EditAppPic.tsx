@@ -1,4 +1,4 @@
-import  { useState, useEffect, useMemo, useContext } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -6,12 +6,12 @@ import Modal from "@mui/material/Modal";
 import { MenuItem, Select, TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
-import { appPicType as appPicTypes } from "../../../types/AppPic.type";
+import { appPic } from "../../../types/appPic";
 import {
   useEditAppPicMutation,
   useGetAppPicMutation,
 } from "../../../Redux/apis/admin/appPicAdminApi";
-import { appPicErrorType } from "../../../types/Error.type";
+import { appPicErrorType } from "../../../types/error";
 import Spinner from "../../Spinner/Spinner";
 
 const style = {
@@ -25,7 +25,7 @@ const style = {
   p: 3,
 };
 
-export const appPicTypeOptions = [
+export const appPicOptions = [
   { value: 0, label: "slider" },
   { value: 1, label: "section" },
   { value: 2, label: "bilbord" },
@@ -46,10 +46,10 @@ export default function EditAppPic() {
     priority: null,
     title: "",
     url: "",
-  } as appPicTypes;
+  } as appPic;
 
   const [editAppPicValue, setEditAppPicValue] =
-    useState<appPicTypes>(inintialAppPicState);
+    useState<appPic>(inintialAppPicState);
 
   const setInputValue = (event: any) => {
     const { value, name } = event.target;
@@ -59,7 +59,8 @@ export default function EditAppPic() {
     });
   };
 
-  const [editAppPic, { error, isSuccess,isLoading:editLoading }] = useEditAppPicMutation();
+  const [editAppPic, { error, isSuccess, isLoading: editLoading }] =
+    useEditAppPicMutation();
 
   const [
     getAppPic,
@@ -119,7 +120,7 @@ export default function EditAppPic() {
         aria-labelledby="modal-modal-title"
       >
         <Box sx={style}>
-          {isLoading ||editLoading? (
+          {isLoading || editLoading ? (
             <div className="h-full">
               <Spinner />
             </div>
@@ -206,7 +207,7 @@ export default function EditAppPic() {
                   sx={{ marginY: "10px" }}
                   onChange={setInputValue}
                 >
-                  {appPicTypeOptions.map((option) => (
+                  {appPicOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>

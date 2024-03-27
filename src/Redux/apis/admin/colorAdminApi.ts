@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { colorType } from "../../../types/Color.type";
+import { color } from "../../../types/color";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
 export const colorAdminApi = createApi({
@@ -16,14 +16,14 @@ export const colorAdminApi = createApi({
       }),
     }),
     createColor: builder.mutation({
-      query: (colorInfo: colorType) => ({
+      query: (colorInfo: color) => ({
         url: "",
         method: "POST",
         data: colorInfo,
       }),
     }),
     editColor: builder.mutation({
-      query: ({ id, colorInfo }: { id: string; colorInfo: colorType }) => ({
+      query: ({ id, colorInfo }: { id: string; colorInfo: color }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: colorInfo,

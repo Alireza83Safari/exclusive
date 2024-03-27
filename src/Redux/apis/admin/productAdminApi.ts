@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { productType } from "../../../types/Product.type";
+import { product } from "../../../types/product";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
 export const productAdminApi = createApi({
@@ -25,7 +25,7 @@ export const productAdminApi = createApi({
     }),
 
     createProduct: builder.mutation({
-      query: (productInfo: productType) => ({
+      query: (productInfo: product) => ({
         url: "",
         method: "POST",
         data: productInfo,
@@ -33,13 +33,7 @@ export const productAdminApi = createApi({
     }),
 
     editProduct: builder.mutation({
-      query: ({
-        id,
-        productInfo,
-      }: {
-        id: string;
-        productInfo: productType;
-      }) => ({
+      query: ({ id, productInfo }: { id: string; productInfo: product }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: productInfo,

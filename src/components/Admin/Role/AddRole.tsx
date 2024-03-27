@@ -4,7 +4,7 @@ import Input from "../../Input";
 import toast from "react-hot-toast";
 import reactDOM from "react-dom";
 import { useCreateRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";
-import { roleErrorType } from "../../../types/Error.type";
+import { roleErrorType } from "../../../types/error";
 
 function AddRole() {
   const { showAddModal, setShowAddModal, refetchRoles, permissions } =

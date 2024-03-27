@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFetchDataFromUrl } from "../../hooks/useFetchDataFromUrl";
 import { usePagination } from "../../hooks/usePagination";
-import { getCommentType } from "../../types/Comment.type";
+import { getCommentType } from "../../types/comment";
 import Pagination from "../Pagination";
 import ContentLoaders from "../ContentLoaders";
 import { useGetCommentsUserQuery } from "../../Redux/apis/user/commentUserApi";
@@ -13,7 +13,7 @@ function AccountComments() {
   const pageSize = 5;
   const { data: comments } = useGetCommentsUserQuery("");
   const {} = usePagination(currentPage, pageSize);
-  const { getFilterData, total, loading } = useFetchDataFromUrl<getCommentType>(
+  const { datas, total, loading } = useFetchDataFromUrl<getCommentType>(
     "comment",
     userAxios
   );
@@ -32,7 +32,7 @@ function AccountComments() {
             </React.Fragment>
           ))
         ) : comments?.data.length ? (
-          getFilterData?.map((comment, index) => (
+          datas?.map((comment, index) => (
             <div
               className={`py-8 px-6 ${
                 index !== total - 1 ? "border-b border-borderColor" : ""

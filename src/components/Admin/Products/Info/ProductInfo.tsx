@@ -5,11 +5,11 @@ import {
 } from "../Context/ProductsContext";
 import Spinner from "../../../Spinner/Spinner";
 import Input from "../../../Input";
-import { productType } from "../../../../types/Product.type";
+import { product } from "../../../../types/product";
 import SelectList from "../../../SelectList";
 import toast from "react-hot-toast";
-import { categoryUserType } from "../../../../types/Category.type";
-import { brandSelectListType } from "../../../../types/Brand.type";
+import { categoryUserType } from "../../../../types/category";
+import { brandSelectListType } from "../../../../types/brand";
 import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
 import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
 import {
@@ -36,7 +36,7 @@ function ProductInfo() {
   const { data: brands } = useGetBrandsSelectListQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
-  const [editProductInfo, setEditProductInfo] = useState<productType>({
+  const [editProductInfo, setEditProductInfo] = useState<product>({
     brandId: "",
     categoryId: "",
     code: "",

@@ -63,7 +63,7 @@ export default function ProductsTable() {
   const limitUrl = searchParams.get("limit");
   const pageSize = limitUrl ? +limitUrl : 12;
   const totalPages = Math.ceil(total / pageSize);
-  const { paginationLoading } = usePagination(currentPage, pageSize);
+  const { isLoading } = usePagination(currentPage, pageSize);
 
   const changePageHandler = (id: number) => {
     setCurrentPage(id);
@@ -172,7 +172,7 @@ export default function ProductsTable() {
             </TableHead>
 
             <TableBody>
-              {loading || paginationLoading ? (
+              {loading || isLoading ? (
                 Array.from(
                   Array(products?.length ? products?.length : 10).keys()
                 ).map((_, index) => (

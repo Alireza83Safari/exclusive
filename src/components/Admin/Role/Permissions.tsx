@@ -1,15 +1,13 @@
-import  { useContext } from "react";
+import { useContext } from "react";
 import reactDOM from "react-dom";
 import { RoleContext, roleContextType } from "./Context/RoleContext";
-import { roleType } from "../../../types/Role.type";
+import { role } from "../../../types/role";
 
 function Permissions() {
   const { roles, roleId, showPermissions, setShowPermissions } = useContext(
     RoleContext
   ) as roleContextType;
-  const findPermissions = roles?.data.find(
-    (role: roleType) => role.id == roleId
-  );
+  const findPermissions = roles?.data.find((role: role) => role.id == roleId);
 
   return reactDOM.createPortal(
     <section

@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
-import { categoryType } from "../../../types/Category.type";
+import { category } from "../../../types/category";
 
 export const categoryAdminApi = createApi({
   baseQuery: axiosBaseQueryAdmin({ baseUrl: "category" }),
@@ -17,7 +17,7 @@ export const categoryAdminApi = createApi({
       }),
     }),
     createCategory: builder.mutation({
-      query: (categoryInfo: categoryType) => ({
+      query: (categoryInfo: category) => ({
         url: ``,
         method: "post",
         data: categoryInfo,
@@ -29,7 +29,7 @@ export const categoryAdminApi = createApi({
         categoryInfo,
       }: {
         id: string;
-        categoryInfo: categoryType;
+        categoryInfo: category;
       }) => ({
         url: `/edit/${id}`,
         method: "post",

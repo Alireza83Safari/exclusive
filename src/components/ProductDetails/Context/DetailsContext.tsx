@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { userProductType } from "../../../types/Product.type";
+import { userProductType } from "../../../types/product";
 import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
 import { useGetProductItemUserMutation } from "../../../Redux/apis/user/productItemUserApi";
 

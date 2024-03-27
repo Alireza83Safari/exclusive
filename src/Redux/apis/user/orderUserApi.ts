@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { addOrderItemType } from "../../../types/Order.type";
+import { addOrderItem } from "../../../types/order";
 import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
 
 export const orderUserApi = createApi({
@@ -16,7 +16,7 @@ export const orderUserApi = createApi({
       }),
     }),
     createOrderItem: builder.mutation({
-      query: (orderItem: addOrderItemType) => ({
+      query: (orderItem: addOrderItem) => ({
         url: `/orderItem`,
         method: "POST",
         data: JSON.stringify(orderItem),
@@ -27,7 +27,6 @@ export const orderUserApi = createApi({
       query: (id: string) => ({
         url: `/orderItem/delete/${id}`,
         method: "POST",
-        
       }),
     }),
   }),

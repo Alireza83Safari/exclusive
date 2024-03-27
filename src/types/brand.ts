@@ -1,12 +1,4 @@
-export type brandStateType = {
-  brandLoading: boolean;
-  brand: getBrandType;
-  brands: brandType[];
-  brandsUser: getBrandType[];
-  brandsSelectList: brandSelectListType[];
-};
-
-export type getBrandType = {
+export type getBrand = {
   code: string;
   createdAt: string;
   fileId: string;
@@ -18,7 +10,7 @@ export type getBrandType = {
   updatedAt: string;
 };
 
-export type brandType = {
+export type brand = {
   code: string;
   name: string;
 };

@@ -28,12 +28,9 @@ function Footer() {
         <div className="text-white md:mx-1 mx-3 my-3">
           <ul>
             <li className="text-xl font-semibold mb-4">Support</li>
-            <li className="my-4">
-              111 Bijoy sarani, Dhaka, <br />
-              DH 1515, Bangladesh.
-            </li>
-            <li className="my-4">exclusive@gmail.com</li>
-            <li className="my-4">+88015-88888-9999</li>
+            <li className="my-4">Iran Karaj</li>
+            <li className="my-4">alireza83safarii@gmail.com</li>
+            <li className="my-4">+989102711361</li>
           </ul>
         </div>
         <div className="text-white md:mx-1 mx-3 my-3">
@@ -91,22 +88,22 @@ function Footer() {
           <div className="flex items-center justify-between mt-4">
             <img
               src="/images/facebook.png"
-              alt=""
+              alt="facebook"
               className="w-6 h-6 object-contain"
             />
             <img
               src="/images/twiter.png"
-              alt=""
+              alt="twiter"
               className="w-6 h-6 object-contain"
             />
             <img
               src="/images/instagram.png"
-              alt=""
+              alt="instagram"
               className="w-6 h-6 object-contain"
             />
             <img
               src="/images/linkdin.png"
-              alt=""
+              alt="linkdin"
               className="w-6 h-6 object-contain"
             />
           </div>
@@ -119,7 +116,7 @@ function Footer() {
           alt="copyright"
         />
         <p className="text-center text-borderColor">
-          Copyright Rimel 2022. All right reserved
+          Copyright Rimel 2023. All right reserved
         </p>
       </div>
     </footer>

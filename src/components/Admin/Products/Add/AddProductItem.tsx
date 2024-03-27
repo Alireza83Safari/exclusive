@@ -5,12 +5,12 @@ import {
   ProductsContext,
   ProductsContextType,
 } from "../Context/ProductsContext";
-import { productItemErrorType } from "../../../../types/Error.type";
+import { productItemErrorType } from "../../../../types/error";
 import toast from "react-hot-toast";
 import { useCreateProductItemMutation } from "../../../../Redux/apis/admin/productItemAdminApi";
 import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
 import Spinner from "../../../Spinner/Spinner";
-import { productItemType } from "../../../../types/ProductItem.type";
+import { productItem } from "../../../../types/productItem";
 
 function AddProductItem() {
   const {
@@ -30,7 +30,7 @@ function AddProductItem() {
     productId: createProductId,
     quantity: null,
     status: null,
-  } as productItemType);
+  } as productItem);
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = event.target;

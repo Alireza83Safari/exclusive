@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetCategorySelectListQuery } from "../../Redux/apis/user/categoryUserApi";
-import { categoryUserType } from "../../types/Category.type";
+import { categoryUserType } from "../../types/category";
 import MenuSkelton from "../../skelton/MenuSkelton";
 
 function Menu() {

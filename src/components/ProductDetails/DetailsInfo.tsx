@@ -4,8 +4,8 @@ import {
   useGetFavoriteProductItemMutation,
 } from "../../Redux/apis/user/favoriteUserApi";
 import ContentLoaders from "../ContentLoaders";
-import { colorType } from "../../types/Color.type";
-import { addOrderItemType } from "../../types/Order.type";
+import { color } from "../../types/color";
+import { addOrderItem } from "../../types/order";
 import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
 import toast from "react-hot-toast";
 import { DetailContext, DetailContextType } from "./Context/DetailsContext";
@@ -62,7 +62,7 @@ function ProductDetailsInfo() {
     let orderItemInfo = {
       productItemId: id,
       quantity: count,
-    } as addOrderItemType;
+    } as addOrderItem;
     createOrderItem(orderItemInfo);
   };
 
@@ -154,7 +154,7 @@ function ProductDetailsInfo() {
                 className="w-6 h-6 rounded-full mx-1 border border-borderColor"
                 style={{
                   backgroundColor: productItem?.colors?.find(
-                    (color: colorType) => color?.name === productItem?.color
+                    (color: color) => color?.name === productItem?.color
                   )?.colorHex,
                 }}
               ></div>

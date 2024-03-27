@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useContext } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
-import { categoryType } from "../../../types/Category.type";
+import { category } from "../../../types/category";
 import toast from "react-hot-toast";
 import {
   CategoryContext,
@@ -8,14 +8,14 @@ import {
 } from "./Context/CayegoryContext";
 import { useCreateCategoryMutation } from "../../../Redux/apis/admin/categoryAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
-import { categoryErrorType } from "../../../types/Error.type";
+import { categoryErrorType } from "../../../types/error";
 
 function AddCategory() {
   const inintialCategoryState = {
     code: "",
     name: "",
   };
-  const [createCategoryValue, setCreateCategoryValue] = useState<categoryType>(
+  const [createCategoryValue, setCreateCategoryValue] = useState<category>(
     inintialCategoryState
   );
   const { refetchCategory } = useContext(

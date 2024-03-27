@@ -1,17 +1,3 @@
-export type productStateType = {
-  productLoading: boolean;
-  adminProduct: adminProductType | null;
-  adminProducts: adminProductType[];
-  adminProductSelectList: adminProductType[];
-  userProduct: userProductType;
-  userProducts: userProductType[];
-  addProductError: errorType | null;
-  productsWithOrder: userProductType;
-  addProductResponse: number | null;
-  createProductId: string | null;
-  editProductResponse: number;
-};
-
 export type errorType = {
   message?: string;
   errors?: {
@@ -24,7 +10,7 @@ export type errorType = {
     shortDescription: string;
   };
 };
-export interface productType {
+export interface product {
   brandId: string;
   categoryId: string;
   code: string;
@@ -36,7 +22,7 @@ export interface productType {
   categoryName?: string;
 }
 
-export interface userProductType extends productType {
+export interface userProductType extends product {
   discountQuantity: number;
   discountType: number;
   discountValue: number;
@@ -55,7 +41,7 @@ type productsLoading = {
 
 export type userProductTypeWithLoading = userProductType & productsLoading;
 
-export interface adminProductType extends productType {
+export interface adminProductType extends product {
   brandFileUrl?: string;
   id: string;
 }

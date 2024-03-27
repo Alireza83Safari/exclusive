@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Input from "../../Input";
 import reactDOM from "react-dom";
 import { useCreateAddressMutation } from "../../../Redux/apis/user/addressUserApi";
-import { addressType } from "../../../types/Address.type";
-import { addressErrorType } from "../../../types/Error.type";
+import { address } from "../../../types/address";
+import { addressErrorType } from "../../../types/error";
 import toast from "react-hot-toast";
 import { addressShema } from "../../../validations/address";
 import { useGetProfileOrdersUserQuery } from "../../../Redux/apis/user/prodileUserApi";
@@ -18,9 +18,9 @@ function AddAddress({ setShowCreateAddress, showCreateAddress, refetch }: any) {
     plaque: 0,
     postalCode: "",
   };
-  const [addressValue, setAddressValue] = useState<addressType>(initialState);
+  const [addressValue, setAddressValue] = useState<address>(initialState);
   const [formIsValid, setFormIsValid] = useState(false);
-  const [errors, setErrors] = useState<addressType>();
+  const [errors, setErrors] = useState<address>();
   const { refetch: refetchOrders } = useGetProfileOrdersUserQuery("");
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {

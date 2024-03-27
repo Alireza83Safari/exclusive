@@ -1,4 +1,4 @@
-export type userType = {
+export type user = {
   createdAt?: string;
   email: string;
   enabled: boolean;

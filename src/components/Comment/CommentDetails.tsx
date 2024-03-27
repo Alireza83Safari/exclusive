@@ -1,4 +1,4 @@
-import { getCommentType } from "../../types/Comment.type";
+import { getCommentType } from "../../types/comment";
 
 type commentDetailPropsType = {
   comments: getCommentType[];

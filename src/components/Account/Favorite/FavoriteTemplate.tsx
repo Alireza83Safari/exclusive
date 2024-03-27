@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { userProductTypeWithLoading } from "../../../types/Product.type";
-import { addOrderItemType } from "../../../types/Order.type";
+import { userProductTypeWithLoading } from "../../../types/product";
+import { addOrderItem } from "../../../types/order";
 import ContentLoaders from "../../ContentLoaders";
 import toast from "react-hot-toast";
 import { useCreateOrderItemMutation } from "../../../Redux/apis/user/orderUserApi";
@@ -29,7 +29,7 @@ function FavoriteTemplate({
     let orderItemInfo = {
       productItemId: itemId,
       quantity: 1,
-    } as addOrderItemType;
+    } as addOrderItem;
     createOrderItem(orderItemInfo)
       .unwrap()
       .then(() => toast.success(`${name} Added To Cart`));

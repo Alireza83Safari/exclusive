@@ -3,7 +3,7 @@ import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCreateCommentMutation } from "../../Redux/apis/user/commentUserApi";
-import { commentType } from "../../types/Comment.type";
+import { comment } from "../../types/comment";
 
 type addCommentPropsType = {
   getCommentsProudct: (productId: string) => void;
@@ -62,7 +62,7 @@ function AddComment({ getCommentsProudct }: addCommentPropsType) {
       strengthPoints: strengths,
       text: commentValue,
       weakPoints: weakPoints,
-    } as commentType;
+    } as comment;
     createComment(commentObj);
   };
 

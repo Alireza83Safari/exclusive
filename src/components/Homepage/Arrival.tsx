@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetAppPicsUserQuery } from "../../Redux/apis/user/appPicUserApi";
-import { getAppPicType } from "../../types/AppPic.type";
+import { getAppPicType } from "../../types/appPic";
 
 function Arrival() {
   const { data } = useGetAppPicsUserQuery("");

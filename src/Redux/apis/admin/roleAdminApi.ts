@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
-import { roleType } from "../../../types/Role.type";
+import { role } from "../../../types/role";
 
 export const roleAdminApi = createApi({
   baseQuery: axiosBaseQueryAdmin({ baseUrl: "/role" }),
@@ -24,7 +24,7 @@ export const roleAdminApi = createApi({
     }),
 
     editRole: builder.mutation({
-      query: ({ id, roleInfo }: { id: string; roleInfo: roleType }) => ({
+      query: ({ id, roleInfo }: { id: string; roleInfo: role }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: roleInfo,

@@ -86,7 +86,7 @@ function CategoryTable() {
   const pageSize = 9;
   const totalPages = Math.ceil(total / pageSize);
   const [currentPage, setCurrentPage] = useState(1);
-  const { paginationLoading } = usePagination(currentPage, pageSize);
+  const { isLoading } = usePagination(currentPage, pageSize);
 
   const setInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -147,7 +147,7 @@ function CategoryTable() {
         <TableContainer sx={{ minHeight: 530 }}>
           {accessList ? (
             <Table stickyHeader aria-label="sticky table">
-              {categoryLoading || paginationLoading ? (
+              {categoryLoading || isLoading ? (
                 Array.from(
                   Array(category?.length ? category?.length : 8).keys()
                 ).map((_, index) => (

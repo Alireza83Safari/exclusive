@@ -22,7 +22,7 @@ import {
   DiscountContext,
   discountContextType,
 } from "./Context/DiscountContext";
-import { getDiscountAdminType } from "../../../types/Discount.type";
+import { getDiscountAdminType } from "../../../types/discount";
 import { useDeleteDiscountMutation } from "../../../Redux/apis/admin/discountAdminApi";
 
 interface Column {

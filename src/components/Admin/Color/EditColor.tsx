@@ -6,9 +6,12 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
-import { colorType } from "../../../types/Color.type";
-import { useEditColorMutation, useGetColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
-import { colorErrorType } from "../../../types/Error.type";
+import { color } from "../../../types/color";
+import {
+  useEditColorMutation,
+  useGetColorMutation,
+} from "../../../Redux/apis/admin/colorAdminApi";
+import { colorErrorType } from "../../../types/error";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,7 +34,7 @@ export default function EditColor() {
   };
 
   const [editColorValue, setEditColorValue] =
-    useState<colorType>(inintialColorState);
+    useState<color>(inintialColorState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -49,7 +52,7 @@ export default function EditColor() {
     editColor({ id: editColorId, colorInfo: editColorValue });
   };
 
-  const editColorError = error as colorErrorType
+  const editColorError = error as colorErrorType;
 
   const getDisbledBtn = useMemo(() => {
     const { name, code } = editColorValue;

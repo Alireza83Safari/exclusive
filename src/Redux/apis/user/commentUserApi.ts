@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
-import { commentType } from "../../../types/Comment.type";
+import { comment } from "../../../types/comment";
 
 export const commentUserApi = createApi({
   baseQuery: axiosBaseQueryUser({ baseUrl: "/comment" }),
@@ -21,7 +21,7 @@ export const commentUserApi = createApi({
       query: (id: string) => ({ url: `/${id}`, method: "get" }),
     }),
     createComment: builder.mutation({
-      query: (commentInfo: commentType) => ({
+      query: (commentInfo: comment) => ({
         url: "",
         method: "POST",
         data: commentInfo,
@@ -29,13 +29,7 @@ export const commentUserApi = createApi({
     }),
 
     editComment: builder.mutation({
-      query: ({
-        id,
-        commentInfo,
-      }: {
-        id: string;
-        commentInfo: commentType;
-      }) => ({
+      query: ({ id, commentInfo }: { id: string; commentInfo: comment }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: commentInfo,

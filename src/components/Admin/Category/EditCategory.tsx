@@ -8,14 +8,13 @@ import {
   categoryContextType,
 } from "./Context/CayegoryContext";
 import { TextField } from "@mui/material";
-import { categoryType } from "../../../types/Category.type";
-
+import { category } from "../../../types/category";
 import toast from "react-hot-toast";
 import {
   useEditCategoryMutation,
   useGetCategoryMutation,
 } from "../../../Redux/apis/admin/categoryAdminApi";
-import { categoryErrorType } from "../../../types/Error.type";
+import { categoryErrorType } from "../../../types/error";
 
 const style = {
   position: "absolute" as "absolute",
@@ -36,7 +35,7 @@ export default function EditCategory() {
     name: "",
   };
 
-  const [editCategoryValue, setEditCategoryValue] = useState<categoryType>(
+  const [editCategoryValue, setEditCategoryValue] = useState<category>(
     inintialCategoryState
   );
 

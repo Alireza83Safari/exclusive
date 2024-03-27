@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { userProductTypeWithLoading } from "../../types/Product.type";
-import { addOrderItemType } from "../../types/Order.type";
+import { userProductTypeWithLoading } from "../../types/product";
+import { addOrderItem } from "../../types/order";
 import ContentLoaders from "../ContentLoaders";
 import toast from "react-hot-toast";
 import { useCreateOrderItemMutation } from "../../Redux/apis/user/orderUserApi";
@@ -29,7 +29,7 @@ function ProductTemplate({
     let orderItemInfo = {
       productItemId: itemId,
       quantity: 1,
-    } as addOrderItemType;
+    } as addOrderItem;
     createOrderItem(orderItemInfo)
       .unwrap()
       .then(() => toast.success(`${name} Added To Cart`));
@@ -63,7 +63,7 @@ function ProductTemplate({
   }, [isUserFavorite, , createFavoriteSuccess]);
 
   return (
-    <div className="relative group my-4 mx-2 px-2" key={id}>
+    <div className="relative group sm:my-4 sm:mx-2 px-2" key={id}>
       <div className="flex justify-center items-center sm:h-[250px] h-[220px] relative bg-gradient">
         {discountValue && (
           <p className="sm:px-3 px-1 py-1 rounded-md bg-red absolute top-3 left-3 sm:text-xs text-[10px] text-white">
@@ -71,10 +71,8 @@ function ProductTemplate({
           </p>
         )}
 
-        <div className="absolute top-3 right-3">
-          <div className="sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-rose-300 duration-300 rounded-full flex justify-center items-center">
-            {isFavoriteImg}
-          </div>
+        <div className="absolute top-3 right-3 sm:w-8 sm:h-8 w-6 h-6 bg-white hover:bg-rose-300 duration-300 rounded-full flex justify-center items-center">
+          {isFavoriteImg}
         </div>
         <button
           className="bg-black w-full absolute bottom-0 text-white py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
@@ -82,7 +80,7 @@ function ProductTemplate({
         >
           Add To Cart
         </button>
-        <Link to={`/product/${id}`} className="w-9/12 h-3/4 ">
+        <Link to={`/product/${id}`} className="w-9/12 h-3/4 flex justify-center">
           <img
             src={fileUrl}
             className="object-contain md:w-full md:h-full w-10/12 h-5/6"

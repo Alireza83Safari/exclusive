@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import toast from "react-hot-toast";
 import { UserContext, UserContextType } from "./Context/UserContext";
-import { userType } from "../../../types/User.type";
+import { user } from "../../../types/user";
 import Input from "../../Input";
 import reactDOM from "react-dom";
 import SelectList from "../../SelectList";
-import { roleType } from "../../../types/Role.type";
+import { role } from "../../../types/role";
 import Spinner from "../../Spinner/Spinner";
 import {
   useEditUserMutation,
   useGetUserMutation,
 } from "../../../Redux/apis/admin/userAdminApi";
 import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
-import { userErrorType } from "../../../types/Error.type";
+import { userErrorType } from "../../../types/error";
 
 export default function EditUser() {
   const { showEditModal, setShowEditModal, editUserId, refetchUser } =
@@ -31,7 +31,7 @@ export default function EditUser() {
   };
 
   const [editUserValue, setEditUserValue] =
-    useState<userType>(inintialUserState);
+    useState<user>(inintialUserState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -197,7 +197,7 @@ export default function EditUser() {
                     })
                   }
                   name="roleId"
-                  options={roles?.data?.map((role: roleType) => ({
+                  options={roles?.data?.map((role: role) => ({
                     label: role.name,
                     value: role.id,
                   }))}

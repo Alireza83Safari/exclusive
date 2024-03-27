@@ -4,7 +4,7 @@ import "swiper/css/pagination";
 import { Link } from "react-router-dom";
 import { useGetBrandsUserQuery } from "../../Redux/apis/user/brandUserApi";
 import BrandSkeleton from "../../skelton/BrandSkeleton";
-import { getBrandType } from "../../types/Brand.type";
+import { getBrand } from "../../types/brand";
 
 function Brand() {
   const { data: brands, isLoading } = useGetBrandsUserQuery("");
@@ -44,7 +44,7 @@ function Brand() {
                   <BrandSkeleton />
                 </SwiperSlide>
               ))
-            : brands?.data?.map((data: getBrandType) => (
+            : brands?.data?.map((data: getBrand) => (
                 <SwiperSlide key={data.id} data-aos="fade-left">
                   <Link to={`/products?brandId=${data.id}`}>
                     <div className="border border-borderColor rounded-md h-44 mx-2 text-center flex justify-center items-center my-10 hover:bg-red duration-200 hover:text-white">

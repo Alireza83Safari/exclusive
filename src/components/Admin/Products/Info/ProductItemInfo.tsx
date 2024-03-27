@@ -7,7 +7,7 @@ import {
   ProductsContextType,
 } from "../Context/ProductsContext";
 import { FaTrash } from "react-icons/fa";
-import { productItemType } from "../../../../types/ProductItem.type";
+import { productItem } from "../../../../types/productItem";
 import toast from "react-hot-toast";
 import {
   useCreateProductItemMutation,
@@ -16,7 +16,7 @@ import {
   useGetProductItemAdminMutation,
 } from "../../../../Redux/apis/admin/productItemAdminApi";
 import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
-import { productItemErrorType } from "../../../../types/Error.type";
+import { productItemErrorType } from "../../../../types/error";
 
 function ProductItemInfo() {
   const { editProductId, showEditItem } = useContext(
@@ -33,7 +33,7 @@ function ProductItemInfo() {
     status: 0,
     colorName: "",
     statusName: "",
-  } as productItemType;
+  } as productItem;
 
   const [EditItemValue, setEditItemValue] = useState(initialProductItemInfo);
 

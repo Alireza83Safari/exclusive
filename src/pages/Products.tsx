@@ -1,7 +1,7 @@
 import React from "react";
 import { useFetchDataFromUrl } from "../hooks/useFetchDataFromUrl";
 import { usePagination } from "../hooks/usePagination";
-import { userProductType } from "../types/Product.type";
+import { userProductType } from "../types/product";
 import { userAxios } from "../services/userInterceptor";
 import ProductSkelton from "../skelton/ProductSkelton";
 import ProductTemplate from "../components/Product/ProductTemplate";

@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { userType } from "../../../types/User.type";
+import { user } from "../../../types/user";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
 export const userAdminApi = createApi({
@@ -23,7 +23,7 @@ export const userAdminApi = createApi({
       }),
     }),
     editUser: builder.mutation({
-      query: ({ id, userInfo }: { id: string; userInfo: userType }) => ({
+      query: ({ id, userInfo }: { id: string; userInfo: user }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: userInfo,

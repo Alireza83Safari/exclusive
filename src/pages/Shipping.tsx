@@ -1,7 +1,7 @@
 import React from "react";
-import { addressType } from "../types/Address.type";
+import { address } from "../types/address";
 import toast from "react-hot-toast";
-import { addressErrorType } from "../types/Error.type";
+import { addressErrorType } from "../types/error";
 import { useNavigate } from "react-router-dom";
 import { useGetOrderUserQuery } from "../Redux/apis/user/orderUserApi";
 import {
@@ -26,7 +26,7 @@ function Shipping() {
   };
   const [copunValue, setCopunValue] = React.useState("");
   const [chooseAddress, setChooseAddress] = React.useState("");
-  const [newAddress, setNewAddress] = React.useState<addressType>(initialState);
+  const [newAddress, setNewAddress] = React.useState<address>(initialState);
 
   const { data: order } = useGetOrderUserQuery("");
   const { data: addresses, refetch } = useGetAddressesQuery("");

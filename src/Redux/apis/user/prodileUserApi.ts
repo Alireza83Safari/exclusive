@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { profileUserInfo } from "../../../types/Profile.type";
+import { profileUserInfo } from "../../../types/profile";
 import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
 
 export const profileUserApi = createApi({

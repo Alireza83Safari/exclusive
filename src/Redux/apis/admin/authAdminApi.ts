@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
-import { userLoginType } from "../../../types/Auth.type";
+import { userLogin } from "../../../types/auth";
 
 export const authAdminApi = createApi({
   baseQuery: axiosBaseQueryAdmin({
@@ -21,7 +21,7 @@ export const authAdminApi = createApi({
       }),
     }),
     adminLogin: builder.mutation({
-      query: (infos: userLoginType) => ({
+      query: (infos: userLogin) => ({
         url: "/login",
         method: "post",
         data: infos,

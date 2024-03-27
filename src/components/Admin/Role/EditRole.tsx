@@ -7,8 +7,8 @@ import {
   useEditRoleMutation,
   useGetRoleMutation,
 } from "../../../Redux/apis/admin/roleAdminApi";
-import { roleErrorType } from "../../../types/Error.type";
-import { roleType } from "../../../types/Role.type";
+import { roleErrorType } from "../../../types/error";
+import { role } from "../../../types/role";
 
 export default function EditRole() {
   const {
@@ -70,7 +70,7 @@ export default function EditRole() {
       isSystem: true,
       name: data.name,
       permissions: selectedPermissions,
-    } as roleType;
+    } as role;
     editRole({ id: editRoleId, roleInfo: newRole });
   };
 

@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
-import { changeCommentStatusType } from "../../../types/Comment.type";
+import { changeCommentStatus } from "../../../types/comment";
 
 export const commentAdminApi = createApi({
   baseQuery: axiosBaseQueryAdmin({ baseUrl: "/comment" }),
@@ -16,7 +16,7 @@ export const commentAdminApi = createApi({
         commentInfo,
       }: {
         id: string;
-        commentInfo: changeCommentStatusType;
+        commentInfo: changeCommentStatus;
       }) => ({
         url: `/changeStatus/${id}`,
         method: "POST",

@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { brandType } from "../../../types/Brand.type";
+import { brand } from "../../../types/brand";
 import { axiosBaseQueryAdmin } from "../../../services/axiosBaseQueryAdmin";
 
 export const brandAdminApi = createApi({
@@ -22,14 +22,14 @@ export const brandAdminApi = createApi({
       }),
     }),
     createBrand: builder.mutation({
-      query: (brandInfo: brandType) => ({
+      query: (brandInfo: brand) => ({
         url: ``,
         method: "POST",
         data: brandInfo,
       }),
     }),
     editBrand: builder.mutation({
-      query: ({ id, brandInfo }: { id: string; brandInfo: brandType }) => ({
+      query: ({ id, brandInfo }: { id: string; brandInfo: brand }) => ({
         url: `/edit/${id}`,
         method: "POST",
         data: brandInfo,

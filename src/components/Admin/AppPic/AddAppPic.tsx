@@ -9,13 +9,13 @@ import {
   Select,
 } from "@mui/material";
 import toast from "react-hot-toast";
-import { appPicType } from "../../../types/AppPic.type";
+import { appPic } from "../../../types/appPic";
 import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import { useCreateAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
-import { appPicErrorType } from "../../../types/Error.type";
-import { appPicTypeOptions } from "./EditAppPic";
+import { appPicErrorType } from "../../../types/error";
 import Spinner from "../../Spinner/Spinner";
+import { appPicOptions } from "./EditAppPic";
 
 function AddAppPic() {
   const inintialAppPicState = {
@@ -24,7 +24,7 @@ function AddAppPic() {
     priority: null,
     title: "",
     url: "",
-  } as appPicType;
+  } as appPic;
   const {
     refetchAppPic,
     setCreateAppPicId,
@@ -33,7 +33,7 @@ function AddAppPic() {
   } = useContext(AppPicContext) as appPicContextType;
 
   const [createAppPicValue, setCreateAppPicValue] =
-    useState<appPicType>(inintialAppPicState);
+    useState<appPic>(inintialAppPicState);
 
   const setInputValue = (event: any) => {
     const { value, name, type } = event.target;
@@ -174,7 +174,7 @@ function AddAppPic() {
               sx={{ marginY: "7px" }}
               onChange={setInputValue}
             >
-              {appPicTypeOptions.map((option) => (
+              {appPicOptions?.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>

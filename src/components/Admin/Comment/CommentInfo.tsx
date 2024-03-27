@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext, useMemo } from "react";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
-import { getCommentType } from "../../../types/Comment.type";
+import { getCommentType } from "../../../types/comment";
 import { CommentSkeleton } from "../../../skelton/admin/Comment";
 
 function CommentInfo() {

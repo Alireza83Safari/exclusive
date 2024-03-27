@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { userProductType } from "../../types/Product.type";
+import { userProductType } from "../../types/product";
 import ProductTemplate from "../Product/ProductTemplate";
 
 function RelatedProducts({ products }: any) {

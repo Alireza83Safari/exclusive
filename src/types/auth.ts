@@ -1,4 +1,4 @@
-export type authType = {
+export type auth = {
   userInfo: null;
   loginError: string | null;
   error: string | null;
@@ -7,12 +7,12 @@ export type authType = {
   registerError: string | null;
 };
 
-export interface userLoginType {
+export interface userLogin {
   username: string;
   password: string;
 }
 
-export interface userRegisterType extends userLoginType {
+export interface userRegisterType extends userLogin {
   passwordConfirmation: string;
 }
 

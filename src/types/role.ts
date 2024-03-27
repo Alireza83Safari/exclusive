@@ -1,4 +1,4 @@
-export type roleType = {
+export type role = {
   code: string;
   createdAt?: string;
   id?: string;

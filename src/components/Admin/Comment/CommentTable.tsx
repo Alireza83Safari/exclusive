@@ -11,7 +11,7 @@ import { FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
 import { CommentContext, commentContextType } from "./Context/CommentContext";
-import { changeCommentStatusType } from "../../../types/Comment.type";
+import { changeCommentStatus } from "../../../types/comment";
 import { useDeleteCommentMutation } from "../../../Redux/apis/user/commentUserApi";
 import { useChangeCommentStatusMutation } from "../../../Redux/apis/admin/commentAdminApi";
 import Pagination from "../../Pagination";
@@ -60,7 +60,7 @@ function CommentTable() {
   const [changeStatus, setChangeStatus] = useState({
     note: "test",
     status: null,
-  } as changeCommentStatusType);
+  } as changeCommentStatus);
 
   const { userHasAccess: accessList } = useHasAccess(
     "action_comment_admin_list"

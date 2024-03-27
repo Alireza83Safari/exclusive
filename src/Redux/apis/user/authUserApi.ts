@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { recoveryPasswordType, setNewPasswordType, userLoginType, userRegisterType } from '../../../types/Auth.type';
+import { recoveryPasswordType, setNewPasswordType, userLogin, userRegisterType } from '../../../types/auth';
 import { axiosBaseQueryUser } from "../../../services/axiosBaseQueryUser";
 
 export const authUserApi = createApi({
@@ -21,7 +21,7 @@ export const authUserApi = createApi({
       }),
     }),
     userLogin: builder.mutation({
-      query: (infos: userLoginType) => ({
+      query: (infos: userLogin) => ({
         url: "/login",
         method: "POST",
         data: JSON.stringify(infos),

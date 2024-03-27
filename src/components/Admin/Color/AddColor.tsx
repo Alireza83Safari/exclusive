@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
-import { colorType } from "../../../types/Color.type";
+import { color } from "../../../types/color";
 import { ColorContext, colorContextType } from "./Context/ColorContext";
 import { useCreateColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
-import { colorErrorType } from "../../../types/Error.type";
+import { colorErrorType } from "../../../types/error";
 import { CreateColorSkeleton } from "../../../skelton/admin/Color";
 
 function AddColor() {
@@ -17,7 +17,7 @@ function AddColor() {
   const { refetchColor } = useContext(ColorContext) as colorContextType;
 
   const [createColorValue, setCreateColorValue] =
-    useState<colorType>(inintialColorState);
+    useState<color>(inintialColorState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,7 +26,7 @@ function AddColor() {
     setCreateColorValue({ ...createColorValue, [name]: value });
   };
 
-  const [createColor, { error: colorError, isSuccess ,isLoading}] =
+  const [createColor, { error: colorError, isSuccess, isLoading }] =
     useCreateColorMutation();
 
   const { userHasAccess } = useHasAccess("action_color_admin_create");

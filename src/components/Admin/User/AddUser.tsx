@@ -4,12 +4,12 @@ import { UserContext, UserContextType } from "./Context/UserContext";
 import reactDOM from "react-dom";
 import Input from "../../Input";
 import SelectList from "../../SelectList";
-import { userType } from "../../../types/User.type";
-import { roleType } from "../../../types/Role.type";
+import { user } from "../../../types/user";
+import { role } from "../../../types/role";
 import Spinner from "../../Spinner/Spinner";
 import { useCreateUserMutation } from "../../../Redux/apis/admin/userAdminApi";
 import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
-import { userErrorType } from "../../../types/Error.type";
+import { userErrorType } from "../../../types/error";
 
 function AddUser() {
   const { showAddModal, refetchUser, setShowAddModal } = useContext(
@@ -28,7 +28,7 @@ function AddUser() {
     roleName: "",
   };
 
-  const [addUserValue, setAddUserValue] = useState<userType>(inintialUserState);
+  const [addUserValue, setAddUserValue] = useState<user>(inintialUserState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -155,7 +155,7 @@ function AddUser() {
                     })
                   }
                   name="roleId"
-                  options={roles?.data.map((role: roleType) => ({
+                  options={roles?.data.map((role: role) => ({
                     label: role.name,
                     value: role.id,
                   }))}

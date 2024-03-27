@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
-import { userProductType } from "../types/Product.type";
+import { userProductType } from "../types/product";
 import ProductSkelton from "../skelton/ProductSkelton";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -25,7 +25,7 @@ const ProductSlider: React.FC<ProductSliderType> = ({
   const totalSkeletonShow = Array.from(Array(4).keys());
 
   return (
-    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative px-4">
+    <section className="xl:max-w-[1280px] md:max-w-[98%] w-full mx-auto mt-20 relative sm:px-4 px-1">
       <p className="text-red font-semibold my-5">This Month</p>
       <div className="flex justify-between items-center my-8">
         <h2 className="md:text-4xl text-2xl font-semibold mb-5 border-l-8 border-red">

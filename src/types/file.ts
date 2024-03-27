@@ -1,4 +1,4 @@
-export type fileType = {
+export type file = {
   createdAt: string;
   extension: string;
   fileType: number;

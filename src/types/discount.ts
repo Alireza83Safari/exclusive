@@ -1,12 +1,3 @@
-export type discountStateType = {
-  discountLoading: boolean;
-  discount: getDiscountAdminType;
-  adminDiscounts: getDiscountAdminType[];
-  userDiscounts: getDiscountUserType[];
-  discountCode: null;
-  discountCodeError: null;
-};
-
 export type getDiscountAdminType = {
   code: string;
   createdAt: string;

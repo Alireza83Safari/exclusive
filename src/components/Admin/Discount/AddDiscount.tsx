@@ -20,7 +20,7 @@ import {
 import { useCreateDiscountMutation } from "../../../Redux/apis/admin/discountAdminApi";
 import { CreateColorSkeleton } from "../../../skelton/admin/Color";
 import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
-import { userProductType } from "../../../types/Product.type";
+import { userProductType } from "../../../types/product";
 import { useGetUserListQuery } from "../../../Redux/apis/admin/userAdminApi";
 
 import dayjs from "dayjs";
