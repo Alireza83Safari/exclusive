@@ -3,10 +3,15 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import { TotalColorSkeleton } from "../../../skelton/admin/Color";
-import { DiscountContext, discountContextType } from "./Context/DiscountContext";
+import {
+  DiscountContext,
+  discountContextType,
+} from "../../../context/admin/discountContext";
 
 function TotalDiscount() {
-  const { total, discountsLoading } = useContext(DiscountContext) as discountContextType;
+  const { total, discountsLoading } = useContext(
+    DiscountContext
+  ) as discountContextType;
   return (
     <Card
       sx={{

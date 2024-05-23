@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import Input from "../../../Input";
-import Spinner from "../../../Spinner/Spinner";
-import SelectList from "../../../SelectList";
+import Spinner from "../../../Share/Spinner/Spinner";
+import { SelectList, Input } from "../../../../components";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 import { FaTrash } from "react-icons/fa";
 import { productItem } from "../../../../types/productItem";
 import toast from "react-hot-toast";

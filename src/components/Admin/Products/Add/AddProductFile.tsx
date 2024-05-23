@@ -2,10 +2,10 @@ import React, { useState, useContext, useEffect } from "react";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 import toast from "react-hot-toast";
 import { FaTrashAlt } from "react-icons/fa";
-import Spinner from "../../../Spinner/Spinner";
+import Spinner from "../../../Share/Spinner/Spinner";
 import { useUploadImageMutation } from "../../../../Redux/apis/user/fileUserApi";
 
 export default function AddProductFile() {

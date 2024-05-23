@@ -9,14 +9,17 @@ import TableRow from "@mui/material/TableRow";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
-import { UserContext, UserContextType } from "./Context/UserContext";
+import {
+  UserContext,
+  UserContextType,
+} from "../../../context/admin/userContext";
 import EditUser from "./EditUser";
 import { Box, Button, TextField } from "@mui/material";
 import AddUser from "./AddUser";
 import { useDeleteUserMutation } from "../../../Redux/apis/admin/userAdminApi";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
-import Pagination from "../../Pagination";
+import { Pagination } from "../../../components";
 import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../hooks/useHasAccess";
 import useRow from "../../../hooks/useRow";

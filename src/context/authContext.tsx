@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { useUserIsAuthenticatedQuery } from "../Redux/apis/user/authUserApi";
+import { authUserApi } from "../Redux";
 
 export type authContextProviderType = {
   children: React.ReactNode;
@@ -39,7 +39,7 @@ export const authContext = createContext<authContextType | null>(null);
 
 export const AuthContextProvider = ({ children }: authContextProviderType) => {
   const { data, isSuccess, isLoading, refetch } =
-    useUserIsAuthenticatedQuery("");
+    authUserApi.useUserIsAuthenticatedQuery("");
   const [userPermissions, setUserPermissions] = useState([]);
   const [userIsLogin, setUserIsLogin] = useState<null | boolean>(false);
   const [userInfos, setUserInfos] = useState<userInfosType | null>(null);

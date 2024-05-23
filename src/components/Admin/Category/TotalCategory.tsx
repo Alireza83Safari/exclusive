@@ -5,8 +5,8 @@ import { useContext } from "react";
 import {
   CategoryContext,
   categoryContextType,
-} from "./Context/CayegoryContext";
-import Spinner from "../../Spinner/Spinner";
+} from "../../../context/admin/cayegoryContext";
+import Spinner from "../../Share/Spinner/Spinner";
 
 function TotalCategory() {
   const { total, categoryLoading } = useContext(

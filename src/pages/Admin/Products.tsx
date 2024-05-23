@@ -1,22 +1,10 @@
-import { ProductsContextProvider } from "../../components/Admin/Products/Context/ProductsContext";
-import { lazy, Suspense } from "react";
-import { Spinner } from "../../components";
-const ProductsPanel = lazy(
-  () => import("../../components/Admin/Products/ProductsPanel")
-);
+import { ProductsPanel } from "../../components";
+import { ProductsContextProvider } from "../../context/admin/productsContext";
 
 function Products() {
   return (
     <ProductsContextProvider>
-      <Suspense
-        fallback={
-          <div className="min-h-screen flex items-center">
-            <Spinner />
-          </div>
-        }
-      >
-        <ProductsPanel />
-      </Suspense>
+      <ProductsPanel />
     </ProductsContextProvider>
   );
 }

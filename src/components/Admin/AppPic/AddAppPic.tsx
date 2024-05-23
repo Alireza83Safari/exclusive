@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import toast from "react-hot-toast";
 import { appPic } from "../../../types/appPic";
-import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
 import { useCreateAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { appPicErrorType } from "../../../types/error";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Share/Spinner/Spinner";
 import { appPicOptions } from "./EditAppPic";
+import { appPicContextType, AppPicContext } from '../../../context/admin/appPicContext';
 
 function AddAppPic() {
   const inintialAppPicState = {

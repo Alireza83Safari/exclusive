@@ -10,11 +10,14 @@ import {
 } from "@mui/material";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { BrandContext, brandContextType } from "./Context/BrandContext";
+import {
+  BrandContext,
+  brandContextType,
+} from "../../../context/admin/brandContext";
 import DeleteModal from "../DeleteModal";
 import EditBrand from "./EditBrand";
 import { useDeleteBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
-import Pagination from "../../Pagination";
+import {Pagination} from "../../../components";
 import { usePagination } from "../../../hooks/usePagination";
 import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";

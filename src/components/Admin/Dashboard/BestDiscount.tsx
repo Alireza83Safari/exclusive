@@ -1,10 +1,10 @@
-import Spinner from "../../Spinner/Spinner";
-import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
+import Spinner from "../../Share/Spinner/Spinner";
+import { productUserApi } from "../../../Redux/apis/user/productUserApi";
 import { MostSkeleton } from "../../../skelton/admin/Dashboard";
 
 function BestDiscount() {
   const { data: product, isLoading: productLoading } =
-    useGetProductsUserQuery("?order=discount");
+    productUserApi.useGetProductsUserQuery("?order=discount");
   const topDiscount = product?.data && product?.data[0];
 
   return (

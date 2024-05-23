@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import {
   CategoryContext,
   categoryContextType,
-} from "./Context/CayegoryContext";
+} from "../../../context/admin/cayegoryContext";
 import { TextField } from "@mui/material";
 import { category } from "../../../types/category";
 import toast from "react-hot-toast";

@@ -1,4 +1,4 @@
-import ContentLoaders from "../../components/ContentLoaders";
+import { ContentLoaders } from "../../components";
 
 function OrderInfosSkeleton() {
   return <ContentLoaders width="32vw" height={200} />;

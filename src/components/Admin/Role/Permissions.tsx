@@ -1,6 +1,9 @@
 import { useContext } from "react";
 import reactDOM from "react-dom";
-import { RoleContext, roleContextType } from "./Context/RoleContext";
+import {
+  RoleContext,
+  roleContextType,
+} from "../../../context/admin/roleContext";
 import { role } from "../../../types/role";
 
 function Permissions() {

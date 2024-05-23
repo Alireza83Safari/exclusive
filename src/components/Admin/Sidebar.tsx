@@ -11,6 +11,7 @@ import { TbCategory, TbLockAccess } from "react-icons/tb";
 import { TbBrandApple } from "react-icons/tb";
 import { IoBagCheck, IoColorPaletteOutline } from "react-icons/io5";
 import { PiFlagBannerFill } from "react-icons/pi";
+import { appRoutes } from "../../routes/appRoutes";
 
 interface SidebarProps {
   open: boolean;
@@ -18,17 +19,17 @@ interface SidebarProps {
 }
 
 const mentItem = [
-  { key: "dashboard", icon: <MdDashboard /> },
-  { key: "product", icon: <FaBox /> },
-  { key: "role", icon: <TbLockAccess /> },
-  { key: "brand", icon: <TbBrandApple /> },
-  { key: "category", icon: <TbCategory /> },
-  { key: "color", icon: <IoColorPaletteOutline /> },
-  { key: "order", icon: <IoBagCheck /> },
-  { key: "comment", icon: <FaRegComment /> },
-  { key: "appPic", icon: <PiFlagBannerFill /> },
-  { key: "user", icon: <FaRegUser /> },
-  { key: "discount", icon: <MdDiscount /> },
+  { key: appRoutes.ADMIN_DASHBOARD, title: "dashboard", icon: <MdDashboard /> },
+  { key: appRoutes.ADMIN_PRODUCT, title: "product",icon: <FaBox /> },
+  { key: appRoutes.ADMIN_ROLE, title: "role",icon: <TbLockAccess /> },
+  { key: appRoutes.ADMIN_BRAND,title: "brand", icon: <TbBrandApple /> },
+  { key: appRoutes.ADMIN_CATEGORY,title: "category", icon: <TbCategory /> },
+  { key: appRoutes.ADMIN_COLOR, title: "color",icon: <IoColorPaletteOutline /> },
+  { key: appRoutes.ADMIN_ORDER, title: "order",icon: <IoBagCheck /> },
+  { key: appRoutes.ADMIN_COMMENT,title: "comment", icon: <FaRegComment /> },
+  { key: appRoutes.ADMIN_APPPIC,title: "appPic", icon: <PiFlagBannerFill /> },
+  { key: appRoutes.ADMIN_USER, title: "user",icon: <FaRegUser /> },
+  { key: appRoutes.ADMIN_DISCOUNT, title: "discount",icon: <MdDiscount /> },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
@@ -48,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               }}
             >
               {menu.icon}
-              <ListItemText primary={menu.key} className="ml-2" />
+              <ListItemText primary={menu.title} className="ml-2" />
             </ListItem>
           </Link>
         ))}

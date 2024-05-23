@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { userAxios } from "../../../../services/userInterceptor";
 import toast from "react-hot-toast";
-import Spinner from "../../../Spinner/Spinner";
+import Spinner from "../../../Share/Spinner/Spinner";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 import {
   useChangeImagePriorityMutation,
   useGetFileItemIdMutation,

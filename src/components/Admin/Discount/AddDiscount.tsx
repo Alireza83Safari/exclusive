@@ -16,12 +16,12 @@ import useHasAccess from "../../../hooks/useHasAccess";
 import {
   DiscountContext,
   discountContextType,
-} from "./Context/DiscountContext";
-import { useCreateDiscountMutation } from "../../../Redux/apis/admin/discountAdminApi";
+} from "../../../context/admin/discountContext";
+import { discountAdminApi } from "../../../Redux/apis/admin/discountAdminApi";
 import { CreateColorSkeleton } from "../../../skelton/admin/Color";
-import { useGetProductsUserQuery } from "../../../Redux/apis/user/productApiUser";
+import { productUserApi } from "../../../Redux/apis/user/productUserApi";
 import { userProductType } from "../../../types/product";
-import { useGetUserListQuery } from "../../../Redux/apis/admin/userAdminApi";
+import { userAdminApi } from "../../../Redux/apis/admin/userAdminApi";
 
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -44,8 +44,8 @@ function AddDiscount() {
   const [createDiscountValue, setCreateDiscountValue] =
     useState(initialDiscountState);
 
-  const { data: products } = useGetProductsUserQuery("");
-  const { data: users } = useGetUserListQuery("");
+  const { data: products } = productUserApi.useGetProductsUserQuery("");
+  const { data: users } = userAdminApi.useGetUserListQuery("");
 
   const setInputValue = (event: any) => {
     const { value, name, type } = event.target;
@@ -56,7 +56,7 @@ function AddDiscount() {
   };
 
   const [createDiscount, { error: discountError, isSuccess, isLoading }] =
-    useCreateDiscountMutation();
+    discountAdminApi.useCreateDiscountMutation();
 
   const { userHasAccess } = useHasAccess("action_discount_admin_create");
 

@@ -16,11 +16,11 @@ import DeleteModal from "../DeleteModal";
 import {
   ProductsContext,
   ProductsContextType,
-} from "./Context/ProductsContext";
+} from "../../../context/admin/productsContext";
 import toast from "react-hot-toast";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDeleteProductMutation } from "../../../Redux/apis/admin/productAdminApi";
-import Pagination from "../../Pagination";
+import { Pagination } from "../../../components";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import useRow from "../../../hooks/useRow";
@@ -86,6 +86,7 @@ export default function ProductsTable() {
   };
 
   const { rowNumber, limit } = useRow();
+  console.log(products);
 
   return (
     <>

@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
-import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
+import { AppPicContext, appPicContextType } from '../../../context/admin/appPicContext';
 import EditAppPic from "./EditAppPic";
 import { useDeleteAppPicMutation } from "../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";

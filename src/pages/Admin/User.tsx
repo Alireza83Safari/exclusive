@@ -1,22 +1,12 @@
-import { Suspense, lazy } from "react";
-import { UserContextProvider } from "../../components/Admin/User/Context/UserContext";
-import { Spinner } from "../../components";
-const UserTable = lazy(() => import("../../components/Admin/User/UserTable"));
+import { UserContextProvider } from "../../context/admin/userContext";
+import { UserTable } from "../../components";
 
 function User() {
   return (
     <UserContextProvider>
-      <Suspense
-        fallback={
-          <div className="min-h-screen flex items-center">
-            <Spinner />
-          </div>
-        }
-      >
-        <div className="grid grid-cols-12 mt-4">
-          <UserTable />
-        </div>
-      </Suspense>
+      <div className="grid grid-cols-12 mt-4">
+        <UserTable />
+      </div>
     </UserContextProvider>
   );
 }

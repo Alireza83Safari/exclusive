@@ -6,15 +6,18 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Share/Spinner/Spinner";
 import { FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
-import { CommentContext, commentContextType } from "./Context/CommentContext";
+import {
+  CommentContext,
+  commentContextType,
+} from "../../../context/admin/commentContext";
 import { changeCommentStatus } from "../../../types/comment";
 import { useDeleteCommentMutation } from "../../../Redux/apis/user/commentUserApi";
 import { useChangeCommentStatusMutation } from "../../../Redux/apis/admin/commentAdminApi";
-import Pagination from "../../Pagination";
+import { Pagination } from "../../../components";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import SearchIcon from "@mui/icons-material/Search";

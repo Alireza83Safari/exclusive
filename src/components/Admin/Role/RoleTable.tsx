@@ -9,7 +9,10 @@ import TableRow from "@mui/material/TableRow";
 import { FaPen, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeleteModal from "../DeleteModal";
-import { RoleContext, roleContextType } from "./Context/RoleContext";
+import {
+  RoleContext,
+  roleContextType,
+} from "../../../context/admin/roleContext";
 import Permissions from "./Permissions";
 import AddRole from "./AddRole";
 import EditRole from "./EditRole";

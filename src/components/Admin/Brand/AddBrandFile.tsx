@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Typography, Paper, Input } from "@mui/material";
 import toast from "react-hot-toast";
-import { BrandContext, brandContextType } from "./Context/BrandContext";
-import { useAddBrandImageMutation } from "../../../Redux/apis/user/brandUserApi";
+import {
+  BrandContext,
+  brandContextType,
+} from "../../../context/admin/brandContext";
 import { adminAxios } from "../../../services/adminInterceptor";
+import { brandUserApi } from "../../../Redux";
 
 function AddBrandFile() {
   const [image, setImage] = useState([]);
@@ -14,7 +17,8 @@ function AddBrandFile() {
     setShowAddBrand,
     setShowAddBrandFile,
   } = useContext(BrandContext) as brandContextType;
-  const [addBrandImage, { isSuccess, error }] = useAddBrandImageMutation();
+  const [addBrandImage, { isSuccess, error }] =
+    brandUserApi.useAddBrandImageMutation();
 
   const createBrandHandler = () => {
     const imageFormData = new FormData();

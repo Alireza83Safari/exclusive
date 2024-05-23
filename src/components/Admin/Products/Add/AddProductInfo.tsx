@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { product } from "../../../../types/product";
-import Input from "../../../Input";
-import SelectList from "../../../SelectList";
+import { SelectList, Input } from "../../../../components";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 import toast from "react-hot-toast";
 import { brandSelectListType } from "../../../../types/brand";
-import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
 import { useCreateProductMutation } from "../../../../Redux/apis/admin/productAdminApi";
-import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
-import Spinner from "../../../Spinner/Spinner";
+import Spinner from "../../../Share/Spinner/Spinner";
 import { productSchema } from "../../../../validations/Product";
 import { productErrorType } from "../../../../types/error";
 import { categoryUserType } from "../../../../types/category";
+import { brandUserApi, categoryUserApi } from "../../../../Redux";
 
 export type createProductType = {
   data: {
@@ -50,8 +48,8 @@ function AddProductInfo() {
     setAddProductInfo({ ...addProductInfo, [name]: value });
   };
 
-  const { data: brands } = useGetBrandsSelectListQuery("");
-  const { data: category } = useGetCategorySelectListQuery("");
+  const { data: brands } = brandUserApi.useGetBrandsSelectListQuery("");
+  const { data: category } = categoryUserApi.useGetCategorySelectListQuery("");
 
   const [createProduct, { error: createProductError, isSuccess, isLoading }] =
     useCreateProductMutation();

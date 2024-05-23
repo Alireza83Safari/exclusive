@@ -2,8 +2,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
-import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
-import Spinner from "../../Spinner/Spinner";
+import { AppPicContext, appPicContextType } from '../../../context/admin/appPicContext';
+import Spinner from "../../Share/Spinner/Spinner";
 
 function TotalAppPic() {
   const { appPics, appPicLoading } = useContext(

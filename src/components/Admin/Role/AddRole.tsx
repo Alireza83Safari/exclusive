@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { RoleContext, roleContextType } from "./Context/RoleContext";
-import Input from "../../Input";
+import {
+  RoleContext,
+  roleContextType,
+} from "../../../context/admin/roleContext";
+import { Input } from "../../../components";
 import toast from "react-hot-toast";
 import reactDOM from "react-dom";
 import { useCreateRoleMutation } from "../../../Redux/apis/admin/roleAdminApi";

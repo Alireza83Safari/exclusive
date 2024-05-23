@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { UserContext, UserContextType } from "./Context/UserContext";
+import {
+  UserContext,
+  UserContextType,
+} from "../../../context/admin/userContext";
 import reactDOM from "react-dom";
-import Input from "../../Input";
-import SelectList from "../../SelectList";
+import { Input, SelectList } from "../../../components";
 import { user } from "../../../types/user";
 import { role } from "../../../types/role";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Share/Spinner/Spinner";
 import { useCreateUserMutation } from "../../../Redux/apis/admin/userAdminApi";
 import { useGetRolesQuery } from "../../../Redux/apis/admin/roleAdminApi";
 import { userErrorType } from "../../../types/error";
