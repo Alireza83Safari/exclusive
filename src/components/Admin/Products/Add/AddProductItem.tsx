@@ -1,15 +1,14 @@
 import React, { useContext, useMemo, useState } from "react";
-import Input from "../../../Input";
-import SelectList from "../../../SelectList";
+import { SelectList, Input } from "../../../../components";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 import { productItemErrorType } from "../../../../types/error";
 import toast from "react-hot-toast";
 import { useCreateProductItemMutation } from "../../../../Redux/apis/admin/productItemAdminApi";
 import { useGetColorsSelectListQuery } from "../../../../Redux/apis/user/colorUserApi";
-import Spinner from "../../../Spinner/Spinner";
+import Spinner from "../../../Share/Spinner/Spinner";
 import { productItem } from "../../../../types/productItem";
 
 function AddProductItem() {

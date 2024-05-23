@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { appRoutes } from "../../routes/appRoutes";
 
 const menuItem = [
   { name: "dashboard", value: "dashboard" },
@@ -63,7 +64,7 @@ function Header() {
               <MenuIcon />
             </IconButton>
 
-            <Link to="/admin">
+            <Link to={appRoutes.ADMIN}>
               <Typography
                 variant="h6"
                 noWrap

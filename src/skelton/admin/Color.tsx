@@ -1,4 +1,4 @@
-import ContentLoaders from "../../components/ContentLoaders";
+import { ContentLoaders } from "../../components";
 
 function TotalColorSkeleton() {
   return <ContentLoaders width="30vw" height={200} />;
@@ -24,4 +24,4 @@ function ColorSkeleton() {
   );
 }
 
-export { TotalColorSkeleton, CreateColorSkeleton ,ColorSkeleton};
+export { TotalColorSkeleton, CreateColorSkeleton, ColorSkeleton };

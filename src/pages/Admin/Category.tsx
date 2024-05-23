@@ -1,34 +1,21 @@
-import React, { Suspense } from "react";
-import { CategoryContextProvider } from "../../components/Admin/Category/Context/CayegoryContext";
-import { Spinner } from "../../components";
-
-const CategoryTable = React.lazy(
-  () => import("../../components/Admin/Category/CategoryTable")
-);
-const TotalCategory = React.lazy(
-  () => import("../../components/Admin/Category/TotalCategory")
-);
-const AddCategory = React.lazy(
-  () => import("../../components/Admin/Category/AddCategory")
-);
+import { CategoryContextProvider } from "../../context/admin/cayegoryContext";
+import { AddCategory, CategoryTable, TotalCategory } from "../../components";
 
 function Category() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center"><Spinner /></div>}>
-      <CategoryContextProvider>
-        <div className="grid grid-cols-12 mt-4">
-          <CategoryTable />
-          <div className="lg:col-span-4 col-span-12 grid grid-cols-1 lg:order-2 order-1">
-            <div className="lg:col-span-2 cols-span-1">
-              <TotalCategory />
-            </div>
-            <div className="lg:col-span-2 cols-span-1">
-              <AddCategory />
-            </div>
+    <CategoryContextProvider>
+      <div className="grid grid-cols-12 mt-4">
+        <CategoryTable />
+        <div className="lg:col-span-4 col-span-12 grid grid-cols-1 lg:order-2 order-1">
+          <div className="lg:col-span-2 cols-span-1">
+            <TotalCategory />
+          </div>
+          <div className="lg:col-span-2 cols-span-1">
+            <AddCategory />
           </div>
         </div>
-      </CategoryContextProvider>
-    </Suspense>
+      </div>
+    </CategoryContextProvider>
   );
 }
 

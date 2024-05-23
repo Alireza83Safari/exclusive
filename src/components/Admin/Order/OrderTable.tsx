@@ -7,8 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box, TextField } from "@mui/material";
-import { OrderContext, orderContextType } from "./Context/OrderContext";
-import Pagination from "../../Pagination";
+import {
+  OrderContext,
+  orderContextType,
+} from "../../../context/admin/orderContext";
+import { Pagination } from "../../../components";
 import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import SearchIcon from "@mui/icons-material/Search";

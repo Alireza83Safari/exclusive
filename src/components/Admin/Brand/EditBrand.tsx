@@ -5,14 +5,17 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
-import { BrandContext, brandContextType } from "./Context/BrandContext";
+import {
+  BrandContext,
+  brandContextType,
+} from "../../../context/admin/brandContext";
 import { brand } from "../../../types/brand";
 import {
   useEditBrandMutation,
   useGetBrandMutation,
 } from "../../../Redux/apis/admin/brandAdminApi";
 import { brandErrorType } from "../../../types/error";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Share/Spinner/Spinner";
 
 const style = {
   position: "absolute" as "absolute",

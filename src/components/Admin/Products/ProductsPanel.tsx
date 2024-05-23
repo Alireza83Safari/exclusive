@@ -5,7 +5,7 @@ import Info from "./Info/Info";
 import {
   ProductsContext,
   ProductsContextType,
-} from "./Context/ProductsContext";
+} from "../../../context/admin/productsContext";
 
 function ProductsPanel() {
   const { showProductInfoModal } = useContext(

@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
-import { OrderContext, orderContextType } from "./Context/OrderContext";
+import { OrderContext, orderContextType } from "../../../context/admin/orderContext";
 import { OrderInfosSkeleton } from "../../../skelton/admin/Order";
 
 function OrderInfo() {

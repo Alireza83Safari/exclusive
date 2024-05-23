@@ -1,7 +1,5 @@
-// App.tsx
 import Header from "./Header";
 import { Navigate, Outlet } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import { useContext } from "react";
 import { authContext, authContextType } from "../../context/authContext";
 
@@ -15,7 +13,6 @@ function Index() {
           <div className="xl:container xl:mx-auto">
             <Outlet />
           </div>
-          <Toaster />
         </>
       ) : (
         <Navigate to="/" />

@@ -2,7 +2,10 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
 import { color } from "../../../types/color";
-import { ColorContext, colorContextType } from "./Context/ColorContext";
+import {
+  ColorContext,
+  colorContextType,
+} from "../../../context/admin/colorContext";
 import { useCreateColorMutation } from "../../../Redux/apis/admin/colorAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { colorErrorType } from "../../../types/error";

@@ -1,71 +1,220 @@
-import Register from "../pages/Register";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Cart from "../pages/Cart";
-import Account from "../pages/Account";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import ProductDetails from "../pages/ProductDetails";
-import Products from "../pages/Products";
-import FavoriteProducts from "../components/Account/Favorite/FavoriteProducts";
-import AccountOrders from "../components/Account/AccountOrders";
-import AccountAddress from "../components/Account/Address/AccountAddress";
-import AccountComments from "../components/Account/AccountComments";
-import Shipping from "../pages/Shipping";
-import IndexPanel from "../components/Admin/index";
-import AdminProducts from "../pages/Admin/Products";
-import Dashboard from "../pages/Admin/Dashboard";
-import Category from "../pages/Admin/Category";
-import Color from "../pages/Admin/Color";
-import BrandPanel from "../pages/Admin/Brand";
-import AppPic from "../pages/Admin/AppPic";
-import Comment from "../pages/Admin/Comment";
-import User from "../pages/Admin/User";
-import Order from "../pages/Admin/Order";
-import Role from "../pages/Admin/Role";
-import NotFound from "../components/404";
-import Discount from "../pages/Admin/Discount";
+import { lazy, Suspense } from "react";
+import {
+  NotFound,
+  FavoriteProducts,
+  AccountOrders,
+  AccountAddress,
+  AccountComments,
+  IndexPanel,
+} from "../components";
+import { appRoutes } from "./appRoutes";
+import {
+  About,
+  Account,
+  Cart,
+  Contact,
+  Home,
+  Login,
+  ProductDetails,
+  Products,
+  Register,
+  Shipping,
+} from "../pages";
+
+const AdminProducts = lazy(() => import("../pages/Admin/Products"));
+const Comment = lazy(() => import("../pages/Admin/Comment"));
+const Discount = lazy(() => import("../pages/Admin/Discount"));
+const Role = lazy(() => import("../pages/Admin/Role"));
+const Order = lazy(() => import("../pages/Admin/Order"));
+const User = lazy(() => import("../pages/Admin/User"));
+const Brand = lazy(() => import("../pages/Admin/Brand"));
+const AppPic = lazy(() => import("../pages/Admin/AppPic"));
+const Category = lazy(() => import("../pages/Admin/Category"));
+const Color = lazy(() => import("../pages/Admin/Color"));
+const Dashboard = lazy(() => import("../pages/Admin/Dashboard"));
 
 const routes = [
   { path: "*", element: <NotFound /> },
-  { path: "register", element: <Register /> },
-  { path: "login", element: <Login /> },
-  { path: "", element: <Home /> },
-  { path: "cart", element: <Cart /> },
-  { path: "cart/Shipping", element: <Shipping /> },
-  { path: "account", element: <Account /> },
-  { path: "about", element: <About /> },
-  { path: "contact", element: <Contact /> },
-  { path: "product/:productId", element: <ProductDetails /> },
-  { path: "products", element: <Products /> },
   {
-    path: "account/*",
-    element: <Account />,
+    path: appRoutes.REGISTER,
+    element: <Register />,
+  },
+  {
+    path: appRoutes.LOGIN,
+    element: <Login />,
+  },
+  {
+    path: "",
+    element: <Home />,
+  },
+  {
+    path: appRoutes.CART,
+    element: <Cart />,
     children: [
-      { path: "", element: <AccountOrders /> },
-      { path: "favorite", element: <FavoriteProducts /> },
-      { path: "order", element: <AccountOrders /> },
-      { path: "comment", element: <AccountComments /> },
-      { path: "address", element: <AccountAddress /> },
+      {
+        path: appRoutes.CART_SHIPPING,
+        element: <Shipping />,
+      },
     ],
   },
-
   {
-    path: "admin/*",
-    element: <IndexPanel />,
+    path: appRoutes.ACCOUNT,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Account />
+      </Suspense>
+    ),
+  },
+  {
+    path: appRoutes.ABOUT + "*",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <About />
+      </Suspense>
+    ),
+  },
+  {
+    path: appRoutes.CONTACT,
+    element: <Contact />,
+  },
+  {
+    path: appRoutes.PRODUCT + ":productId",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductDetails />
+      </Suspense>
+    ),
+  },
+  {
+    path: appRoutes.PRODUCTS,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Products />
+      </Suspense>
+    ),
+  },
+  {
+    path: appRoutes.ACCOUNT,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Account />
+      </Suspense>
+    ),
     children: [
-      { path: "", element: <Dashboard /> },
-      { path: "dashboard", element: <Dashboard /> },
-      { path: "product", element: <AdminProducts /> },
-      { path: "category", element: <Category /> },
-      { path: "color", element: <Color /> },
-      { path: "brand", element: <BrandPanel /> },
-      { path: "appPic", element: <AppPic /> },
-      { path: "comment", element: <Comment /> },
-      { path: "user", element: <User /> },
-      { path: "order", element: <Order /> },
-      { path: "role", element: <Role /> },
-      { path: "discount", element: <Discount /> },
+      { path: "", element: <AccountOrders /> },
+      {
+        path: appRoutes.ACCOUNT_FAVORITE_CHILDREN,
+        element: <FavoriteProducts />,
+      },
+      { path: appRoutes.ACCOUNT_ORDER_CHILDREN, element: <AccountOrders /> },
+      { path: appRoutes.ADMIN_COMMENT_CHILDREN, element: <AccountComments /> },
+      { path: appRoutes.ACCOUNT_ADDRESS_CHILDREN, element: <AccountAddress /> },
+    ],
+  },
+  {
+    path: appRoutes.ADMIN + "*",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <IndexPanel />
+      </Suspense>
+    ),
+    children: [
+      {
+        path: "",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Dashboard />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_DASHBOARD_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Dashboard />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_PRODUCT_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AdminProducts />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_CATEGORY_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Category />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_COLOR_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Color />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_BRAND_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Brand />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_APPPIC_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AppPic />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_COMMENT_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Comment />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_USER_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <User />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_ORDER_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Order />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_ROLE_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Role />
+          </Suspense>
+        ),
+      },
+      {
+        path: appRoutes.ADMIN_DISCOUNT_CHILDREN,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Discount />
+          </Suspense>
+        ),
+      },
     ],
   },
 ];

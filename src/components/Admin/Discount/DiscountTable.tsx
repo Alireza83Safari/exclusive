@@ -13,17 +13,17 @@ import { usePagination } from "../../../hooks/usePagination";
 import { useSearch } from "../../../hooks/useSearch";
 import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Pagination from "../../Pagination";
+import { Pagination } from "../../../components";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { RowTableSkeleton } from "../../../skelton/admin/Table/Table";
 import { useLocation } from "react-router-dom";
 import useRow from "../../../hooks/useRow";
-import {
-  DiscountContext,
-  discountContextType,
-} from "./Context/DiscountContext";
 import { getDiscountAdminType } from "../../../types/discount";
 import { useDeleteDiscountMutation } from "../../../Redux/apis/admin/discountAdminApi";
+import {
+  discountContextType,
+  DiscountContext,
+} from "../../../context/admin/discountContext";
 
 interface Column {
   id:

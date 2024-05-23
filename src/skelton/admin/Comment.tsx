@@ -1,4 +1,4 @@
-import ContentLoaders from "../../components/ContentLoaders";
+import { ContentLoaders } from "../../components";
 
 function CommentSkeleton() {
   return (

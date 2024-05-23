@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
-import { ColorContext, colorContextType } from "./Context/ColorContext";
+import { ColorContext, colorContextType } from "../../../context/admin/colorContext";
 import { color } from "../../../types/color";
 import {
   useEditColorMutation,

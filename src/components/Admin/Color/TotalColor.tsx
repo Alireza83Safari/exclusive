@@ -2,7 +2,10 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
-import { ColorContext, colorContextType } from "./Context/ColorContext";
+import {
+  ColorContext,
+  colorContextType,
+} from "../../../context/admin/colorContext";
 import { TotalColorSkeleton } from "../../../skelton/admin/Color";
 
 function TotalColor() {

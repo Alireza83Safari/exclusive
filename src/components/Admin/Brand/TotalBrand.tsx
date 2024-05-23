@@ -2,8 +2,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
-import { BrandContext, brandContextType } from "./Context/BrandContext";
-import Spinner from "../../Spinner/Spinner";
+import {
+  BrandContext,
+  brandContextType,
+} from "../../../context/admin/brandContext";
+import Spinner from "../../Share/Spinner/Spinner";
 
 function TotalBrand() {
   const { total, brandsLoading } = useContext(BrandContext) as brandContextType;

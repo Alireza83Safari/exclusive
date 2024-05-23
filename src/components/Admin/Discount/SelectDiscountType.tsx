@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import {
   DiscountContext,
   discountContextType,
-} from "./Context/DiscountContext";
+} from "../../../context/admin/discountContext";
 import useHasAccess from "../../../hooks/useHasAccess";
 
 export default function SelectDiscountType({}) {

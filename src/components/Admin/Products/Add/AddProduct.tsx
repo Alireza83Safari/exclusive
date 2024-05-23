@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 
 const AddProductInfo = lazy(() => import("./AddProductInfo"));
 const AddProductItem = lazy(() => import("./AddProductItem"));

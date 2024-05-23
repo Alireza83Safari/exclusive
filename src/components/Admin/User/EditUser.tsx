@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import toast from "react-hot-toast";
-import { UserContext, UserContextType } from "./Context/UserContext";
+import {
+  UserContext,
+  UserContextType,
+} from "../../../context/admin/userContext";
 import { user } from "../../../types/user";
-import Input from "../../Input";
+import { Input, SelectList } from "../../../components";
 import reactDOM from "react-dom";
-import SelectList from "../../SelectList";
 import { role } from "../../../types/role";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Share/Spinner/Spinner";
 import {
   useEditUserMutation,
   useGetUserMutation,
@@ -30,8 +32,7 @@ export default function EditUser() {
     roleName: "",
   };
 
-  const [editUserValue, setEditUserValue] =
-    useState<user>(inintialUserState);
+  const [editUserValue, setEditUserValue] = useState<user>(inintialUserState);
 
   const setInputValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

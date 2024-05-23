@@ -11,12 +11,12 @@ import toast from "react-hot-toast";
 import {
   CategoryContext,
   categoryContextType,
-} from "./Context/CayegoryContext";
+} from "../../../context/admin/cayegoryContext";
 import EditCategory from "./EditCategory";
 import { useDeleteCategoryMutation } from "../../../Redux/apis/admin/categoryAdminApi";
 import { useSearch } from "../../../hooks/useSearch";
 import { usePagination } from "../../../hooks/usePagination";
-import Pagination from "../../Pagination";
+import {Pagination} from "../../../components";
 import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../hooks/useHasAccess";

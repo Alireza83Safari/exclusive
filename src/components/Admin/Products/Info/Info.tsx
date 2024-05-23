@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
+} from "../../../../context/admin/productsContext";
 import { AiFillCloseCircle } from "react-icons/ai";
 const ProductInfo = lazy(() => import("./ProductInfo"));
 const ProductItemInfo = lazy(() => import("./ProductItemInfo"));

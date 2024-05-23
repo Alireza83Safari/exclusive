@@ -5,14 +5,14 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { MenuItem, Select, TextField } from "@mui/material";
 import toast from "react-hot-toast";
-import { AppPicContext, appPicContextType } from "./Context/AppPicContext";
+import { AppPicContext, appPicContextType } from '../../../context/admin/appPicContext';
 import { appPic } from "../../../types/appPic";
 import {
   useEditAppPicMutation,
   useGetAppPicMutation,
 } from "../../../Redux/apis/admin/appPicAdminApi";
 import { appPicErrorType } from "../../../types/error";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Share/Spinner/Spinner";
 
 const style = {
   position: "absolute",

@@ -2,20 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   ProductsContext,
   ProductsContextType,
-} from "../Context/ProductsContext";
-import Spinner from "../../../Spinner/Spinner";
-import Input from "../../../Input";
+} from "../../../../context/admin/productsContext";
+import Spinner from "../../../Share/Spinner/Spinner";
 import { product } from "../../../../types/product";
-import SelectList from "../../../SelectList";
+import { SelectList, Input } from "../../../../components";
 import toast from "react-hot-toast";
 import { categoryUserType } from "../../../../types/category";
 import { brandSelectListType } from "../../../../types/brand";
-import { useGetBrandsSelectListQuery } from "../../../../Redux/apis/user/brandUserApi";
 import { useGetCategorySelectListQuery } from "../../../../Redux/apis/user/categoryUserApi";
 import {
   useEditProductMutation,
   useGetProductAdminMutation,
 } from "../../../../Redux/apis/admin/productAdminApi";
+import { brandUserApi } from "../../../../Redux";
 
 function ProductInfo() {
   const { editProductId } = useContext(ProductsContext) as ProductsContextType;
@@ -33,7 +32,7 @@ function ProductInfo() {
     }
   }, [editProductId]);
 
-  const { data: brands } = useGetBrandsSelectListQuery("");
+  const { data: brands } = brandUserApi.useGetBrandsSelectListQuery("");
   const { data: category } = useGetCategorySelectListQuery("");
 
   const [editProductInfo, setEditProductInfo] = useState<product>({

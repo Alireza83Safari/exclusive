@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useState, useContext } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import { category } from "../../../types/category";
 import toast from "react-hot-toast";
-import {
-  CategoryContext,
-  categoryContextType,
-} from "./Context/CayegoryContext";
 import { useCreateCategoryMutation } from "../../../Redux/apis/admin/categoryAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { categoryErrorType } from "../../../types/error";
+import {
+  CategoryContext,
+  categoryContextType,
+} from "../../../context/admin/cayegoryContext";
 
 function AddCategory() {
   const inintialCategoryState = {

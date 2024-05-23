@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, TextField, Typography, Paper } from "@mui/material";
 import toast from "react-hot-toast";
-import { BrandContext, brandContextType } from "./Context/BrandContext";
 import { brand } from "../../../types/brand";
 import { useCreateBrandMutation } from "../../../Redux/apis/admin/brandAdminApi";
 import useHasAccess from "../../../hooks/useHasAccess";
 import { brandErrorType } from "../../../types/error";
+import {
+  brandContextType,
+  BrandContext,
+} from "../../../context/admin/brandContext";
 
 function AddBrand() {
   const inintialBrandState = {
