@@ -11,21 +11,8 @@ import toast from "react-hot-toast";
 import DeleteModal from "../../DeleteModal/DeleteModal";
 import { useDeleteAppPicMutation } from "../../../../Redux/apis/admin/appPicAdminApi";
 import useHasAccess from "../../../../hooks/useHasAccess";
-import { AppPicTableProps } from "./AppPicTable.interface";
-
-interface Column {
-  id: "index" | "createAt" | "actions" | "url" | "title" | "type";
-  label: string;
-}
-
-const columns: readonly Column[] = [
-  { id: "index", label: "index" },
-  { id: "title", label: "Title" },
-  { id: "type", label: "type" },
-  { id: "url", label: "Url" },
-  { id: "createAt", label: "createAt" },
-  { id: "actions", label: "actions" },
-];
+import { AppPicTableProps, columns } from "./AppPicTable.interface";
+import BrandTableSkeleton from "../../../Skeleton/Admin/Brand/BrandTableSkeleton";
 
 function AppPicTable(props: AppPicTableProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -67,6 +54,10 @@ function AppPicTable(props: AppPicTableProps) {
       toast.error("You Havent Access Edit AppPic");
     }
   };
+
+  if (isLoading) {
+    return <BrandTableSkeleton />;
+  }
 
   return (
     <div className="lg:col-span-8 col-span-12 m-3 sm:mt-3 sm:px-0 px-3 mt-64 lg:order-1 order-2">

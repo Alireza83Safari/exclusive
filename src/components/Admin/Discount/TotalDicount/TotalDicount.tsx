@@ -2,9 +2,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { TotalDiscountProps } from "./TotalDicount.interface";
+import TotalBrandSkeleton from "../../../Skeleton/Admin/Brand/TotalBrandSkeleton";
 
 function TotalDiscount(props: TotalDiscountProps) {
   const { total, isLoading } = props;
+
+  if (isLoading) {
+    return <TotalBrandSkeleton />;
+  }
   return (
     <Card
       sx={{

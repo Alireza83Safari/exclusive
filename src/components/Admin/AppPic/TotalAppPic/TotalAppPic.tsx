@@ -2,9 +2,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { TotalAppPicProps } from "./TotalAppPic.interface";
+import TotalBrandSkeleton from "../../../Skeleton/Admin/Brand/TotalBrandSkeleton";
 
 function TotalAppPic(props: TotalAppPicProps) {
   const { appPics, isLoading } = props;
+
+  if (isLoading) {
+    return <TotalBrandSkeleton />;
+  }
 
   return (
     <Card

@@ -4,8 +4,7 @@ import Typography from "@mui/material/Typography";
 import { OrderInfoProps } from "./OrderInfo.interface";
 
 function OrderInfo(props: OrderInfoProps) {
-  const { orders, isLoading } = props;
-  console.log(orders);
+  const { orders } = props;
 
   const totalOrderPriceWithDiscount = orders?.data.reduce(
     (prev: any, next: any) => {

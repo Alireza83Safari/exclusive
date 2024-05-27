@@ -12,40 +12,15 @@ import DeleteModal from "../../DeleteModal/DeleteModal";
 import { useSearch } from "../../../../hooks/useSearch";
 import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Pagination } from "../../../../components";
+import { BrandTableSkeleton, Pagination } from "../../../../components";
 import useHasAccess from "../../../../hooks/useHasAccess";
 import useRow from "../../../../hooks/useRow";
 import { getDiscountAdminType } from "../../../../types/discount";
 import { useDeleteDiscountMutation } from "../../../../Redux/apis/admin/discountAdminApi";
-import { DiscountTableProps } from "./DiscountTable.interface";
-
-interface Column {
-  id:
-    | "index"
-    | "name"
-    | "createdAt"
-    | "actions"
-    | "type"
-    | "value"
-    | "quantity";
-  label: string;
-}
-
-const columns: readonly Column[] = [
-  { id: "index", label: "index" },
-  { id: "name", label: "name" },
-  { id: "type", label: "type" },
-  { id: "value", label: "value" },
-  { id: "quantity", label: "quantity" },
-  { id: "createdAt", label: "createdAt" },
-  { id: "actions", label: "actions" },
-];
+import { columns, DiscountTableProps } from "./DiscountTable.interface";
 
 function DiscountTable(props: DiscountTableProps) {
   const { discounts, isLoading, refetchDiscount } = props;
-
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [editDiscountId, setEditDiscountId] = useState("");
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteDiscountID, setDeleteDiscountID] = useState("");
@@ -53,9 +28,7 @@ function DiscountTable(props: DiscountTableProps) {
   const { userHasAccess: accessList } = useHasAccess(
     "action_discount_admin_list"
   );
-  const { userHasAccess: accessEdit } = useHasAccess(
-    "action_discount_admin_update"
-  );
+
   const { userHasAccess: accessDelete } = useHasAccess(
     "action_discount_admin_delete"
   );
@@ -75,15 +48,6 @@ function DiscountTable(props: DiscountTableProps) {
     }
   };
 
-  const editDiscountHandler = (id: string) => {
-    if (accessEdit) {
-      setEditDiscountId(id);
-      setOpenEditModal(true);
-    } else {
-      toast.error("You Havent Access Edit Discount");
-    }
-  };
-
   const [searchQuery, setSearchQuery] = useState("");
 
   const pageSize = 10;
@@ -100,6 +64,9 @@ function DiscountTable(props: DiscountTableProps) {
     searchHandler(searchQuery);
   };
   const { rowNumber, limit } = useRow();
+  if (isLoading) {
+    return <BrandTableSkeleton />;
+  }
 
   return (
     <div className="lg:col-span-8 col-span-12 m-3 lg:order-1 order-2">
@@ -188,7 +155,7 @@ function DiscountTable(props: DiscountTableProps) {
                           />
                           <FaPen
                             className="text-orange-500 cursor-pointer"
-                            onClick={() => editDiscountHandler(row.id)}
+                            // onClick={() => editDiscountHandler(row.id)}
                           />
                         </TableCell>
                       </TableRow>

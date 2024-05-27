@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useFetchDataFromUrl } from "../../../../hooks/useFetchDataFromUrl";
-import { usePagination } from "../../../../hooks/usePagination";
 import { getCommentType } from "../../../../types/comment";
 import { AccountCommentSkeleton, Pagination } from "../../../../components";
 import { commentUserApi } from "../../../../Redux/apis/user/commentUserApi";
@@ -8,21 +6,15 @@ import { userAxios } from "../../../../services/userInterceptor";
 import CommentItem from "./CommentItem";
 
 function AccountComments() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
-
   const { data: comments } = commentUserApi.useGetCommentsUserQuery("");
 
-  const {} = usePagination(currentPage, pageSize);
   const { datas, total, loading } = useFetchDataFromUrl<getCommentType>(
     "comment",
     userAxios
   );
 
+  const pageSize = 5;
   const totalPages = Math.ceil(total / pageSize);
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
 
   if (loading) {
     return <AccountCommentSkeleton />;
@@ -50,13 +42,7 @@ function AccountComments() {
         </div>
       )}
 
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
+      <Pagination totalPages={totalPages} pageSize={pageSize} />
     </>
   );
 }

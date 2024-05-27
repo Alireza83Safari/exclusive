@@ -15,6 +15,7 @@ import useHasAccess from "../../../../hooks/useHasAccess";
 import { appPicErrorType } from "../../../../types/error";
 import { appPicOptions } from "../EditAppPic/EditAppPic";
 import { AddAppPicProps } from "./AddAppPic.interface";
+import { AddAppPicSkeleton } from "../../../";
 
 function AddAppPic(props: AddAppPicProps) {
   const inintialAppPicState = {
@@ -72,6 +73,9 @@ function AddAppPic(props: AddAppPicProps) {
     }
   }, [createAppPicValue]);
 
+  if (isLoading) {
+    return <AddAppPicSkeleton />;
+  }
   return (
     <div className="col-span-4 px-4 lg:min-h-full bg-white lg:h-[30rem] h-[16rem] rounded-lg mx-3 relative">
       <Paper

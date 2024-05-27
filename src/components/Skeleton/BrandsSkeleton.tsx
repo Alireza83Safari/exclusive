@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState } from "react";
-import ProductSkeleton from "./ProductSkeleton";
 
 const BrandsSkeleton = () => {
   const ref = useRef<HTMLDivElement>(null);

@@ -1,7 +1,6 @@
 /// share
 export { default as Spinner } from "./Share/Spinner/Spinner";
 export { default as NotFound } from "./Share/404";
-export { default as ContentLoaders } from "./Share/ContentLoaders";
 export { default as ErrorBoundary } from "./Share/ErrorBoundary";
 export { default as Input } from "./Share/Input";
 export { default as Pagination } from "./Share/Pagination";
@@ -174,3 +173,6 @@ export { default as BrandTableSkeleton } from "./Skeleton/Admin/Brand/BrandTable
 export { default as TotalBrandSkeleton } from "./Skeleton/Admin/Brand/TotalBrandSkeleton";
 export { default as AddBrandSkeleton } from "./Skeleton/Admin/Brand/AddBrandSkeleton";
 export { default as BrandSkeleton } from "./Skeleton/Admin/Brand/BrandSkeleton";
+export { default as AddAppPicSkeleton } from "./Skeleton/Admin/AppPic/AddAppPicSkeleton";
+export { default as ProductDetailsSkeleton } from "./Skeleton/ProductDetailsSkeleton";
+export { default as ProductDetailesImageSkeleton } from "./Skeleton/ProductDetailesImageSkeleton";

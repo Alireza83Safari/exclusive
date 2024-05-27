@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { usePagination } from "../../../../hooks/usePagination";
 import { AccountOrderSkeleton, Pagination } from "../../../index";
 import { useLocation } from "react-router-dom";
 import { profileUserApi } from "../../../../Redux/apis/user/profileUserApi";
@@ -8,13 +6,8 @@ import OrderItem from "./OrderItem";
 function AccountOrders() {
   const { data: orders, isLoading } =
     profileUserApi.useGetProfileOrdersUserQuery("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const pagiSize = 4;
-  const totalPages = Math.ceil(orders?.length / pagiSize);
-  const {} = usePagination(currentPage, pagiSize);
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const pageSize = 4;
+  const totalPages = Math.ceil(orders?.length / pageSize);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const page: number | null = parseInt(searchParams.get("page") as string);
@@ -32,13 +25,7 @@ function AccountOrders() {
         <OrderItem order={order} />
       ))}
 
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
+      <Pagination totalPages={totalPages} pageSize={pageSize} />
     </div>
   );
 }

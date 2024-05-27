@@ -5,8 +5,8 @@ import { color } from "../../../../types/color";
 import { useCreateColorMutation } from "../../../../Redux/apis/admin/colorAdminApi";
 import useHasAccess from "../../../../hooks/useHasAccess";
 import { colorErrorType } from "../../../../types/error";
-import { CreateColorSkeleton } from "../../../../skelton/admin/Color";
 import { AddColorProps } from "./AddColor.interface";
+import Spinner from "../../../Share/Spinner/Spinner";
 
 function AddColor(props: AddColorProps) {
   const { refetchColor } = props;
@@ -61,7 +61,7 @@ function AddColor(props: AddColorProps) {
   return (
     <div className="col-span-4 px-3">
       {isLoading ? (
-        <CreateColorSkeleton />
+        <Spinner />
       ) : (
         <Paper
           style={{

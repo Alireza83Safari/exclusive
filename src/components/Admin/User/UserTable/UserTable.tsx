@@ -14,7 +14,7 @@ import { Box, Button, TextField } from "@mui/material";
 import AddUser from "../AddUser/AddUser";
 import { useDeleteUserMutation } from "../../../../Redux/apis/admin/userAdminApi";
 import { useSearch } from "../../../../hooks/useSearch";
-import { Pagination } from "../../../../components";
+import { Pagination, ProductTableSkeleton } from "../../../../components";
 import SearchIcon from "@mui/icons-material/Search";
 import useHasAccess from "../../../../hooks/useHasAccess";
 import useRow from "../../../../hooks/useRow";
@@ -86,6 +86,10 @@ function UserTable(props: UserTableProps) {
   };
 
   const { rowNumber, limit } = useRow();
+
+  if (isLoading) {
+    return <ProductTableSkeleton />;
+  }
 
   return (
     <div className="col-span-12 m-3 bg-white p-2">

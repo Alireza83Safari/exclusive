@@ -9,7 +9,6 @@ function Products() {
   const [showInfo, setShowInfo] = useState(true);
   const [showEditItem, setShowEditItem] = useState(false);
   const [showEditFile, setShowEditFile] = useState(false);
-  const [showEditFeature, setShowEditFeature] = useState(false);
   const [showProductInfoModal, setShowProductInfoModal] = useState(false);
   const [editProductId, setEditProductId] = useState<string>("");
 

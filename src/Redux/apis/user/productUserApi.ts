@@ -6,7 +6,7 @@ export const productUserApi = createApi({
   reducerPath: "productUserApi",
   endpoints: (builder) => ({
     getProductsUser: builder.query({
-      query: (url?: string) => ({ url: `${url ? url : ""}`, method: "get" }),
+      query: (url?: string) => ({ url: url ? url : "", method: "get" }),
     }),
 
     getProductUser: builder.mutation({

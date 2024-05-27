@@ -12,7 +12,6 @@ import DeleteModal from "../../DeleteModal/DeleteModal";
 import { useDeleteRoleMutation } from "../../../../Redux/apis/admin/roleAdminApi";
 import useHasAccess from "../../../../hooks/useHasAccess";
 import { Box } from "@mui/material";
-import { RowTableSkeleton } from "../../../../skelton/admin/Table/Table";
 import ProductTableSkeleton from "../../../Skeleton/Admin/ProductTableSkeleton";
 import Permissions from "../Permissions/Permissions";
 import { columns, RoleTableProps } from "./RoleTable.interface";
@@ -53,6 +52,10 @@ function RoleTable(props: RoleTableProps) {
     return <ProductTableSkeleton />;
   }
 
+  if (isLoading) {
+    return <ProductTableSkeleton />;
+  }
+
   return (
     <div className="m-3 lg:order-1 order-2 mt-4">
       <Paper
@@ -77,65 +80,50 @@ function RoleTable(props: RoleTableProps) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {isLoading
-                  ? Array.from(Array(roles?.data?.length).keys()).map(
-                      (_, index) => (
-                        <TableRow key={index}>
-                          {[...Array(6).keys()].map((cellIndex) => (
-                            <TableCell key={cellIndex}>
-                              <RowTableSkeleton />
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      )
-                    )
-                  : roles?.data?.map((row: any, index: any) => (
-                      <TableRow key={row.id}>
-                        <TableCell align="center">{index + 1}</TableCell>
-                        <TableCell align="center">{row.name}</TableCell>
-                        <TableCell align="center">{row.code}</TableCell>
-                        <TableCell align="center">
-                          <button
-                            className="text-xs border border-borderColor py-1 px-2 rounded-md"
-                            onClick={() => {
-                              setRoleId(row.id);
-                              setShowPermissions(true);
-                            }}
-                          >
-                            Permissions
-                          </button>
-                        </TableCell>
-                        <TableCell
-                          style={{ whiteSpace: "nowrap" }}
-                          align="center"
-                        >
-                          {row.createdAt.slice(0, 10)}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mt: "12px",
-                          }}
-                        >
-                          <FaTrash
-                            className="text-red mr-3"
-                            onClick={() => {
-                              setDeleteBrandId(row.id);
-                              setShowDeleteModal(true);
-                            }}
-                          />
-                          <FaPen
-                            className="text-orange-500"
-                            onClick={() => {
-                              setShowEditModal(true);
-                              setEditRoleId(row.id);
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                {roles?.data?.map((row: any, index: any) => (
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">{row.name}</TableCell>
+                    <TableCell align="center">{row.code}</TableCell>
+                    <TableCell align="center">
+                      <button
+                        className="text-xs border border-borderColor py-1 px-2 rounded-md"
+                        onClick={() => {
+                          setRoleId(row.id);
+                          setShowPermissions(true);
+                        }}
+                      >
+                        Permissions
+                      </button>
+                    </TableCell>
+                    <TableCell style={{ whiteSpace: "nowrap" }} align="center">
+                      {row.createdAt.slice(0, 10)}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        mt: "12px",
+                      }}
+                    >
+                      <FaTrash
+                        className="text-red mr-3"
+                        onClick={() => {
+                          setDeleteBrandId(row.id);
+                          setShowDeleteModal(true);
+                        }}
+                      />
+                      <FaPen
+                        className="text-orange-500"
+                        onClick={() => {
+                          setShowEditModal(true);
+                          setEditRoleId(row.id);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           ) : (
