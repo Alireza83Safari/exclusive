@@ -7,7 +7,7 @@ export const orderAdminApi = createApi({
   endpoints: (builder) => ({
     getOrderAdmin: builder.query({
       query: (url: string) => ({
-        url: `/order${url ? `/${url}` : ``}`,
+        url: url ? `/order${url}` : "/order",
         method: "get",
       }),
     }),

@@ -1,4 +1,4 @@
-import Header from "./Header";
+import Header from "./Header/Header";
 import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { authContext, authContextType } from "../../context/authContext";

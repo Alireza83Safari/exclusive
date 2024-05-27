@@ -6,7 +6,11 @@ import {
   AccountAddress,
   AccountComments,
   IndexPanel,
+  DashboardSkeleton,
+  ProductTableSkeleton,
+  BrandSkeleton,
 } from "../components";
+
 import { appRoutes } from "./appRoutes";
 import {
   About,
@@ -122,7 +126,7 @@ const routes = [
       {
         path: "",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<DashboardSkeleton />}>
             <Dashboard />
           </Suspense>
         ),
@@ -130,7 +134,7 @@ const routes = [
       {
         path: appRoutes.ADMIN_DASHBOARD_CHILDREN,
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<DashboardSkeleton />}>
             <Dashboard />
           </Suspense>
         ),
@@ -138,7 +142,7 @@ const routes = [
       {
         path: appRoutes.ADMIN_PRODUCT_CHILDREN,
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<ProductTableSkeleton />}>
             <AdminProducts />
           </Suspense>
         ),
@@ -146,7 +150,7 @@ const routes = [
       {
         path: appRoutes.ADMIN_CATEGORY_CHILDREN,
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<BrandSkeleton />}>
             <Category />
           </Suspense>
         ),
@@ -162,7 +166,7 @@ const routes = [
       {
         path: appRoutes.ADMIN_BRAND_CHILDREN,
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<BrandSkeleton />}>
             <Brand />
           </Suspense>
         ),

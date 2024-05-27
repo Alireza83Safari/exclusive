@@ -8,7 +8,7 @@ export const productAdminApi = createApi({
   endpoints: (builder) => ({
     getProductsAdmin: builder.query({
       query: (url?: string) => ({
-        url: `${url ? url : ""}`,
+        url: url ? url : "",
         method: "get",
       }),
     }),

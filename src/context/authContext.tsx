@@ -41,7 +41,7 @@ export const AuthContextProvider = ({ children }: authContextProviderType) => {
   const { data, isSuccess, isLoading, refetch } =
     authUserApi.useUserIsAuthenticatedQuery("");
   const [userPermissions, setUserPermissions] = useState([]);
-  const [userIsLogin, setUserIsLogin] = useState<null | boolean>(false);
+  const [userIsLogin, setUserIsLogin] = useState<null | boolean>(true);
   const [userInfos, setUserInfos] = useState<userInfosType | null>(null);
 
   useEffect(() => {

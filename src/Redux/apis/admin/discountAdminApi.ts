@@ -7,7 +7,7 @@ export const discountAdminApi = createApi({
   reducerPath: "discountAdminApi",
   endpoints: (builder) => ({
     getDiscountAdmin: builder.query({
-      query: () => ({ url: ``, method: "get" }),
+      query: (url: string) => ({ url: url ? url : "", method: "get" }),
     }),
     getDiscountWithId: builder.mutation({
       query: (id: string) => ({

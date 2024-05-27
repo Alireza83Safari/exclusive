@@ -7,7 +7,7 @@ export const colorAdminApi = createApi({
   reducerPath: "colorAdminApi",
   endpoints: (builder) => ({
     getColors: builder.query({
-      query: () => ({ url: ``, method: "get" }),
+      query: (url: string) => ({ url: url ? url : "", method: "get" }),
     }),
     getColor: builder.mutation({
       query: (id: string) => ({

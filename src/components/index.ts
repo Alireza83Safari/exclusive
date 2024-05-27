@@ -10,80 +10,80 @@ export { default as Timer } from "./Share/Timer";
 
 /// start admin
 //// appPic
-export { default as AddAppPic } from "./Admin/AppPic/AddAppPic";
-export { default as AddAppPicFile } from "./Admin/AppPic/AddAppPicFile";
-export { default as AppPicTable } from "./Admin/AppPic/AppPicTable";
-export { default as EditAppPic } from "./Admin/AppPic/EditAppPic";
-export { default as EditAppPicFile } from "./Admin/AppPic/EditAppPicFile";
-export { default as TotalAppPic } from "./Admin/AppPic/TotalAppPic";
+export { default as AddAppPic } from "./Admin/AppPic/AddAppPic/AddAppPic";
+export { default as AddAppPicFile } from "./Admin/AppPic/AddAppPicFile/AddAppPicFile";
+export { default as AppPicTable } from "./Admin/AppPic/AppPicTable/AppPicTable";
+export { default as EditAppPic } from "./Admin/AppPic/EditAppPic/EditAppPic";
+export { default as EditAppPicFile } from "./Admin/AppPic/EditAppPicFile/EditAppPicFile";
+export { default as TotalAppPic } from "./Admin/AppPic/TotalAppPic/TotalAppPic";
 
 //// brand
-export { default as AddBrand } from "./Admin/Brand/AddBrand";
-export { default as AddBrandFile } from "./Admin/Brand/AddBrandFile";
-export { default as BrandTable } from "./Admin/Brand/BrandTable";
-export { default as EditBrand } from "./Admin/Brand/EditBrand";
-export { default as TotalBrand } from "./Admin/Brand/TotalBrand";
+export { default as AddBrand } from "./Admin/Brand/AddBrand/AddBrand";
+export { default as AddBrandFile } from "./Admin/Brand/AddBrandFile/AddBrandFile";
+export { default as BrandTable } from "./Admin/Brand/BrandTable/BrandTable";
+export { default as EditBrand } from "./Admin/Brand/EditBrand/EditBrand";
+export { default as TotalBrand } from "./Admin/Brand/TotalBrand/TotalBrand";
 
 //// category
-export { default as AddCategory } from "./Admin/Category/AddCategory";
-export { default as CategoryTable } from "./Admin/Category/CategoryTable";
-export { default as EditCategory } from "./Admin/Category/EditCategory";
-export { default as TotalCategory } from "./Admin/Category/TotalCategory";
+export { default as AddCategory } from "./Admin/Category/AddCategory/AddCategory";
+export { default as CategoryTable } from "./Admin/Category/CategoryTable/CategoryTable";
+export { default as EditCategory } from "./Admin/Category/EditCategory/EditCategory";
+export { default as TotalCategory } from "./Admin/Category/TotalCategory/TotalCategory";
 
 /// panel layout
 export { default as IndexPanel } from "./Admin/index";
 
 //// color
-export { default as AddColor } from "./Admin/Color/AddColor";
-export { default as ColorTable } from "./Admin/Color/ColorTable";
-export { default as EditColor } from "./Admin/Color/EditColor";
-export { default as TotalColor } from "./Admin/Color/TotalColor";
+export { default as AddColor } from "./Admin/Color/AddColor/AddColor";
+export { default as ColorTable } from "./Admin/Color/ColorTable/ColorTable";
+export { default as EditColor } from "./Admin/Color/EditColor/EditColor";
+export { default as TotalColor } from "./Admin/Color/TotalColor/TotalColor";
 
 //// comment
-export { default as CommentInfo } from "./Admin/Comment/CommentInfo";
-export { default as CommentTable } from "./Admin/Comment/CommentTable";
+export { default as CommentInfo } from "./Admin/Comment/CommentInfo/CommentInfo";
+export { default as CommentTable } from "./Admin/Comment/CommentTable/CommentTable";
 
 //// dashboard
-export { default as BarChart } from "./Admin/Dashboard/BarChart";
-export { default as BestDiscount } from "./Admin/Dashboard/BestDiscount";
-export { default as BestSale } from "./Admin/Dashboard/BestSale";
-export { default as DashboardChart } from "./Admin/Dashboard/DashboardChart";
-export { default as DahboardOrdersTable } from "./Admin/Dashboard/DahboardOrdersTable";
-export { default as DashboardTopbar } from "./Admin/Dashboard/DashboardTopbar";
+export { default as BarChart } from "./Admin/Dashboard/BarChart/BarChart";
+export { default as BestDiscount } from "./Admin/Dashboard/BestDiscount/BestDiscount";
+export { default as BestSale } from "./Admin/Dashboard/BestSale/BestSale";
+export { default as DashboardChart } from "./Admin/Dashboard/DashboardChart/DashboardChart";
+export { default as DahboardOrdersTable } from "./Admin/Dashboard/DahboardOrdersTable/DahboardOrdersTable";
+export { default as DashboardTopbar } from "./Admin/Dashboard/DashboardTopbar/DashboardTopbar";
 
 //// discount
-export { default as AddDiscount } from "./Admin/Discount/AddDiscount";
-export { default as DiscountTable } from "./Admin/Discount/DiscountTable";
-export { default as SelectDiscountType } from "./Admin/Discount/SelectDiscountType";
-export { default as TotalDicount } from "./Admin/Discount/TotalDicount";
+export { default as AddDiscount } from "./Admin/Discount/AddDiscount/AddDiscount";
+export { default as DiscountTable } from "./Admin/Discount/DiscountTable/DiscountTable";
+export { default as SelectDiscountType } from "./Admin/Discount/SelectDiscountType/SelectDiscountType";
+export { default as TotalDicount } from "./Admin/Discount/TotalDicount/TotalDicount";
 
 //// order
-export { default as OrderInfo } from "./Admin/Order/OrderInfo";
-export { default as OrderTable } from "./Admin/Order/OrderTable";
+export { default as OrderInfo } from "./Admin/Order/OrderInfo/OrderInfo";
+export { default as OrderTable } from "./Admin/Order/OrderTable/OrderTable";
 
 //// role
-export { default as AddRole } from "./Admin/Role/AddRole";
-export { default as EditRole } from "./Admin/Role/EditRole";
-export { default as Permissions } from "./Admin/Role/Permissions";
-export { default as RoleTable } from "./Admin/Role/RoleTable";
+export { default as AddRole } from "./Admin/Role/AddRole/AddRole";
+export { default as EditRole } from "./Admin/Role/EditRole/EditRole";
+export { default as Permissions } from "./Admin/Role/Permissions/Permissions";
+export { default as RoleTable } from "./Admin/Role/RoleTable/RoleTable";
 
 //// user
-export { default as AddUser } from "./Admin/User/AddUser";
-export { default as EditUser } from "./Admin/User/EditUser";
-export { default as UserTable } from "./Admin/User/UserTable";
+export { default as AddUser } from "./Admin/User/AddUser/AddUser";
+export { default as EditUser } from "./Admin/User/EditUser/EditUser";
+export { default as UserTable } from "./Admin/User/UserTable/UserTable";
 
 //// product
-export { default as ProductsTable } from "./Admin/Products/ProductsTable";
-export { default as ProductsPanel } from "./Admin/Products/ProductsPanel";
-export { default as AddProduct } from "./Admin/Products/Add/AddProduct";
-export { default as AddProductFeature } from "./Admin/Products/Add/AddProductFeature";
-export { default as AddProductFile } from "./Admin/Products/Add/AddProductFile";
-export { default as AddProductInfo } from "./Admin/Products/Add/AddProductInfo";
-export { default as AddProductItem } from "./Admin/Products/Add/AddProductItem";
-export { default as Info } from "./Admin/Products/Info/Info";
-export { default as ProductImage } from "./Admin/Products/Info/ProductImage";
-export { default as ProductInfo } from "./Admin/Products/Info/ProductInfo";
-export { default as ProductItemInfo } from "./Admin/Products/Info/ProductItemInfo";
+export { default as ProductsTable } from "./Admin/Products/ProductTable/ProductsTable";
+export { default as AddProduct } from "./Admin/Products/Add/AddProduct/AddProduct";
+export { default as AddProductFeature } from "./Admin/Products/Add/AddProductFeature/AddProductFeature";
+export { default as AddProductFile } from "./Admin/Products/Add/AddProductFile/AddProductFile";
+export { default as AddProductInfo } from "./Admin/Products/Add/AddProductInfo/AddProductInfo";
+export { default as AddProductItem } from "./Admin/Products/Add/AddProductItem/AddProductItem";
+export { default as Info } from "./Admin/Products/Info/Info/Info";
+export { default as ProductImage } from "./Admin/Products/Info/ProductImage/ProductImage";
+export { default as ProductInfo } from "./Admin/Products/Info/ProductInfo/ProductInfo";
+export { default as ProductItemInfo } from "./Admin/Products/Info/ProductItemInfo/ProductItemInfo";
+export { default as AddNewProduct } from "./Admin/Products/Add/AddProduct/AddProduct";
 
 /////// shop
 export { default as AccountComments } from "./Shop/Account/Comment/AccountComments";
@@ -162,3 +162,15 @@ export { default as ArrivalSkeleton } from "./Skeleton/ArrivalSkeleton";
 export { default as CartSkeleton } from "./Skeleton/CartSkeleton";
 export { default as AccountOrderSkeleton } from "./Skeleton/AccountOrderSkeleton";
 export { default as AccountCommentSkeleton } from "./Skeleton/AccountCommentSkeleton";
+
+/// admin skeleton
+export { default as DashboardSkeleton } from "./Skeleton/Admin/Dashboard/DashboardSkeleton";
+export { default as DashboardBestSaleSkeleton } from "./Skeleton/Admin/Dashboard/DashboardBestSaleSkeleton";
+export { default as DashboardChartSkeleton } from "./Skeleton/Admin/Dashboard/DashboardChartSkeleton";
+export { default as DashboardTableSkeleton } from "./Skeleton/Admin/Dashboard/DashboardTableSkeleton";
+export { default as DashboardTopbarSkeleton } from "./Skeleton/Admin/Dashboard/DashboardTopbarSkeleton";
+export { default as ProductTableSkeleton } from "./Skeleton/Admin/ProductTableSkeleton";
+export { default as BrandTableSkeleton } from "./Skeleton/Admin/Brand/BrandTableSkeleton";
+export { default as TotalBrandSkeleton } from "./Skeleton/Admin/Brand/TotalBrandSkeleton";
+export { default as AddBrandSkeleton } from "./Skeleton/Admin/Brand/AddBrandSkeleton";
+export { default as BrandSkeleton } from "./Skeleton/Admin/Brand/BrandSkeleton";

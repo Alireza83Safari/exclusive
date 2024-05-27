@@ -7,7 +7,7 @@ export const roleAdminApi = createApi({
   reducerPath: "roleAdminApi",
   endpoints: (builder) => ({
     getRoles: builder.query({
-      query: (url: string) => ({ url: `${url && `/${url}`}`, method: "get" }),
+      query: () => ({ url: "", method: "get" }),
     }),
     getRolePermissions: builder.query({
       query: () => ({ url: `/permissions`, method: "get" }),
